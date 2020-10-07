@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Review-大数据系统与大规模数据分析 | 洛阳城头看落阳</title>
+  <meta name="description" content="关系型数据库 数据库系统架构Database Management System(数据库管理系统) RDBMS: Relational Database Management System(关系型数据库系统)   SQL Parser  SQL 语句的程序-&gt;解析好的内部表达（例如：parsing tree） 语法解析，语法检查，表名、列名、类型检查  Query Optimizer  产生">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Review-大数据系统与大规模数据分析">
+<meta property="og:url" content="http://example.com/2018/06/05/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="洛阳城头看落阳">
+<meta property="og:description" content="关系型数据库 数据库系统架构Database Management System(数据库管理系统) RDBMS: Relational Database Management System(关系型数据库系统)   SQL Parser  SQL 语句的程序-&gt;解析好的内部表达（例如：parsing tree） 语法解析，语法检查，表名、列名、类型检查  Query Optimizer  产生">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/2018/06/05/asset/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/63255074.jpg">
+<meta property="og:image" content="http://example.com/2018/06/05/asset/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/65754030.jpg">
+<meta property="og:image" content="http://example.com/2018/06/05/asset/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/10513525.jpg">
+<meta property="og:image" content="http://example.com/2018/06/05/asset/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/49182773.jpg">
+<meta property="og:image" content="http://example.com/2018/06/05/asset/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/52486626.jpg">
+<meta property="og:image" content="http://example.com/2018/06/05/asset/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/91625804.jpg">
+<meta property="og:image" content="http://example.com/2018/06/05/asset/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/96929964.jpg">
+<meta property="og:image" content="http://example.com/2018/06/05/asset/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/46453396.jpg">
+<meta property="og:image" content="http://example.com/2018/06/05/asset/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/23748812.jpg">
+<meta property="article:published_time" content="2018-06-05T07:24:59.000Z">
+<meta property="article:modified_time" content="2020-09-18T07:11:31.597Z">
+<meta property="article:author" content="xmz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2018/06/05/asset/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/63255074.jpg">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2018/06/05/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/index.html">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    <link href="https://cdn.bootcss.com/KaTeX/0.8.3/katex.min.css" rel="stylesheet">
+  
+  
+  
+    <link href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css" rel="stylesheet">
+  
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xmzzyo" target="_blank">
+          <img class="img-circle img-rotate" src="/images/touxiang.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">zzyo</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithms/">Algorithms</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DL/">DL</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DL/NLP/">NLP</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/IELTS/">IELTS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NLP/">NLP</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RL/">RL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RecSys/">RecSys</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SE/">SE</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90/">程序分析</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cross-domain/" rel="tag">Cross-domain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" rel="tag">强化学习</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="tag">推荐系统</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/07/01/Time-Series-Analysis/" class="title">Time Series Analysis</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-07-01T07:19:35.000Z" itemprop="datePublished">2020-07-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/06/10/Life-Time-Value/" class="title">Life-Time Value</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-06-10T12:29:41.000Z" itemprop="datePublished">2020-06-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RL/">RL</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/19/Note-Deep-Reinforce-Learning/" class="title">Note Deep Reinforce Learning</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-19T11:34:53.000Z" itemprop="datePublished">2020-04-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RecSys/">RecSys</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/15/Deep-Reinforcement-Learning-for-Recommender-Systems/" class="title">Deep Reinforcement Learning for Recommender Systems</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-15T08:36:13.000Z" itemprop="datePublished">2020-04-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RecSys/">RecSys</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/12/Cross-domain-Recommendation/" class="title">Cross-domain Recommendation</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-12T10:15:12.000Z" itemprop="datePublished">2020-04-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/crypto-js@4.0.0/crypto-js.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Review-大数据系统与大规模数据分析" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Review-大数据系统与大规模数据分析
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2018/06/05/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="article-date">
+	  <time datetime="2018-06-05T07:24:59.000Z" itemprop="datePublished">2018-06-05</time>
+	</a>
+</span>
+        
+        
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 1.3k(words)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 5(minutes)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="关系型数据库"><a href="#关系型数据库" class="headerlink" title="关系型数据库"></a>关系型数据库</h2><hr>
+<h3 id="数据库系统架构"><a href="#数据库系统架构" class="headerlink" title="数据库系统架构"></a><strong>数据库系统架构</strong></h3><p>Database Management System(数据库管理系统)</p>
+<p>RDBMS: Relational Database Management System(关系型数据库系统)</p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/63255074.jpg"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/65754030.jpg"></p>
+<p>SQL Parser</p>
+<blockquote>
+<p>SQL 语句的程序-&gt;<strong><em>解析好的内部表达</em></strong>（例如：parsing tree）</p>
+<p><strong><em>语法解析</em></strong>，语法检查，表名、列名、类型检查</p>
+</blockquote>
+<p>Query Optimizer</p>
+<blockquote>
+<p>产生可行的query plan</p>
+<p>估计query plan的运行时间和空间代价</p>
+<p>在多个可行的query plans中选择**<em>最佳的query plan**</em></p>
+</blockquote>
+<p>Data storage and indexing</p>
+<blockquote>
+<p>如何在硬盘上存储数据</p>
+<p>如何高效地访问硬盘上的数据</p>
+</blockquote>
+<p>Buffer pool</p>
+<blockquote>
+<p>在内存中缓存硬盘的数据</p>
+<p>提高性能，减少I/O</p>
+</blockquote>
+<p>Execution Engine</p>
+<blockquote>
+<p>根据query plan，完成相应的运算和操作</p>
+<p>数据访问</p>
+<p><strong><em>关系型运算的实现</em></strong></p>
+</blockquote>
+<p>Transaction management：事务管理</p>
+<blockquote>
+<p>目标是<strong>实现ACID</strong></p>
+<p>进行<strong>logging写日志，locking加锁</strong></p>
+<p><strong>保证并行transactions事务的正确性</strong></p>
+</blockquote>
+<h3 id="数据存储与访问"><a href="#数据存储与访问" class="headerlink" title="数据存储与访问"></a><strong>数据存储与访问</strong></h3><h4 id="数据表"><a href="#数据表" class="headerlink" title="数据表"></a>数据表</h4><p>RDBMS最小的存储单位是database page size，Data page size 可以设置为1~多个文件系统的 page，例如，4KB, 8KB, 16KB, …</p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/10513525.jpg"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/49182773.jpg"></p>
+<p>数据的顺序访问</p>
+<blockquote>
+<p>顺序读取Student表的每个page</p>
+<p>对于每个page，顺序访问每个tuple</p>
+</blockquote>
+<h4 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h4><p>Selective Data Access (有选择性的访问)</p>
+<blockquote>
+<p>使用index(索引)</p>
+<ol>
+<li><p>Tree based index</p>
+<p><strong>有序，支持点查询和范围查询</strong></p>
+</li>
+<li><p>Hash based index</p>
+<p><strong>无序，只支持点查询</strong></p>
+</li>
+</ol>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/52486626.jpg"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/91625804.jpg"></p>
+<blockquote>
+<p>每个<strong>节点是一个page</strong></p>
+<p><strong>所有key存储在叶子节点</strong></p>
+<p> <strong>内部节点完全是索引作用</strong></p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/96929964.jpg"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/46453396.jpg"></p>
+<p><strong>Search</strong></p>
+<blockquote>
+<p>从根节点到叶节点</p>
+<p>每个节点中进行<strong>二分查找</strong></p>
+<p><strong>内部节点：找到包括search key的子树</strong></p>
+<p><strong>叶节点：找到匹配</strong></p>
+</blockquote>
+<blockquote>
+<p>Search代价</p>
+<p>共有N个key</p>
+<p>每个节点的child/pointer个数为B</p>
+<p>总I/O次数=树高：$O(\log_BN)$</p>
+<p>总比较次数</p>
+<p>每个节点内部二分查找：$O(\log_2B)$</p>
+<p>$O(\log_BN) x O(\log_2B) = O(\log_2N)$</p>
+</blockquote>
+<p><strong>Insertion</strong></p>
+<blockquote>
+<p>Search 然后在节点中插入</p>
+<p>叶节点未满，插入叶节点</p>
+<p>叶节点满了，node split(节点分裂)</p>
+</blockquote>
+<p><strong>Deletion</strong></p>
+<blockquote>
+<p>Search 然后在节点中删除</p>
+<p>node merge?</p>
+<p>原设计：当节点中key个数小于一半</p>
+<p>实际实现：数据总趋势是增长的</p>
+<p><strong>可以只有节点为空时才node merge</strong></p>
+<p><strong>或者完全不进行node merge</strong></p>
+</blockquote>
+<p><strong>Range Scan</strong></p>
+<blockquote>
+<p><strong>找到起始叶结点</strong>，包括范围起始值</p>
+<p><strong>沿着叶的链接读下一个叶结点</strong></p>
+<p>直至遇到范围终止值</p>
+</blockquote>
+<p> <strong>Clustered index(主索引)与Secondary index(二级索引)</strong></p>
+<blockquote>
+<p>Clustered: 记录就存在index中，记录顺序就是index顺序</p>
+<p>​    需要处理每一个记录顺序读每一个page</p>
+<p>Secondary: 记录顺序不是index顺序，index中存储page ID和in-page tuple slot ID.</p>
+<p>​    有选择地处理记录随机读相关的page</p>
+</blockquote>
+<h4 id="缓冲池Buffer-Pool"><a href="#缓冲池Buffer-Pool" class="headerlink" title="缓冲池Buffer Pool"></a>缓冲池Buffer Pool</h4><p>提高性能，减少I/O</p>
+<p>数据访问的局部性(locality)</p>
+<blockquote>
+<ol>
+<li><p>Temporal locality (时间局部性)</p>
+<p>同一个数据元素可能会在一段时间内多次被访问</p>
+<p>Buffer pool</p>
+</li>
+<li><p>Spatial locality (空间局部性)</p>
+<p>位置相近的数据元素可能会被一起访问</p>
+<p>Page为单位读写</p>
+</li>
+</ol>
+</blockquote>
+<p>Buffer pool的内存空间分成page大小的单元（frame）,每个frame可以缓冲硬盘中的一个page.</p>
+<p><strong>Replacement (替换)</strong></p>
+<p>如果这个page 被修改过，那么需要写回硬盘</p>
+<p><strong>Replacement Policies(替换策略)</strong></p>
+<blockquote>
+<p>Random：随机替换</p>
+<p>FIFO(First In First Out)：替换最老的页</p>
+<p>LRU (Least Recently Used)：最近最少使用</p>
+</blockquote>
+<p><strong>Clock算法</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/23748812.jpg"></p>
+<h3 id="运算的实现"><a href="#运算的实现" class="headerlink" title="运算的实现"></a><strong>运算的实现</strong></h3><h4 id="Operator-tree"><a href="#Operator-tree" class="headerlink" title="Operator tree"></a>Operator tree</h4><p>Query plan 最终将表现为一棵Operator Tree</p>
+<blockquote>
+<p>每个节点代表一个运算</p>
+<p><strong>运算的输入来自孩子节点</strong></p>
+<p><strong>运算的输出送往父亲节点</strong></p>
+</blockquote>
+<p>####Selection &amp; Projection</p>
+<h4 id="Join"><a href="#Join" class="headerlink" title="Join"></a>Join</h4><p><strong>Nested loop</strong></p>
+<pre><code>&gt;Nested Loop Join 双循环
+&gt;
+&gt;Block Nested Loop Join 一次读入内存大小
+&gt;
+&gt;Index Nested Loop Join 建立中间索引</code></pre>
+<p><strong>Hashing</strong></p>
+<p>读R建立hash table; 读S访问hash table找到所有的匹配;</p>
+<p>R比内存大怎么办？</p>
+<blockquote>
+<p>把R和S划分成小块    PartitionID = hash(join key) % PartitionNumber</p>
+<p>Rj中记录的匹配只存在于相应的Sj中</p>
+<p>匹配的记录hash (join key)必然相同</p>
+</blockquote>
+<p>GRACE Hash Join    线性时间</p>
+<p><strong>Sorting</strong></p>
+<p>如果把R按照R.a的顺序排序，把S按照S.b的顺序排序，那么可以Merge(归并)找出所有的匹配，当一个表已经有序的情况下，会被使用</p>
+<h3 id="事务处理"><a href="#事务处理" class="headerlink" title="事务处理"></a><strong>事务处理</strong></h3><p>####ACID</p>
+<p>事务中的所有操作满足ACID性质</p>
+<ol>
+<li>Atomicity（原子性）要么完全执行，要么完全没有执行</li>
+<li>Consistency（一致性）从一个正确状态转换到另一个正确状态</li>
+<li>Isolation（隔离性）每个事务与其它并发事务互不影响</li>
+<li>Durability（持久性）Transaction commit后，结果持久有效，crash也不消失</li>
+</ol>
+<p>####Concurrency Control (并发控制)</p>
+<p>Serializable(可串行化)：并行执行结果=某个顺序的串行执行结果</p>
+<ol>
+<li>Read uncommitted data (读脏数据) (写读)在T2 commit之前，T1读了T2已经修改了的数据</li>
+<li>Unrepeatable reads(不可重复读) (读写)在T2 commit之前，T1写了T2已经读的数据</li>
+<li>Overwrite uncommitted data (更新丢失) (写写)在T2 commit之前，T1重写了T2已经修改了的数据</li>
+</ol>
+<p>Pessimistic (悲观) 假设：数据竞争可能经常出现，保证数据竞争不会出现</p>
+<p>Optimistic (乐观) 假设：数据竞争很少见，在提交前检查是否没有数据竞争</p>
+<p>Pessimistic: 加锁</p>
+<p>####Crash Recovery (崩溃恢复)</p>
+<p>###<strong>数据仓库</strong></p>
+<p>###<strong>分布式数据库</strong></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2018/06/05/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" title="Review-大数据系统与大规模数据分析" target="_blank" rel="external">http://example.com/2018/06/05/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xmzzyo" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/touxiang.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xmzzyo" target="_blank"><span class="text-dark">zzyo</span><small class="ml-1x"></small></a></h3>
+        <div>技术活，当赏~</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2018/06/11/Review-Deep-Learning/" title="Review Deep Learning"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2018/02/07/VirtualBox-Ubuntu1604-Server-%E9%9D%99%E6%80%81ip%E9%85%8D%E7%BD%AE/" title="VirtualBox Ubuntu1604 Server 静态ip配置"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2020 xmz
+        
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+  <script>
+  //利用 FancyBox 实现点击图片放大
+  $(document).ready(function() {
+    $('article img').not('[hidden]').not('.panel-body img').each(function() {
+      var $image = $(this);
+      var imageCaption = $image.attr('alt');
+      var $imageWrapLink = $image.parent('a');
+      if ($imageWrapLink.length < 1) {
+        var src = this.getAttribute('src');
+        var idx = src.lastIndexOf('?');
+        if (idx != -1) {
+          src = src.substring(0, idx);
+        }
+        $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+      }
+      $imageWrapLink.attr('data-fancybox', 'images');
+      if (imageCaption) {
+        $imageWrapLink.attr('data-caption', imageCaption);
+      }
+    });
+    $().fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+    });
+  });
+  </script>
+
+
+
+
+    <script defer>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?5b8968d29b062c2b158f75733d315d20";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+</body>
+</html>

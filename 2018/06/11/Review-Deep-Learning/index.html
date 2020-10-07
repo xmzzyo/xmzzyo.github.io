@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Review Deep Learning | 洛阳城头看落阳</title>
+  <meta name="description" content="DL Basics  Linear AlgebraScalarsVectors$\mathbb{R^n}$ Matrices2-D Array $\mathbb{R^{m\times n}}$ TensorsMatrix Transpose  $(AB)^T&#x3D;B^TA^T$ Matrix (Dot) ProductIdentity Matrix$I_nx&#x3D;x$ Systems of Equatio">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Review Deep Learning">
+<meta property="og:url" content="http://example.com/2018/06/11/Review-Deep-Learning/index.html">
+<meta property="og:site_name" content="洛阳城头看落阳">
+<meta property="og:description" content="DL Basics  Linear AlgebraScalarsVectors$\mathbb{R^n}$ Matrices2-D Array $\mathbb{R^{m\times n}}$ TensorsMatrix Transpose  $(AB)^T&#x3D;B^TA^T$ Matrix (Dot) ProductIdentity Matrix$I_nx&#x3D;x$ Systems of Equatio">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/58736544.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/40136780.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/18790749.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/30844542.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/15520315.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/60061288.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/48854382.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/19687725.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/27510155.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/10544389.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/36643891.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/25566880.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/34867821.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/60918544.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/58611138.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/59169403.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/44066790.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/80725967.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/93754219.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/57101764.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/88055126.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/51784666.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/892430.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/6836615.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/27246838.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/72949772.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/52393914.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/93543592.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/9105331.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/57243000.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/16408984.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/19484532.jpg">
+<meta property="og:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/43402611.jpg">
+<meta property="article:published_time" content="2018-06-11T13:20:04.000Z">
+<meta property="article:modified_time" content="2020-09-18T07:11:31.597Z">
+<meta property="article:author" content="xmz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2018/06/11/asset/Review-Deep-Learning/58736544.jpg">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2018/06/11/Review-Deep-Learning/index.html">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    <link href="https://cdn.bootcss.com/KaTeX/0.8.3/katex.min.css" rel="stylesheet">
+  
+  
+  
+    <link href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css" rel="stylesheet">
+  
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xmzzyo" target="_blank">
+          <img class="img-circle img-rotate" src="/images/touxiang.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">zzyo</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithms/">Algorithms</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DL/">DL</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DL/NLP/">NLP</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/IELTS/">IELTS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NLP/">NLP</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RL/">RL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RecSys/">RecSys</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SE/">SE</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90/">程序分析</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cross-domain/" rel="tag">Cross-domain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" rel="tag">强化学习</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="tag">推荐系统</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/07/01/Time-Series-Analysis/" class="title">Time Series Analysis</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-07-01T07:19:35.000Z" itemprop="datePublished">2020-07-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/06/10/Life-Time-Value/" class="title">Life-Time Value</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-06-10T12:29:41.000Z" itemprop="datePublished">2020-06-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RL/">RL</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/19/Note-Deep-Reinforce-Learning/" class="title">Note Deep Reinforce Learning</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-19T11:34:53.000Z" itemprop="datePublished">2020-04-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RecSys/">RecSys</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/15/Deep-Reinforcement-Learning-for-Recommender-Systems/" class="title">Deep Reinforcement Learning for Recommender Systems</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-15T08:36:13.000Z" itemprop="datePublished">2020-04-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RecSys/">RecSys</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/12/Cross-domain-Recommendation/" class="title">Cross-domain Recommendation</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-12T10:15:12.000Z" itemprop="datePublished">2020-04-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/crypto-js@4.0.0/crypto-js.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Review-Deep-Learning" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Review Deep Learning
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2018/06/11/Review-Deep-Learning/" class="article-date">
+	  <time datetime="2018-06-11T13:20:04.000Z" itemprop="datePublished">2018-06-11</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/DL/">DL</a>
+  </span>
+
+        
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 791(words)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 4(minutes)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="DL-Basics"><a href="#DL-Basics" class="headerlink" title="DL Basics"></a>DL Basics</h2><p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/58736544.jpg"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/40136780.jpg"></p>
+<h3 id="Linear-Algebra"><a href="#Linear-Algebra" class="headerlink" title="Linear Algebra"></a>Linear Algebra</h3><h4 id="Scalars"><a href="#Scalars" class="headerlink" title="Scalars"></a>Scalars</h4><h4 id="Vectors"><a href="#Vectors" class="headerlink" title="Vectors"></a>Vectors</h4><p>$\mathbb{R^n}$</p>
+<h4 id="Matrices"><a href="#Matrices" class="headerlink" title="Matrices"></a>Matrices</h4><p>2-D Array</p>
+<p>$\mathbb{R^{m\times n}}$</p>
+<h4 id="Tensors"><a href="#Tensors" class="headerlink" title="Tensors"></a>Tensors</h4><h4 id="Matrix-Transpose"><a href="#Matrix-Transpose" class="headerlink" title="Matrix Transpose"></a>Matrix Transpose</h4><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/18790749.jpg" style="zoom:50%;" />
+
+<p>$(AB)^T=B^TA^T$</p>
+<h4 id="Matrix-Dot-Product"><a href="#Matrix-Dot-Product" class="headerlink" title="Matrix (Dot) Product"></a>Matrix (Dot) Product</h4><h4 id="Identity-Matrix"><a href="#Identity-Matrix" class="headerlink" title="Identity Matrix"></a>Identity Matrix</h4><p>$I_nx=x$</p>
+<h4 id="Systems-of-Equations"><a href="#Systems-of-Equations" class="headerlink" title="Systems of Equations"></a>Systems of Equations</h4><p>只有一个解：可逆</p>
+<h4 id="Matrix-Inversion"><a href="#Matrix-Inversion" class="headerlink" title="Matrix Inversion"></a>Matrix Inversion</h4><p>可逆必要条件：方阵，满秩</p>
+<h4 id="Norms"><a href="#Norms" class="headerlink" title="Norms"></a>Norms</h4><p>$||x||_1=\sum_i|x_i|$</p>
+<p>$||x||_ \infty =\max\limits_i|x_i|$</p>
+<h4 id="Special-Matrices-and-Vectors"><a href="#Special-Matrices-and-Vectors" class="headerlink" title="Special Matrices and Vectors"></a>Special Matrices and Vectors</h4><p>正交阵：$A^{-1}=A^T$</p>
+<h4 id="Eigendecomposition"><a href="#Eigendecomposition" class="headerlink" title="Eigendecomposition"></a>Eigendecomposition</h4><p>每一个实对称矩阵都有实，正交特征分解：</p>
+<p>$A=Q \land Q^T$</p>
+<h4 id="SVD"><a href="#SVD" class="headerlink" title="SVD"></a>SVD</h4><p>不用是方阵</p>
+<h4 id="Moore-Penrose-Pseudoinverse"><a href="#Moore-Penrose-Pseudoinverse" class="headerlink" title="Moore-Penrose Pseudoinverse"></a>Moore-Penrose Pseudoinverse</h4><p>？？？</p>
+<h4 id="Trace"><a href="#Trace" class="headerlink" title="Trace"></a>Trace</h4><h3 id="Probability-and-Information-Theory"><a href="#Probability-and-Information-Theory" class="headerlink" title="Probability and Information Theory"></a>Probability and Information Theory</h3><h4 id="Computing-Marginal-Probability-with-Sum-Rule"><a href="#Computing-Marginal-Probability-with-Sum-Rule" class="headerlink" title="Computing Marginal Probability with Sum Rule"></a>Computing Marginal Probability with Sum Rule</h4><p>$P(X=x)=\sum_yP(X=x|Y=y)$</p>
+<p>$p(x)=\int p(x,y)dy$</p>
+<h4 id="Bernoulli-Distribution"><a href="#Bernoulli-Distribution" class="headerlink" title="Bernoulli Distribution"></a>Bernoulli Distribution</h4><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/30844542.jpg" style="zoom:50%;" />
+
+<h4 id="Gaussian-Distribution"><a href="#Gaussian-Distribution" class="headerlink" title="Gaussian Distribution"></a>Gaussian Distribution</h4><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/15520315.jpg" style="zoom:50%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/60061288.jpg" style="zoom:50%;" />
+
+<h2 id="CNN"><a href="#CNN" class="headerlink" title="CNN"></a>CNN</h2><h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ol>
+<li><p>Sparse interactions</p>
+<p> 不是全链接，稀疏链接</p>
+</li>
+<li><p>Parameter sharing</p>
+<p> 整张图片共享一个kernel参数矩阵</p>
+</li>
+<li><p>Equivariant representations</p>
+<p> $f(g(x))=g(f(x))$</p>
+<p> Images: If we move an object in the image, its representation will move the same amount in the output</p>
+<p> Convolution is not equivariant to other operations such as change in scale or rotation</p>
+</li>
+<li><p>Ability to work with inputs of variable size</p>
+</li>
+</ol>
+<h3 id="Pooling优点"><a href="#Pooling优点" class="headerlink" title="Pooling优点"></a>Pooling优点</h3><ol>
+<li>Pooling helps the representation become slightly invariant to small translations of the input(we care more about whether a certain feature is present rather than exactly where it is)</li>
+<li>Since pooling is used for downsampling, it can be used to handle inputs of varying sizes</li>
+</ol>
+<h3 id="Convolution"><a href="#Convolution" class="headerlink" title="Convolution"></a>Convolution</h3><p><strong><em>输出大小:</em></strong></p>
+<p>$\frac{N-K}{S}+1$</p>
+<p>$N，原图大小(长或者宽)，K，kernel，S，步长$</p>
+<p><strong><em>Zero Padding</em></strong></p>
+<p>$\frac{K-1}{2}\ padding可以保留原来的size$</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/48854382.jpg" style="zoom:50%;" />
+
+<h2 id="RNN"><a href="#RNN" class="headerlink" title="RNN"></a>RNN</h2><h3 id="LSTM"><a href="#LSTM" class="headerlink" title="LSTM"></a>LSTM</h3><p>Challenge of Long-Term Dependencies：梯度消失或爆炸</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/19687725.jpg" style="zoom:50%;" />
+
+<p>LSTM可以解决梯度消失（开忘记门），不能解决梯度爆炸</p>
+<p>The influence never disappears unless forget gate is closed</p>
+<p>No Gradient vanishing (If forget gate is opened.)</p>
+<p>Instead of computing new state as a matrix product with the old state, it rather computes the difference between them.  Expressivity is the same, but gradients are better behaved.</p>
+<p>结构：</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/27510155.jpg" style="zoom:50%;" />
+
+<h3 id="GRU结构"><a href="#GRU结构" class="headerlink" title="GRU结构"></a>GRU结构</h3><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/10544389.jpg" style="zoom:50%;" />
+
+<p>Exploding is controlled with gradient clipping. Vanishing is controlled with additive interactions (LSTM)</p>
+<h2 id="正则化和优化"><a href="#正则化和优化" class="headerlink" title="正则化和优化"></a>正则化和优化</h2><p>Regularization is any modification made to the learning algorithm with an intention to <strong>lower the generalization error but not the training error</strong>.</p>
+<h3 id="经典正则化策略"><a href="#经典正则化策略" class="headerlink" title="经典正则化策略"></a>经典正则化策略</h3><ol>
+<li>Parameter Norm Penalties</li>
+</ol>
+<blockquote>
+<p>L2 norm penalty can be interpreted as a <strong>MAP Bayesian</strong><br><strong>Inference with a Gaussian prior on the weights</strong>.</p>
+</blockquote>
+<blockquote>
+<p>L1 norm penalty can be interpreted as a<br><strong>MAP Bayesian Inference with a Isotropic Laplace Distribution</strong><br><strong>prior on the weights.</strong></p>
+</blockquote>
+<ol start="2">
+<li><p>Dataset Augmentation</p>
+</li>
+<li><p>Noise Robustness</p>
+</li>
+</ol>
+<blockquote>
+<p>Noise added to weights </p>
+<p>Noise Injection on Outputs. An example is label smoothing.</p>
+</blockquote>
+<ol start="4">
+<li>Early Stopping</li>
+<li>Parameter Sharing</li>
+<li>Parameter Tying</li>
+<li>Multitask Learning</li>
+<li>Bagging</li>
+<li>Ensemble Models</li>
+<li>Dropout</li>
+</ol>
+<blockquote>
+<p>Dropout can intuitively be explained as forcing the model to learn with <strong>missing input and hidden units</strong>.</p>
+</blockquote>
+<blockquote>
+<p>Each time we load an example into a minibatch, we randomly sample a different binary mask to apply to all of the input and hidden units in the network.</p>
+</blockquote>
+<ol start="11">
+<li>Adversarial Training<blockquote>
+<p>training on adversarially perturbed examples from the training set.</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="优化方法"><a href="#优化方法" class="headerlink" title="优化方法"></a>优化方法</h3><ol>
+<li><p>Gradient Descent</p>
+<ul>
+<li>Batch Gradient Descent</li>
+</ul>
+<blockquote>
+<p>Need to compute gradients over the entire training for one update</p>
+</blockquote>
+<ul>
+<li>Stochastic Gradient Descent</li>
+</ul>
+</li>
+<li><p>Minibatching</p>
+<blockquote>
+<p>Use larger mini-batches</p>
+</blockquote>
+</li>
+<li><p>Learning Rate Schedule</p>
+<blockquote>
+<p>the learning rate is decayed linearly</p>
+</blockquote>
+</li>
+<li><p>Momentum</p>
+<blockquote>
+<p>The Momentum method is a method to accelerate learning using SGD</p>
+</blockquote>
+<p>梯度：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/36643891.jpg"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/25566880.jpg"></p>
+</li>
+<li><p>Nesterov Momentum</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/34867821.jpg" style="zoom:50%;" />
+</li>
+<li><p>AdaGrad</p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/60918544.jpg"></p>
+</li>
+<li><p>RMSProp</p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/58611138.jpg"></p>
+</li>
+<li><p>Adam</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/59169403.jpg" style="zoom: 50%;" />
+
+</li>
+</ol>
+<p><strong><em>以上方法比较</em></strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/44066790.jpg"></p>
+<ol start="9">
+<li>Batch Normalization</li>
+</ol>
+<blockquote>
+<p>Let H be a design matrix having activations in any layer for m examples in the mini-batch</p>
+</blockquote>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/80725967.jpg" style="zoom:50%;" />
+
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/93754219.jpg"></p>
+<p><strong><em>优点</em></strong></p>
+<ul>
+<li>Improves gradient flow through the network.</li>
+<li>Allows higher learning rates.</li>
+<li>Reduces the strong dependence on initialization.</li>
+<li>Acts as a form of regularization in a funny way, and slightly reduces the need for dropout.</li>
+</ul>
+<ol start="10">
+<li>Initialization Strategies</li>
+</ol>
+<blockquote>
+<p><strong>Initialization should break symmetry (quiz!)</strong></p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/57101764.jpg"></p>
+<h2 id="Reinforcement-Learning"><a href="#Reinforcement-Learning" class="headerlink" title="Reinforcement Learning"></a>Reinforcement Learning</h2><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/88055126.jpg" style="zoom:50%;" />
+
+<h3 id="Model-free-learning"><a href="#Model-free-learning" class="headerlink" title="Model-free learning"></a>Model-free learning</h3><ol>
+<li><strong>Policy-based Approach</strong> Learning an Actor</li>
+</ol>
+<ul>
+<li>Step1: Neural Network as Actor<blockquote>
+<p>Input of neural network: the observation of machine represented as a vector or a matrix</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>Output neural network : each action corresponds to a<br>neuron in output layer</p>
+</blockquote>
+<ul>
+<li>Step 2: goodness of function<blockquote>
+<p>Given an actor $𝜋_𝜃 𝑠$ with network parameter $𝜃$</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/51784666.jpg"></p>
+<ul>
+<li>Step 3: pick the best function<br>Policy Gradient</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/892430.jpg"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/6836615.jpg"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/27246838.jpg"></p>
+<ol start="2">
+<li><strong>Value-based Approach</strong> Learning a Critic</li>
+</ol>
+<blockquote>
+<p>A critic does not determine the action.</p>
+<p>Given an actor π, it evaluates the how good the actor is</p>
+</blockquote>
+<p><strong>Critic</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/72949772.jpg"></p>
+<blockquote>
+<p>Monte-Carlo based approach </p>
+<p>The critic watches 𝜋 playing the game</p>
+</blockquote>
+<p><strong>MC VS. TD</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/52393914.jpg"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/93543592.jpg"></p>
+<p><strong>Q-Learning</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/9105331.jpg"></p>
+<ol start="3">
+<li><strong>Deep Reinforcement Learning</strong> Actor-Critic</li>
+</ol>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/57243000.jpg" style="zoom:50%;" />
+
+<h3 id="Model-based-learning"><a href="#Model-based-learning" class="headerlink" title="Model-based learning"></a>Model-based learning</h3><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/16408984.jpg" style="zoom:50%;" />
+
+<p><strong>Advantages of Model-Based RL</strong><br><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/19484532.jpg" style="zoom: 33%;" /></p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/43402611.jpg" style="zoom: 33%;" />
+
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2018/06/11/Review-Deep-Learning/" title="Review Deep Learning" target="_blank" rel="external">http://example.com/2018/06/11/Review-Deep-Learning/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xmzzyo" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/touxiang.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xmzzyo" target="_blank"><span class="text-dark">zzyo</span><small class="ml-1x"></small></a></h3>
+        <div>技术活，当赏~</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2018/07/08/NLP-Chp3-%E5%BD%A2%E5%BC%8F%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%9C%BA%E5%8F%8A%E5%85%B6%E5%9C%A8NLP%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/" title="NLP-Chp3-形式语言与自动机及其在NLP中的应用"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2018/06/05/Review-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" title="Review-大数据系统与大规模数据分析"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2020 xmz
+        
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+  <script>
+  //利用 FancyBox 实现点击图片放大
+  $(document).ready(function() {
+    $('article img').not('[hidden]').not('.panel-body img').each(function() {
+      var $image = $(this);
+      var imageCaption = $image.attr('alt');
+      var $imageWrapLink = $image.parent('a');
+      if ($imageWrapLink.length < 1) {
+        var src = this.getAttribute('src');
+        var idx = src.lastIndexOf('?');
+        if (idx != -1) {
+          src = src.substring(0, idx);
+        }
+        $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+      }
+      $imageWrapLink.attr('data-fancybox', 'images');
+      if (imageCaption) {
+        $imageWrapLink.attr('data-caption', imageCaption);
+      }
+    });
+    $().fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+    });
+  });
+  </script>
+
+
+
+
+    <script defer>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?5b8968d29b062c2b158f75733d315d20";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+</body>
+</html>

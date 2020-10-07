@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>NLP-Chp6-隐马尔可夫模型与条件随机场 | 洛阳城头看落阳</title>
+  <meta name="description" content="NLP中概率图模型的演变  1. 马尔可夫模型 马尔可夫模型(Markov Model): 如果在特定情况下，系统在时间 t 的状态只与其在时间 t-1 的状态相关，则该系统构成一个离散的一阶马尔可夫链：$p(q_t &#x3D; S_j | q_{t-1} &#x3D;Si ,q_{t-2} &#x3D;Sk , \dots) &#x3D;p(q_t &#x3D; S_j | q_{t-1}&#x3D;S_i )$ 如果只考虑公式独立于时间 t 的随机过">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NLP-Chp6-隐马尔可夫模型与条件随机场">
+<meta property="og:url" content="http://example.com/2018/07/09/NLP-Chp6-%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA/index.html">
+<meta property="og:site_name" content="洛阳城头看落阳">
+<meta property="og:description" content="NLP中概率图模型的演变  1. 马尔可夫模型 马尔可夫模型(Markov Model): 如果在特定情况下，系统在时间 t 的状态只与其在时间 t-1 的状态相关，则该系统构成一个离散的一阶马尔可夫链：$p(q_t &#x3D; S_j | q_{t-1} &#x3D;Si ,q_{t-2} &#x3D;Sk , \dots) &#x3D;p(q_t &#x3D; S_j | q_{t-1}&#x3D;S_i )$ 如果只考虑公式独立于时间 t 的随机过">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/2018/07/09/asset/NLP-Chp6-%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA/20559589.jpg">
+<meta property="og:image" content="http://example.com/2018/07/09/asset/NLP-Chp6-%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA/65577340.jpg">
+<meta property="article:published_time" content="2018-07-09T00:53:45.000Z">
+<meta property="article:modified_time" content="2020-09-18T07:11:31.595Z">
+<meta property="article:author" content="xmz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2018/07/09/asset/NLP-Chp6-%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA/20559589.jpg">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2018/07/09/NLP-Chp6-%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA/index.html">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    <link href="https://cdn.bootcss.com/KaTeX/0.8.3/katex.min.css" rel="stylesheet">
+  
+  
+  
+    <link href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css" rel="stylesheet">
+  
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xmzzyo" target="_blank">
+          <img class="img-circle img-rotate" src="/images/touxiang.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">zzyo</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithms/">Algorithms</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DL/">DL</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DL/NLP/">NLP</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/IELTS/">IELTS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NLP/">NLP</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RL/">RL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RecSys/">RecSys</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SE/">SE</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90/">程序分析</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cross-domain/" rel="tag">Cross-domain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" rel="tag">强化学习</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="tag">推荐系统</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/07/01/Time-Series-Analysis/" class="title">Time Series Analysis</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-07-01T07:19:35.000Z" itemprop="datePublished">2020-07-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/06/10/Life-Time-Value/" class="title">Life-Time Value</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-06-10T12:29:41.000Z" itemprop="datePublished">2020-06-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RL/">RL</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/19/Note-Deep-Reinforce-Learning/" class="title">Note Deep Reinforce Learning</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-19T11:34:53.000Z" itemprop="datePublished">2020-04-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RecSys/">RecSys</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/15/Deep-Reinforcement-Learning-for-Recommender-Systems/" class="title">Deep Reinforcement Learning for Recommender Systems</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-15T08:36:13.000Z" itemprop="datePublished">2020-04-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RecSys/">RecSys</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/12/Cross-domain-Recommendation/" class="title">Cross-domain Recommendation</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-12T10:15:12.000Z" itemprop="datePublished">2020-04-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/crypto-js@4.0.0/crypto-js.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-NLP-Chp6-隐马尔可夫模型与条件随机场" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      NLP-Chp6-隐马尔可夫模型与条件随机场
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2018/07/09/NLP-Chp6-%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA/" class="article-date">
+	  <time datetime="2018-07-09T00:53:45.000Z" itemprop="datePublished">2018-07-09</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/NLP/">NLP</a>
+  </span>
+
+        
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 1.4k(words)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 5(minutes)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p><strong>NLP中概率图模型的演变</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp6-%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA/20559589.jpg"></p>
+<h3 id="1-马尔可夫模型"><a href="#1-马尔可夫模型" class="headerlink" title="1. 马尔可夫模型"></a>1. 马尔可夫模型</h3><blockquote>
+<p>马尔可夫模型(Markov Model):</p>
+<p>如果在特定情况下，系统在时间 t 的状态只与其在时间 t-1 的状态相关，则该系统构成一个离散的一阶马尔可夫链：$p(q_t = S_j | q_{t-1} =Si ,q_{t-2} =Sk , \dots) =p(q_t = S_j | q_{t-1}=S_i )$</p>
+<p>如果只考虑公式独立于时间 t 的随机过程，即所谓的不动性假设，状态与时间无关，那么$p(q_t = S_j | q_{t-1}=S_i )=a_{ij}$</p>
+<p>$s.t. a_{ij}&gt;0\ \sum\limits_{j=1}^Na_{ij}=1$</p>
+<p>马尔可夫模型又可视为随机的有限状态自动机 </p>
+</blockquote>
+<h3 id="2-隐马尔可夫模型"><a href="#2-隐马尔可夫模型" class="headerlink" title="2. 隐马尔可夫模型"></a>2. 隐马尔可夫模型</h3><blockquote>
+<p>该模型是一个双重随机过程，我们不知道具体的状态序列，只知道状态转移的概率，即模型的状态转换过程是不可观察的（隐蔽的），而可观察事件的随机过程是隐蔽状态转换过程的随机函数</p>
+</blockquote>
+<blockquote>
+<p>三个问题：</p>
+<p>(1)在给定模型$\mu=(A, B, \pi)$ 和观察序列 $O＝O_1O_2 …O_T$的情况下，怎样快速计算概率 $p(O|\mu)$？<br>(2)在给定模型 $\mu=(A, B, \pi)$和观察序列 $O＝O_1O_2 …O_T$的情况下，如何选择在一定意义下“最优”的状态序列 $Q = q_1 q_2 … q_T$，使得该状态序列“最好地解释”观察序列？<br>(3)给定一个观察序列$O＝O_1O_2 …O_T$ ，如何根据最大似然估计来求模型的参数值？即如何调节模型的参数，使得$p(O|\mu)$ 最大？</p>
+</blockquote>
+<h3 id="3-前向算法"><a href="#3-前向算法" class="headerlink" title="3. 前向算法"></a>3. 前向算法</h3><p><strong>快速计算观察序列概率$p(O|\mu)$</strong></p>
+<p><strong>动态规划</strong></p>
+<p><strong>前向变量</strong></p>
+<p>$\alpha_t(i)=p(O_1O_2O_3\dots O_t,q_t=S_i|\mu)$</p>
+<blockquote>
+<p>先输出序列，后状态转移，前面一段</p>
+</blockquote>
+<p>$P(O|\mu)=\sum\limits_{S_i}p(O_1O_2O_3\dots O_t,q_t=S_i|\mu)=\sum\limits_{i=1}^N\alpha_T(i)$</p>
+<p><strong>递推式：时间t+1：</strong></p>
+<p>$\alpha_{t+1}=[\sum\limits_{i=1}^N\alpha_t(i)a_{ij}]\times b_j(O_{t+1})$</p>
+<blockquote>
+<p>N个状态</p>
+</blockquote>
+<p><strong>初始化：</strong></p>
+<p>$\alpha_1(i)=\pi_ib_i(O_1)$</p>
+<p><strong>结束：</strong></p>
+<p>$P(O|\mu)=\sum_{i=1}^N\alpha_T(i)$</p>
+<p><strong>时间复杂度：</strong></p>
+<p>$O(N^2T)$</p>
+<h3 id="4-后向算法"><a href="#4-后向算法" class="headerlink" title="4. 后向算法"></a>4. 后向算法</h3><p><strong>后向变量</strong></p>
+<p>$\beta_t(i)=p(O_{t+1}O_{t+2}O_{t+3}\dots O_T,q_t=S_i|\mu)$</p>
+<blockquote>
+<p>先状态转移，再输出序列，后面一段</p>
+</blockquote>
+<p><strong>归纳顺序：</strong></p>
+<p>$\beta_T(x),\beta_{T-1}(x),\beta_{T-2}(x)\dots\beta_1(x)$</p>
+<p><strong>初始化：</strong></p>
+<p>$\beta_T(i)=1$</p>
+<p><strong>递推公式：</strong></p>
+<p>$\beta_t(i)=\sum\limits_{j=1}^Na_{ij}b_j(O_{t+1})\beta_{t+1}(j)$</p>
+<blockquote>
+<p>N个状态</p>
+</blockquote>
+<p><strong>输出结果：</strong></p>
+<p>$p(O|\mu)=\sum\limits_{i=1}^N\beta_1(i)\pi_1b_1(O_1)$</p>
+<p><strong>时间复杂度：</strong></p>
+<p>$O(N^2T)$</p>
+<h3 id="5-Viterbi-搜索算法"><a href="#5-Viterbi-搜索算法" class="headerlink" title="5. Viterbi 搜索算法"></a>5. Viterbi 搜索算法</h3><p><strong>如何发现“最优”状态序列能够“最好地解释”观察序列</strong></p>
+<p>$\gamma_t(i)=p(q_t=S_i|O,\mu)=\frac{p(q_t=S_i,O|\mu)}{p(O|\mu)}$</p>
+<p>$p(a_t=S_i,O|\mu)=\alpha_t(i)\times\beta_t(i)$</p>
+<p><strong>每一个状态单独最优不一定使整体的状态序列最优</strong></p>
+<p><strong>Viterbi 变量 $\delta_t(i)$是在时间 t 时，模型沿着某一条路径到达 $S_i$，输出观察序列$ O＝O_1O_2 …O_t$ 的最大概率为：</strong></p>
+<p>$\delta_t(i)=\max\limits_{q_1,q_2\dots q_{t-1}}p(q_1,q_2,\dots,q_t=S_i,O_1,O_2,\dots,O_t|\mu)$</p>
+<p><strong>递推公式：</strong></p>
+<p>$\delta_{t+1}(i)=\max\limits_j[\delta_t(j)a_{ji}]\times b_i(O_{t+1})$</p>
+<p><strong>初始化：</strong></p>
+<p>$\delta_1(i)=\pi_ib_i(O1)$</p>
+<p>$\psi_t(j)=\arg\max\limits_j[\delta_t(j)a_{ji}]\times b_i(O_{t+1})$</p>
+<p><strong>回溯得到路径</strong></p>
+<p><strong>时间复杂度：</strong></p>
+<p>$O(N^2T)$</p>
+<h3 id="6-参数学习"><a href="#6-参数学习" class="headerlink" title="6. 参数学习"></a>6. 参数学习</h3><p><strong>前向后向算法</strong></p>
+<p><strong>在时间t状态为$S_j$，在时间t+1状态为$S_i$概率为：</strong></p>
+<p>$\varepsilon_t(i, j)=\frac{\alpha_t\times a_{ij}b_j(O_{t+1})\times \beta_{t+1}(j)}{\sum_{i=1}^N\sum_{j=1}^N\alpha_t\times a_{ij}b_j(O_{t+1})\times \beta_{t+1}(j)}$</p>
+<p><strong>给定模型$\mu$和观察序列$ O＝O_1O_2 …O_t$ ，在时间 t位于状态$ S_i$ 的概率为：</strong></p>
+<p>$\gamma_t(i)=\sum_{j=1}^N\varepsilon_t(i,j)$</p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp6-%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA/65577340.jpg"></p>
+<h3 id="7-HMM应用举例"><a href="#7-HMM应用举例" class="headerlink" title="7. HMM应用举例"></a>7. HMM应用举例</h3><p>分词和词性标注问题：</p>
+<ol>
+<li>分词：概率最大的输出序列，$P(O|\mu)$</li>
+<li>词性标注：最优状态序列，$P(Q|O,\mu)$</li>
+</ol>
+<h3 id="8-CRFs及其应用"><a href="#8-CRFs及其应用" class="headerlink" title="8. CRFs及其应用"></a>8. CRFs及其应用</h3><p><strong>定义：</strong></p>
+<blockquote>
+<p>设 G=(V, E) 为一个无向图，V为结点集合，E为无向边的集合，$Y = {Y_v | v\in V}$，即V中每个结点对应于一个随机变量 $Y_v$, 其取值范围为可能的标记集合 {y}。如果以观察序列X为条件，每个随机变量 $Y_v$都满足以下马尔可夫特性：</p>
+<p>$p(Y_v|X,Y_w,w\neq v)=p(Y_v|X,Y_w,w\sim v)$</p>
+<p>其中，$w\sim v $表示两个结点在图中是邻近结点。那么，(X, Y) 为一个条件随机场。</p>
+</blockquote>
+<p><strong>在给定观察序列X 时，某个特定标记序列Y的概率可以定义为：</strong></p>
+<p>$exp(\sum_j\lambda_jt_j(y_{i-1},y_i,X,i)+\sum_k\mu_ks_k(y_i,X,i))$</p>
+<p>其中，$t_j(y_{i-1},y_i,X,i)$是转移函数，$s_k(y_i,X,i)$是状态函数</p>
+<p><strong>特征函数可以统一表示为：</strong></p>
+<p>$F_j(Y,X)=\sum_{i=1}^nf_i(y_{i-1},y_i,X,i)$</p>
+<p><strong>条件随机场定义的条件概率可以由下式给出:</strong></p>
+<p>$p(Y|X,\lambda)=\frac{1}{Z(x)}exp(\sum_j\lambda_jF_j(Y,X))$</p>
+<p><strong>三个问题：</strong></p>
+<ol>
+<li>特征选取</li>
+<li>参数训练</li>
+<li>解码</li>
+</ol>
+<p><strong>应用举例：</strong></p>
+<p>由字构词(基于字标注)的分词方法</p>
+<blockquote>
+<p>一般情况下，每个字只有4个词位：词首(B)、词中(M)、词尾(E)和单独成词(S) 。</p>
+</blockquote>
+<p><strong>解码：</strong></p>
+<blockquote>
+<p>条件随机场解码的过程就是根据模型求解的过程，可以由维特比 (Viterbi)算法完成。维特比算法是一个动态规划算法，动态规划要求局部路径也是最优路径的一部分</p>
+</blockquote>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2018/07/09/NLP-Chp6-%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA/" title="NLP-Chp6-隐马尔可夫模型与条件随机场" target="_blank" rel="external">http://example.com/2018/07/09/NLP-Chp6-%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xmzzyo" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/touxiang.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xmzzyo" target="_blank"><span class="text-dark">zzyo</span><small class="ml-1x"></small></a></h3>
+        <div>技术活，当赏~</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2018/07/11/NLP-Chp7-%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90%E4%B8%8E%E8%AF%8D%E6%80%A7%E6%A0%87%E6%B3%A8/" title="NLP-Chp7-词法分析与词性标注"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2018/07/08/NLP-Chp5-%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/" title="NLP-Chp5-语言模型"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2020 xmz
+        
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+  <script>
+  //利用 FancyBox 实现点击图片放大
+  $(document).ready(function() {
+    $('article img').not('[hidden]').not('.panel-body img').each(function() {
+      var $image = $(this);
+      var imageCaption = $image.attr('alt');
+      var $imageWrapLink = $image.parent('a');
+      if ($imageWrapLink.length < 1) {
+        var src = this.getAttribute('src');
+        var idx = src.lastIndexOf('?');
+        if (idx != -1) {
+          src = src.substring(0, idx);
+        }
+        $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+      }
+      $imageWrapLink.attr('data-fancybox', 'images');
+      if (imageCaption) {
+        $imageWrapLink.attr('data-caption', imageCaption);
+      }
+    });
+    $().fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+    });
+  });
+  </script>
+
+
+
+
+    <script defer>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?5b8968d29b062c2b158f75733d315d20";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+</body>
+</html>

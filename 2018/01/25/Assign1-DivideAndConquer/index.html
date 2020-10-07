@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Assign1-DivideAndConquer | 洛阳城头看落阳</title>
+  <meta name="description" content="1 Divide and Conquer 每次将数组二分，取A，B数组的中位数比较，若$A[m_A]&lt;B[m_B]$则$0-m_A$必属于两数组排序后的前n个数中，我们反证，若$A[m_A]&lt;B[m_B]$,A中$0-m_A$不完全属于前n个数，则第n个数小于$A[m_A]$，又因为$A[m_A]&lt;B[m_B]$，则B中比$A[m_A]$小的数小于$\frac{n}{">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Assign1-DivideAndConquer">
+<meta property="og:url" content="http://example.com/2018/01/25/Assign1-DivideAndConquer/index.html">
+<meta property="og:site_name" content="洛阳城头看落阳">
+<meta property="og:description" content="1 Divide and Conquer 每次将数组二分，取A，B数组的中位数比较，若$A[m_A]&lt;B[m_B]$则$0-m_A$必属于两数组排序后的前n个数中，我们反证，若$A[m_A]&lt;B[m_B]$,A中$0-m_A$不完全属于前n个数，则第n个数小于$A[m_A]$，又因为$A[m_A]&lt;B[m_B]$，则B中比$A[m_A]$小的数小于$\frac{n}{">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/2018/01/25/asset/Assign1-DivideAndConquer/20190113151538.png">
+<meta property="og:image" content="http://example.com/2018/01/25/asset/Assign1-DivideAndConquer/20190114110221.png">
+<meta property="og:image" content="http://example.com/2018/01/25/asset/Assign1-DivideAndConquer/20190114110304.png">
+<meta property="og:image" content="http://example.com/2018/01/25/asset/Assign1-DivideAndConquer/20190114110329.png">
+<meta property="og:image" content="http://example.com/2018/01/25/asset/Assign1-DivideAndConquer/20190114110352.png">
+<meta property="og:image" content="http://example.com/2018/01/25/asset/Assign1-DivideAndConquer/20190114110415.png">
+<meta property="og:image" content="http://example.com/2018/01/25/asset/Assign1-DivideAndConquer/20190114110428.png">
+<meta property="article:published_time" content="2018-01-25T02:55:10.000Z">
+<meta property="article:modified_time" content="2020-09-18T07:11:31.591Z">
+<meta property="article:author" content="xmz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2018/01/25/asset/Assign1-DivideAndConquer/20190113151538.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2018/01/25/Assign1-DivideAndConquer/index.html">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    <link href="https://cdn.bootcss.com/KaTeX/0.8.3/katex.min.css" rel="stylesheet">
+  
+  
+  
+    <link href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css" rel="stylesheet">
+  
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xmzzyo" target="_blank">
+          <img class="img-circle img-rotate" src="/images/touxiang.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">zzyo</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithms/">Algorithms</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DL/">DL</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DL/NLP/">NLP</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/IELTS/">IELTS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NLP/">NLP</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RL/">RL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RecSys/">RecSys</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SE/">SE</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90/">程序分析</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cross-domain/" rel="tag">Cross-domain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" rel="tag">强化学习</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="tag">推荐系统</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/07/01/Time-Series-Analysis/" class="title">Time Series Analysis</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-07-01T07:19:35.000Z" itemprop="datePublished">2020-07-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/06/10/Life-Time-Value/" class="title">Life-Time Value</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-06-10T12:29:41.000Z" itemprop="datePublished">2020-06-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RL/">RL</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/19/Note-Deep-Reinforce-Learning/" class="title">Note Deep Reinforce Learning</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-19T11:34:53.000Z" itemprop="datePublished">2020-04-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RecSys/">RecSys</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/15/Deep-Reinforcement-Learning-for-Recommender-Systems/" class="title">Deep Reinforcement Learning for Recommender Systems</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-15T08:36:13.000Z" itemprop="datePublished">2020-04-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RecSys/">RecSys</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/12/Cross-domain-Recommendation/" class="title">Cross-domain Recommendation</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-12T10:15:12.000Z" itemprop="datePublished">2020-04-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/crypto-js@4.0.0/crypto-js.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Assign1-DivideAndConquer" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Assign1-DivideAndConquer
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2018/01/25/Assign1-DivideAndConquer/" class="article-date">
+	  <time datetime="2018-01-25T02:55:10.000Z" itemprop="datePublished">2018-01-25</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Algorithms/">Algorithms</a>
+  </span>
+
+        
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 2.2k(words)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 12(minutes)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Assign1-DivideAndConquer/20190113151538.png" style="zoom:67%;" />
+
+
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Assign1-DivideAndConquer/20190114110221.png" style="zoom:67%;" />
+
+<h3 id="1-Divide-and-Conquer"><a href="#1-Divide-and-Conquer" class="headerlink" title="1 Divide and Conquer"></a>1 Divide and Conquer</h3><p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Assign1-DivideAndConquer/20190114110304.png"></p>
+<p>每次将数组二分，取A，B数组的中位数比较，若$A[m_A]&lt;B[m_B]$则$0-m_A$必属于两数组排序后的前n个数中，我们反证，若$A[m_A]&lt;B[m_B]$,A中$0-m_A$不完全属于前n个数，则第n个数小于$A[m_A]$，又因为$A[m_A]&lt;B[m_B]$，则B中比$A[m_A]$小的数小于$\frac{n}{2}$，则A，B中小于$A[m_A]$的个数必小于$n$，因此假设不成立。每次递归过程会使问题规模减小$\frac{1}{2}$，直到$A[m_A]=B[m_B]$，或者问题规模减少到1，因此，经过有限次递归，可以得到问题解。</p>
+<p>由$(b)$中的子问题图可知，问题规模每次递归减少$\frac{1}{2}$，因此共有$\log n$层，每层的时间复杂度为$O(n)$，因此，总时间复杂度为$O(\log n)$。</p>
+<h3 id="2-Divide-and-Conquer"><a href="#2-Divide-and-Conquer" class="headerlink" title="2 Divide and Conquer"></a>2 Divide and Conquer</h3><p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Assign1-DivideAndConquer/20190114110329.png"></p>
+<p>随机选取pivot，将比pivot小的数移动至pivot左边，比pivot大的数移动到pivot右边，比较$|S_+|$与k-1的大小，若小于k-1，则说明$k^{th}$ largest数在$S_-$中，若大于k-1，则说明$k^{th}$\ largest数在$S_+$中，若等于，则$k^{th}$\ largest是pivot。</p>
+<p>$T(n)\ =\ T(\frac{n}{2})+C$，总时间复杂度与QuickSelect一样为$O(n)$。</p>
+<h3 id="3-Divide-and-Conquer"><a href="#3-Divide-and-Conquer" class="headerlink" title="3 Divide and Conquer"></a>3 Divide and Conquer</h3><p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Assign1-DivideAndConquer/20190114110352.png"></p>
+<p>对于完全二叉树T，总存在全局最小值，也即存在局部最小值，local minimum一定存在。对于lable of node v，若其小于左右child，则其为local minimum，若lable of node v只大于左（右）child，就递归左（右）子树，而右（左）child大于父节点，因此其不用递归。</p>
+<p>完全二叉树共有$\log n$层，每层时间复杂度为$O(n)$，因此$T(n)\ =\ O(\log n)$。</p>
+<h3 id="4-Divide-and-Conquer"><a href="#4-Divide-and-Conquer" class="headerlink" title="4 Divide and Conquer"></a>4 Divide and Conquer</h3><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Assign1-DivideAndConquer/20190114110415.png" style="zoom: 67%;" />
+
+<p>不断四分，最后到3*3的格子，localmin要么是边界最小值，要么是中心点，必有localmin。</p>
+<p>时间复杂度$T(n)=T(\frac{n}{4})+O(n)$ ，为$O(n)$ 。</p>
+<h3 id="5-Divide-and-Conquer"><a href="#5-Divide-and-Conquer" class="headerlink" title="5 Divide and Conquer"></a>5 Divide and Conquer</h3><p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Assign1-DivideAndConquer/20190114110428.png"></p>
+<p>选取多边形一条随机边$v_1,v_2$，以及点$p_n$，可以构成一个三角形和两个多变形，其中一个多边形边数为i，另个一个是v-i+1，且$p_n$在满足两个多变形至少为三角形的前提下，可以任取。因此i的取值为2到n-1，解为卡特兰数，满足$f(n)=f(2)\times f(n-1)+f(3)\times f(n-2)+f(4)\times f(n-3)+\cdots+f(n-1)\times f(2)$。</p>
+<p>保存计算结果，$T(n)\ =\ O(n^2)$。</p>
+<h3 id="6-Divide-and-Conquer"><a href="#6-Divide-and-Conquer" class="headerlink" title="6 Divide and Conquer"></a>6 Divide and Conquer</h3><p>若a[i] &lt;= 3*a[j] : i++<br>否则a[i] &gt; 3*a[j]: 说明此时满足条件，cnt += n ­ i , 最后j++ </p>
+<p>当大于三倍右边时，计左半部分i右边的个数。</p>
+<p>$O(n\log n)$</p>
+<h3 id="7-Divide-and-Conquer"><a href="#7-Divide-and-Conquer" class="headerlink" title="7 Divide and Conquer"></a>7 Divide and Conquer</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> SortAndCount;</span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SAC</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> len = <span class="number">100000</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] data = <span class="keyword">new</span> <span class="keyword">int</span>[len];</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> Qc = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SAC</span><span class="params">(<span class="keyword">int</span> len, <span class="keyword">int</span>[] data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.len = len;</span><br><span class="line">        <span class="keyword">this</span>.data = data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SAC <span class="title">newInstance</span><span class="params">(<span class="keyword">int</span> len, <span class="keyword">int</span>[] data)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SAC(len, data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] getData() &#123;</span><br><span class="line">        <span class="keyword">return</span> data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// MergeAndSort 计算逆序数</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">SortAndCount</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (l == r)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> m = (l + r) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">long</span> lrc = SortAndCount(l, m);</span><br><span class="line">        <span class="keyword">long</span> rrc = SortAndCount(m + <span class="number">1</span>, r);</span><br><span class="line">        <span class="keyword">long</span> rc = MergeAndCount(l, m, r);</span><br><span class="line">        <span class="keyword">return</span> lrc + rrc + rc;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">MergeAndCount</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> m, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> rc = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> i = l, j = m + <span class="number">1</span>, p = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span>[] res = <span class="keyword">new</span> <span class="keyword">int</span>[len];</span><br><span class="line">        <span class="keyword">while</span> (i &lt;= m &amp;&amp; j &lt;= r) &#123;</span><br><span class="line">            <span class="keyword">if</span> (data[i] &gt; data[j]) &#123;</span><br><span class="line">                res[p] = data[j];</span><br><span class="line">                j++;</span><br><span class="line">                p++;</span><br><span class="line">                <span class="comment">// 左边 data[i] 比 data[j] 大，则 data[i] 左边的数比 data[j] 都大，</span></span><br><span class="line">                <span class="comment">// 共有 m-i-1 个逆序对</span></span><br><span class="line">                rc += m - i + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                res[p] = data[i];</span><br><span class="line">                i++;</span><br><span class="line">                p++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 没有遍历完的左右数组，继续赋值给 res 数组</span></span><br><span class="line">        <span class="keyword">while</span> (i &lt;= m) &#123;</span><br><span class="line">            res[p] = data[i];</span><br><span class="line">            p++;</span><br><span class="line">            i++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (j &lt;= r) &#123;</span><br><span class="line">            res[p] = data[j];</span><br><span class="line">            p++;</span><br><span class="line">            j++;</span><br><span class="line">        &#125;</span><br><span class="line">        p = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 将 Merge 后的数组 res 赋给 data</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> k = l; k &lt;= r; k++, p++) &#123;</span><br><span class="line">            data[k] = res[p];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> rc;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 快排计算逆序数</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">QSortAndCount</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (l &lt; r) &#123;</span><br><span class="line">            <span class="keyword">int</span> pivot = Partition(l, r);</span><br><span class="line">            QSortAndCount(l, pivot - <span class="number">1</span>);</span><br><span class="line">            QSortAndCount(pivot + <span class="number">1</span>, r);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Qc;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">Partition</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = l + <span class="number">1</span>, p = l;</span><br><span class="line">        <span class="keyword">int</span>[] left = <span class="keyword">new</span> <span class="keyword">int</span>[len];</span><br><span class="line">        <span class="keyword">while</span> (i &lt;= r) &#123;</span><br><span class="line">            <span class="keyword">if</span> (data[i] &lt; data[l]) &#123;</span><br><span class="line">                left[p] = data[i];</span><br><span class="line">                <span class="comment">//当找到小于pivot的数时，移到左边，</span></span><br><span class="line">                <span class="comment">//由该数以及在其左侧比它大的数构成逆序数对，</span></span><br><span class="line">                <span class="comment">//左侧比它大的数共有 i-p 个，即总数减去比 pivot 小的数，就是比其大的数，</span></span><br><span class="line">                <span class="comment">//因为从左到右依次与 pivot 比较，因此该数与已经移到左侧的数依然保持相对有序，移动不会减少</span></span><br><span class="line">                <span class="comment">//逆序数对移到左侧后，即消除了 i-p 个逆序对，可以继续比较、移动</span></span><br><span class="line">                Qc += i - p;</span><br><span class="line">                p++;</span><br><span class="line">            &#125;</span><br><span class="line">            i++;</span><br><span class="line">        &#125;</span><br><span class="line">        left[p] = data[l];</span><br><span class="line">        <span class="keyword">int</span> pivot = p;</span><br><span class="line">        p++;</span><br><span class="line">        <span class="comment">// 将比 pivot 大的数继续放在 left 数组右边</span></span><br><span class="line">        <span class="keyword">for</span> (i = l + <span class="number">1</span>; i &lt;= r; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (data[i] &gt;= data[l]) &#123;</span><br><span class="line">                left[p] = data[i];</span><br><span class="line">                p++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (i = l; i &lt;= r; i++) &#123;</span><br><span class="line">            data[i] = left[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> pivot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        BufferedReader br = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> FileReader(<span class="string">&quot;Q8.txt&quot;</span>));</span><br><span class="line">        String line = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span>[] data = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100000</span>];</span><br><span class="line">        <span class="keyword">while</span> ((line = br.readLine()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">            data[i++] = Integer.parseInt(line.trim());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">long</span> rc;</span><br><span class="line">        <span class="keyword">long</span> start, end;</span><br><span class="line">        start = System.currentTimeMillis();</span><br><span class="line">        rc = SAC.newInstance(i,data).SortAndCount(<span class="number">0</span>, i-<span class="number">1</span>);</span><br><span class="line">        end = System.currentTimeMillis();</span><br><span class="line">        System.out.println(rc);</span><br><span class="line">        System.out.println(<span class="string">&quot;MergeSortAndCount cost time: &quot;</span>+(end-start)+<span class="string">&quot;ms&quot;</span>);</span><br><span class="line">        <span class="comment">/*start = System.currentTimeMillis();</span></span><br><span class="line"><span class="comment">        rc = SAC.newInstance(i, data).QSortAndCount(0, i - 1);</span></span><br><span class="line"><span class="comment">        end = System.currentTimeMillis();</span></span><br><span class="line"><span class="comment">        System.out.println(rc);</span></span><br><span class="line"><span class="comment">        System.out.println(&quot;QuickSortAndCount cost time: &quot;+(end-start)+&quot;ms&quot;);*/</span></span><br><span class="line">        <span class="comment">/*data = sac.getData();</span></span><br><span class="line"><span class="comment">        for (int k = 0; k &lt; i; k++) &#123;</span></span><br><span class="line"><span class="comment">            System.out.println(data[k]);</span></span><br><span class="line"><span class="comment">        &#125;*/</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-Divide-and-Conquer"><a href="#8-Divide-and-Conquer" class="headerlink" title="8 Divide and Conquer"></a>8 Divide and Conquer</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> Strassen;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Strassen</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 将矩阵根据起始点 (x,y) 和长度 len ，分成四个子矩阵</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[][] divideMatrix(<span class="keyword">int</span> src[][], <span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">int</span> len) &#123;</span><br><span class="line">        <span class="keyword">int</span>[][] sub = <span class="keyword">new</span> <span class="keyword">int</span>[len][len];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; len; j++) &#123;</span><br><span class="line">                sub[i][j] = src[i + x][j + y];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sub;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 矩阵合并</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[][] mergeMatrix(<span class="keyword">int</span>[][] c11, <span class="keyword">int</span>[][] c12, <span class="keyword">int</span>[][] c21, <span class="keyword">int</span>[][] c22) &#123;</span><br><span class="line">        <span class="keyword">int</span> mlen = c11.length;</span><br><span class="line">        <span class="keyword">int</span> len = mlen * <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">int</span>[][] c = <span class="keyword">new</span> <span class="keyword">int</span>[len][len];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; len; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (i &lt; mlen &amp;&amp; j &lt; mlen)</span><br><span class="line">                    c[i][j] = c11[i][j];</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (i &lt; mlen &amp;&amp; j &gt;= mlen)</span><br><span class="line">                    c[i][j] = c12[i][j - mlen];</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (i &gt;= mlen &amp;&amp; j &lt; mlen)</span><br><span class="line">                    c[i][j] = c21[i - mlen][j];</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (i &gt;= mlen &amp;&amp; j &gt;= mlen)</span><br><span class="line">                    c[i][j] = c22[i - mlen][j - mlen];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> c;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 两个矩阵相加</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[][] matrixAdd(<span class="keyword">int</span> A[][], <span class="keyword">int</span> B[][]) &#123;</span><br><span class="line">        <span class="keyword">int</span> len = A.length;</span><br><span class="line">        <span class="keyword">int</span>[][] C = <span class="keyword">new</span> <span class="keyword">int</span>[len][len];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; len; j++) &#123;</span><br><span class="line">                C[i][j] = A[i][j] + B[i][j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> C;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 两个矩阵相减</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[][] matrixSub(<span class="keyword">int</span> A[][], <span class="keyword">int</span> B[][]) &#123;</span><br><span class="line">        <span class="keyword">int</span> len = A.length;</span><br><span class="line">        <span class="keyword">int</span>[][] C = <span class="keyword">new</span> <span class="keyword">int</span>[len][len];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; len; j++) &#123;</span><br><span class="line">                C[i][j] = A[i][j] - B[i][j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> C;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Strassen 算法</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[][] strassenMatrixMultiply(<span class="keyword">int</span> A[][], <span class="keyword">int</span> B[][]) &#123;</span><br><span class="line">        <span class="keyword">int</span> len = A.length;</span><br><span class="line">        <span class="keyword">int</span> mLen = len / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">int</span> C[][] = <span class="keyword">new</span> <span class="keyword">int</span>[len][len];</span><br><span class="line">        <span class="keyword">if</span> (len == <span class="number">1</span>) &#123;</span><br><span class="line">            C[<span class="number">0</span>][<span class="number">0</span>] = A[<span class="number">0</span>][<span class="number">0</span>] * B[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">return</span> C;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span>[][] A11, A12, A21, A22, B11, B12, B21, B22;</span><br><span class="line">        A11 = divideMatrix(A, <span class="number">0</span>, <span class="number">0</span>, mLen);</span><br><span class="line">        A12 = divideMatrix(A, <span class="number">0</span>, mLen, mLen);</span><br><span class="line">        A21 = divideMatrix(A, mLen, <span class="number">0</span>, mLen);</span><br><span class="line">        A22 = divideMatrix(A, mLen, mLen, mLen);</span><br><span class="line">        B11 = divideMatrix(B, <span class="number">0</span>, <span class="number">0</span>, mLen);</span><br><span class="line">        B12 = divideMatrix(B, <span class="number">0</span>, mLen, mLen);</span><br><span class="line">        B21 = divideMatrix(B, mLen, <span class="number">0</span>, mLen);</span><br><span class="line">        B22 = divideMatrix(B, mLen, mLen, mLen);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span>[][] tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7, tmp8, tmp9, tmp10;</span><br><span class="line"></span><br><span class="line">        tmp1 = matrixSub(B12, B22);</span><br><span class="line">        tmp2 = matrixAdd(A11, A12);</span><br><span class="line">        tmp3 = matrixAdd(A21, A22);</span><br><span class="line">        tmp4 = matrixSub(B21, B11);</span><br><span class="line">        tmp5 = matrixAdd(A11, A22);</span><br><span class="line">        tmp6 = matrixAdd(B11, B22);</span><br><span class="line">        tmp7 = matrixSub(A12, A22);</span><br><span class="line">        tmp8 = matrixAdd(B21, B22);</span><br><span class="line">        tmp9 = matrixSub(A11, A21);</span><br><span class="line">        tmp10 = matrixAdd(B11, B12);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span>[][] P1 = strassenMatrixMultiply(A11, tmp1),</span><br><span class="line">                P2 = strassenMatrixMultiply(tmp2, B22),</span><br><span class="line">                P3 = strassenMatrixMultiply(tmp3, B11),</span><br><span class="line">                P4 = strassenMatrixMultiply(A22, tmp4),</span><br><span class="line">                P5 = strassenMatrixMultiply(tmp5, tmp6),</span><br><span class="line">                P6 = strassenMatrixMultiply(tmp7, tmp8),</span><br><span class="line">                P7 = strassenMatrixMultiply(tmp9, tmp10);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span>[][] tmp;</span><br><span class="line">        <span class="keyword">int</span>[][] C11, C12, C21, C22;</span><br><span class="line"></span><br><span class="line">        tmp = matrixAdd(P4, P5);</span><br><span class="line">        tmp = matrixAdd(tmp, P6);</span><br><span class="line">        C11 = matrixSub(tmp, P2);</span><br><span class="line">        C12 = matrixAdd(P1, P2);</span><br><span class="line">        C21 = matrixAdd(P3, P4);</span><br><span class="line">        tmp = matrixAdd(P1, P5);</span><br><span class="line">        tmp = matrixSub(tmp, P3);</span><br><span class="line">        C22 = matrixSub(tmp, P7);</span><br><span class="line"></span><br><span class="line">        C = mergeMatrix(C11, C12, C21, C22);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> C;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// GradeSchool 算法</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[][] gradeSchool(<span class="keyword">int</span>[][] A, <span class="keyword">int</span>[][] B) &#123;</span><br><span class="line">        <span class="keyword">int</span> len = A.length;</span><br><span class="line">        <span class="keyword">int</span>[][] C = <span class="keyword">new</span> <span class="keyword">int</span>[len][len];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; len; j++) &#123;</span><br><span class="line">                <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; len; k++) &#123;</span><br><span class="line">                    sum += A[i][k] * B[k][j];</span><br><span class="line">                &#125;</span><br><span class="line">                C[i][j] = sum;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> C;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printMatrix</span><span class="params">(<span class="keyword">int</span>[][] m)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m.length; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> e : m[i]) &#123;</span><br><span class="line">                System.out.print(e + <span class="string">&quot; &quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.print(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[][] A = <span class="keyword">new</span> <span class="keyword">int</span>[][]&#123;</span><br><span class="line">                &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>&#125;,</span><br><span class="line">                &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>&#125;,</span><br><span class="line">                &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>&#125;,</span><br><span class="line">                &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>&#125;,</span><br><span class="line">                &#123;<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;,</span><br><span class="line">                &#123;<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;,</span><br><span class="line">                &#123;<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;,</span><br><span class="line">                &#123;<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span>[][] B = <span class="keyword">new</span> <span class="keyword">int</span>[][]&#123;</span><br><span class="line">                &#123;<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;,</span><br><span class="line">                &#123;<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;,</span><br><span class="line">                &#123;<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;,</span><br><span class="line">                &#123;<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;,</span><br><span class="line">                &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>&#125;,</span><br><span class="line">                &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>&#125;,</span><br><span class="line">                &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>&#125;,</span><br><span class="line">                &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>&#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span>[][] C;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">long</span> start = System.nanoTime();</span><br><span class="line">        C = Strassen.strassenMatrixMultiply(A, B);</span><br><span class="line">        <span class="keyword">long</span> end = System.nanoTime();</span><br><span class="line">        Strassen.printMatrix(C);</span><br><span class="line">        System.out.println(<span class="string">&quot;Strassen cost time: &quot;</span> + (end - start) / <span class="number">1000</span> + <span class="string">&quot;ms&quot;</span>);</span><br><span class="line">        System.out.println();</span><br><span class="line">        start = System.nanoTime();</span><br><span class="line">        C = Strassen.gradeSchool(A, B);</span><br><span class="line">        end = System.nanoTime();</span><br><span class="line">        Strassen.printMatrix(C);</span><br><span class="line">        System.out.println(<span class="string">&quot;GradeSchool cost time: &quot;</span> + (end - start) / <span class="number">1000</span> + <span class="string">&quot;ms&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2018/01/25/Assign1-DivideAndConquer/" title="Assign1-DivideAndConquer" target="_blank" rel="external">http://example.com/2018/01/25/Assign1-DivideAndConquer/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xmzzyo" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/touxiang.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xmzzyo" target="_blank"><span class="text-dark">zzyo</span><small class="ml-1x"></small></a></h3>
+        <div>技术活，当赏~</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2018/01/25/Assign2-DynamicProgramming/" title="Assign2-DynamicProgramming"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2018/01/25/Assign3-Greedy/" title="Assign3-Greedy"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2020 xmz
+        
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+  <script>
+  //利用 FancyBox 实现点击图片放大
+  $(document).ready(function() {
+    $('article img').not('[hidden]').not('.panel-body img').each(function() {
+      var $image = $(this);
+      var imageCaption = $image.attr('alt');
+      var $imageWrapLink = $image.parent('a');
+      if ($imageWrapLink.length < 1) {
+        var src = this.getAttribute('src');
+        var idx = src.lastIndexOf('?');
+        if (idx != -1) {
+          src = src.substring(0, idx);
+        }
+        $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+      }
+      $imageWrapLink.attr('data-fancybox', 'images');
+      if (imageCaption) {
+        $imageWrapLink.attr('data-caption', imageCaption);
+      }
+    });
+    $().fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+    });
+  });
+  </script>
+
+
+
+
+    <script defer>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?5b8968d29b062c2b158f75733d315d20";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+</body>
+</html>

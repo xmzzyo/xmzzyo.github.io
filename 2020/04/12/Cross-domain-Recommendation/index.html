@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Cross-domain Recommendation | 洛阳城头看落阳</title>
+  <meta name="description" content="Cross-Domain推荐系统跨领域推荐目的：  解决冷启动 通过减少数据稀疏性，提高准确度 多样性、新奇性 强化用户模型（用户新偏好）  冷启动以往解决方法：  领域无关特征：性别、职业 辅助信息：search query、外部知识如Wikipedia  跨领域推荐方法background  协同过滤： user、item不overlap，没有共同信息； 解决： 假设domains共享同分布的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cross-domain Recommendation">
+<meta property="og:url" content="http://example.com/2020/04/12/Cross-domain-Recommendation/index.html">
+<meta property="og:site_name" content="洛阳城头看落阳">
+<meta property="og:description" content="Cross-Domain推荐系统跨领域推荐目的：  解决冷启动 通过减少数据稀疏性，提高准确度 多样性、新奇性 强化用户模型（用户新偏好）  冷启动以往解决方法：  领域无关特征：性别、职业 辅助信息：search query、外部知识如Wikipedia  跨领域推荐方法background  协同过滤： user、item不overlap，没有共同信息； 解决： 假设domains共享同分布的">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200409161847024.png">
+<meta property="og:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200409161545479.png">
+<meta property="og:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200409161600602.png">
+<meta property="og:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200409210417405.png">
+<meta property="og:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200409210454834.png">
+<meta property="og:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200409210020132.png">
+<meta property="og:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200410104429093.png">
+<meta property="og:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200409114743237.png">
+<meta property="og:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200409114904853.png">
+<meta property="og:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200409121518939.png">
+<meta property="og:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200409121334123.png">
+<meta property="og:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200413143713415.png">
+<meta property="og:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200413145306248.png">
+<meta property="og:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200413153547226.png">
+<meta property="og:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200413152223999.png">
+<meta property="og:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200413152306519.png">
+<meta property="og:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200413152643491.png">
+<meta property="og:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200413152711190.png">
+<meta property="og:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200413154008830.png">
+<meta property="og:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200413161710453.png">
+<meta property="og:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200414225744223.png">
+<meta property="og:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200414230836966.png">
+<meta property="article:published_time" content="2020-04-12T10:15:12.000Z">
+<meta property="article:modified_time" content="2020-09-18T07:11:31.592Z">
+<meta property="article:author" content="xmz">
+<meta property="article:tag" content="Cross-domain">
+<meta property="article:tag" content="推荐系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2020/04/12/asset/Cross-domain-Recommendation/image-20200409161847024.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2020/04/12/Cross-domain-Recommendation/index.html">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    <link href="https://cdn.bootcss.com/KaTeX/0.8.3/katex.min.css" rel="stylesheet">
+  
+  
+  
+    <link href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css" rel="stylesheet">
+  
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xmzzyo" target="_blank">
+          <img class="img-circle img-rotate" src="/images/touxiang.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">zzyo</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithms/">Algorithms</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DL/">DL</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DL/NLP/">NLP</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/IELTS/">IELTS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NLP/">NLP</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RL/">RL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RecSys/">RecSys</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SE/">SE</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90/">程序分析</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cross-domain/" rel="tag">Cross-domain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" rel="tag">强化学习</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="tag">推荐系统</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/07/01/Time-Series-Analysis/" class="title">Time Series Analysis</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-07-01T07:19:35.000Z" itemprop="datePublished">2020-07-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/06/10/Life-Time-Value/" class="title">Life-Time Value</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-06-10T12:29:41.000Z" itemprop="datePublished">2020-06-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RL/">RL</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/19/Note-Deep-Reinforce-Learning/" class="title">Note Deep Reinforce Learning</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-19T11:34:53.000Z" itemprop="datePublished">2020-04-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RecSys/">RecSys</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/15/Deep-Reinforcement-Learning-for-Recommender-Systems/" class="title">Deep Reinforcement Learning for Recommender Systems</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-15T08:36:13.000Z" itemprop="datePublished">2020-04-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RecSys/">RecSys</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/12/Cross-domain-Recommendation/" class="title">Cross-domain Recommendation</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-12T10:15:12.000Z" itemprop="datePublished">2020-04-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/crypto-js@4.0.0/crypto-js.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">Catalogue</h3>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Cross-Domain%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">Cross-Domain推荐系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Cross-domain-recommendation-without-shared-users-or-items-by-sharing-latent-vector-distributions"><span class="toc-number">1.1.</span> <span class="toc-text">Cross-domain recommendation without shared users or items by sharing latent vector distributions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cross-domain-Recommendation-via-Deep-Domain-Adaptation"><span class="toc-number">1.2.</span> <span class="toc-text">Cross-domain Recommendation via Deep Domain Adaptation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Connecting-Social-Media-to-E-Commerce-Cold-Start-Product-Recommendation-Using-Microblogging-Information"><span class="toc-number">1.3.</span> <span class="toc-text">Connecting Social Media to E-Commerce: Cold-Start Product Recommendation Using Microblogging Information</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cross-Domain-Recommendation-An-Embedding-and-Mapping-Approach"><span class="toc-number">1.4.</span> <span class="toc-text">Cross-Domain Recommendation: An Embedding and Mapping Approach</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cross-Domain-Recommendation-for-Cold-Start-Users-via-Neighborhood-Based-Feature-Mapping"><span class="toc-number">1.5.</span> <span class="toc-text">Cross-Domain Recommendation for Cold-Start Users via Neighborhood Based Feature Mapping</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cross-Domain-Recommendation-via-Clustering-on-Multi-Layer-Graphs"><span class="toc-number">1.6.</span> <span class="toc-text">Cross-Domain Recommendation via Clustering on Multi-Layer Graphs</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Cross-domain-Recommendation" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Cross-domain Recommendation
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/04/12/Cross-domain-Recommendation/" class="article-date">
+	  <time datetime="2020-04-12T10:15:12.000Z" itemprop="datePublished">2020-04-12</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/RecSys/">RecSys</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/Cross-domain/" rel="tag">Cross-domain</a>, <a class="article-tag-link-link" href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="tag">推荐系统</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 1.4k(words)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 5(minutes)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="Cross-Domain推荐系统"><a href="#Cross-Domain推荐系统" class="headerlink" title="Cross-Domain推荐系统"></a>Cross-Domain推荐系统</h2><p><strong>跨领域推荐目的：</strong></p>
+<ul>
+<li>解决冷启动</li>
+<li>通过减少数据稀疏性，提高准确度</li>
+<li>多样性、新奇性</li>
+<li>强化用户模型（用户新偏好）</li>
+</ul>
+<p><strong>冷启动以往解决方法：</strong></p>
+<ul>
+<li>领域无关特征：性别、职业</li>
+<li>辅助信息：search query、外部知识如Wikipedia</li>
+</ul>
+<p><strong>跨领域推荐方法background</strong></p>
+<ul>
+<li>协同过滤：<ul>
+<li>user、item不overlap，没有共同信息；</li>
+<li><strong>解决：</strong><ul>
+<li>假设domains共享同分布的高斯隐向量（贝叶斯概率矩阵分解）</li>
+<li>根据打分矩阵迁移cluster-level打分pattern</li>
+<li>只迁移打分矩阵的latent $\Lambda$（$V\Lambda U$）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>基于内容：<ul>
+<li>social tag共享（Flickr），review-based</li>
+<li>DBpedia/Wikipedia来描述item</li>
+</ul>
+</li>
+<li>基于内容和协同过滤相结合<ul>
+<li><strong>Multi-view</strong> <em>CCCFNet: A Content-Boosted Collaborative Filtering Neural Network for Cross Domain Recommender Systems</em></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>以下方法基本上都是<strong>迁移/对齐 latent knowledge</strong>：</p>
+<ul>
+<li>直接矩阵分解，按照是否user/item overlap来迁移分解后的部分，或者Mapping后再迁移</li>
+<li>多元高斯分布拟合，迁移$\mu$和$\Lambda$</li>
+<li>共享私有disentanglement，然后迁移共享</li>
+</ul>
+</blockquote>
+<h3 id="Cross-domain-recommendation-without-shared-users-or-items-by-sharing-latent-vector-distributions"><a href="#Cross-domain-recommendation-without-shared-users-or-items-by-sharing-latent-vector-distributions" class="headerlink" title="Cross-domain recommendation without shared users or items by sharing latent vector distributions"></a>Cross-domain recommendation without shared users or items by sharing latent vector distributions</h3><blockquote>
+<p>基于<strong>矩阵分解</strong></p>
+<p>假设不同domain的<strong>latent vector</strong>服从<strong>相同均值和协方差矩阵的高斯分布</strong></p>
+</blockquote>
+<p>本文为<strong>无监督目标匹配方法</strong>，不同领域间没有alignment information下找到目标之间关系</p>
+<p>latent vector学习<strong>两阶段：</strong></p>
+<ul>
+<li>每个领域的latent vector</li>
+<li>latent vector对齐</li>
+</ul>
+<p><strong>user vector</strong> $u_{dn}$，<strong>item vector</strong> $v_{dm}$，<strong>打分</strong><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200409161847024.png" alt="image-20200409161847024" style="zoom:67%;" /></p>
+<p><strong>对齐</strong>user vector和item vector：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200409161545479.png" alt="image-20200409161545479" style="zoom:67%;" />                <img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200409161600602.png" alt="image-20200409161600602" style="zoom:67%;" />  </p>
+<blockquote>
+<p><strong>Gaussian-Wishart先验分布</strong></p>
+<p>用来估计多元正态样本的协方差矩阵而引入的<strong>矩阵型</strong>随机分布</p>
+<p>作为正态分布的协方差矩阵的逆的共轭先验分布</p>
+<blockquote>
+<p>多元高斯分布均值分布的共轭是高斯分布，精度（方差的逆）分布的共轭为Gamma分布</p>
+</blockquote>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200409210417405.png" alt="image-20200409210417405" style="zoom:50%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200409210454834.png" alt="image-20200409210454834" style="zoom:50%;" />
+</blockquote>
+<p><strong>训练过程：</strong></p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200409210020132.png" alt="image-20200409210020132" style="zoom:67%;" />
+
+<p><strong>推断过程：</strong></p>
+<p>包括user/item vector、高斯参数通过<strong>Gibbs 采样</strong>，根据当前<strong>其他参数的状态的条件概率</strong>得到。</p>
+<ol>
+<li>从Gaussian-Wishart后验分布中采样user/item vectors的均值$\mu$、协方差$\Lambda$</li>
+<li>从以$\mu\quad \Lambda$的高斯分布中采样user/item vector</li>
+<li>估计打分值<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200410104429093.png" alt="image-20200410104429093" style="zoom:50%;" /></li>
+</ol>
+<p><strong>改进：</strong>本文所提出的方法假设所有的domain共享一个latent vector的分布。然而，一些latent vector仅用于某一domain，领域之间的关系有所不同。通过<strong>引入domain-speciﬁc latent vector和shared latent vector</strong>，<strong>可建模domain heterogeneity</strong>。</p>
+<h3 id="Cross-domain-Recommendation-via-Deep-Domain-Adaptation"><a href="#Cross-domain-Recommendation-via-Deep-Domain-Adaptation" class="headerlink" title="Cross-domain Recommendation via Deep Domain Adaptation"></a>Cross-domain Recommendation via Deep Domain Adaptation</h3><blockquote>
+<p><strong>基于内容的跨领域推荐</strong>，解决冷启动，<strong>可以不用user、item的overlap</strong></p>
+<p><strong>Domain Separation Network</strong>, with a denoising autoencoder for item representation.</p>
+</blockquote>
+<p><strong>目的：</strong> 将source domain的item推荐给target domain,其中source domain和target domain无user overlap</p>
+<p><strong>任务：</strong> 通过video文本描述推荐新闻</p>
+<p><strong>方法：</strong> 使用domain separation network</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200409114743237.png" alt="image-20200409114743237" style="zoom: 67%;" />
+
+<p><strong>损失函数：</strong><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200409114904853.png" alt="image-20200409114904853"></p>
+<p><strong>DSN 损失：</strong> 分类误差＋stack降噪自编码器重构误差＋共享/私有正交约束＋共享encoder的对抗损失(Gradient Reversal Layer)</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200409121518939.png" alt="image-20200409121518939" style="zoom:67%;" />
+
+<p>损失函数：<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200409121334123.png" alt="image-20200409121334123"></p>
+<p>DSN损失＋item embedding差别＋降噪自编码器重构误差</p>
+<h3 id="Connecting-Social-Media-to-E-Commerce-Cold-Start-Product-Recommendation-Using-Microblogging-Information"><a href="#Connecting-Social-Media-to-E-Commerce-Cold-Start-Product-Recommendation-Using-Microblogging-Information" class="headerlink" title="Connecting Social Media to E-Commerce: Cold-Start Product Recommendation Using Microblogging Information"></a>Connecting Social Media to E-Commerce: Cold-Start Product Recommendation Using Microblogging Information</h3><blockquote>
+<p>需要user的overlap</p>
+<p><strong>目的</strong>： 解决冷启动</p>
+</blockquote>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200413143713415.png" alt="image-20200413143713415" style="zoom:67%;" />
+
+<p><strong>流程：</strong></p>
+<ol>
+<li>微博feature（Demographic，Text，Network，Temporal）</li>
+<li>京东word2vec学习item vector，para2vec学习user vector</li>
+<li>在<strong>linked user</strong>中使用MART（Multiple Additive Regression Tree）作为回归问题学习两个user vector的映射</li>
+</ol>
+<p><strong>Trick：</strong></p>
+<ol>
+<li>由于<strong>linked user</strong>数据量限制，将所有user vector平均$v^{sup}$，然后约束拟合到的user vector不能和平均vector差太多</li>
+<li>约束特征向量维度之间的相关性</li>
+</ol>
+<p><strong>目标函数为：</strong></p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200413145306248.png" alt="image-20200413145306248" style="zoom: 67%;" />
+
+<h3 id="Cross-Domain-Recommendation-An-Embedding-and-Mapping-Approach"><a href="#Cross-Domain-Recommendation-An-Embedding-and-Mapping-Approach" class="headerlink" title="Cross-Domain Recommendation: An Embedding and Mapping Approach"></a>Cross-Domain Recommendation: An Embedding and Mapping Approach</h3><blockquote>
+<p>MLP非线性映射（非线性好，但需要数据多）</p>
+<p><strong>选择性映射</strong>（不是所有user/item适合映射，不active/popular的对映射有害）</p>
+<p>需要overlap</p>
+</blockquote>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200413153547226.png" alt="image-20200413153547226" style="zoom:50%;" />
+
+<p>两种隐向量模型：**</p>
+<ol>
+<li><p>MF：</p>
+<p>隐向量正态分布：<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200413152223999.png" alt="image-20200413152223999" style="zoom: 67%;" /></p>
+<p>目标函数：<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200413152306519.png" alt="image-20200413152306519" style="zoom:67%;" /></p>
+</li>
+<li><p>RBF（pair-wise的preference ranking模型）：</p>
+<p>相对偏好：<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200413152643491.png" alt="image-20200413152643491" style="zoom:67%;" /></p>
+<p>目标函数：<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200413152711190.png" alt="image-20200413152711190" style="zoom: 67%;" /></p>
+</li>
+</ol>
+<p><strong>两种映射模型：</strong></p>
+<ol>
+<li>线性</li>
+<li>MLP非线性</li>
+</ol>
+<p><strong>采样：</strong></p>
+<p>学习映射模型时，采用<strong>top-p percent of popular</strong> entities 作为training set</p>
+<h3 id="Cross-Domain-Recommendation-for-Cold-Start-Users-via-Neighborhood-Based-Feature-Mapping"><a href="#Cross-Domain-Recommendation-for-Cold-Start-Users-via-Neighborhood-Based-Feature-Mapping" class="headerlink" title="Cross-Domain Recommendation for Cold-Start Users via Neighborhood Based Feature Mapping"></a>Cross-Domain Recommendation for Cold-Start Users via Neighborhood Based Feature Mapping</h3><blockquote>
+<p>使用了三种相似度方法计算用户相似性</p>
+<p>基于相似user邻居的GBT学习Mapping</p>
+<p>需要user overlap</p>
+</blockquote>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200413154008830.png" alt="image-20200413154008830" style="zoom:50%;" />
+
+<p><strong>基于用户相似度的矩阵分解：</strong></p>
+<p><strong>动机：</strong></p>
+<ol>
+<li>不同user在不同domain 打分行为不同，分别在不同domain分解获得domain-specific latent feature</li>
+<li>domain少了，稀疏了，所以加上用户相似度更好的进行分解</li>
+</ol>
+<p><strong>三种相似度：</strong></p>
+<ol>
+<li>Similarity Based on Common Ratings</li>
+<li>Similarity Based on the Estimations of Having No Interest（用户不给打分代表不喜欢，概率事件，考虑item的popularity and reputation、user的打分行为）</li>
+<li>Similarity Based on Rating Biases</li>
+</ol>
+<p><strong>目标函数：</strong></p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200413161710453.png" alt="image-20200413161710453" style="zoom:67%;" />
+
+<p><strong>基于邻居的latent mapping：</strong></p>
+<p>由于分domain进行分解，需要在不同domain的latent space进行mapping</p>
+<p>使用linked user基于GBT学习mapping</p>
+<p>根据与cold-start user相似的用户在target domain的vectors获取cold-start user的vector</p>
+<h3 id="Cross-Domain-Recommendation-via-Clustering-on-Multi-Layer-Graphs"><a href="#Cross-Domain-Recommendation-via-Clustering-on-Multi-Layer-Graphs" class="headerlink" title="Cross-Domain Recommendation via Clustering on Multi-Layer Graphs"></a>Cross-Domain Recommendation via Clustering on Multi-Layer Graphs</h3><blockquote>
+<p>多site，adults使用超过3个的社交网络</p>
+<p><strong>group knowledge</strong>，通过社区检测(cross-source user community detection approach)获得，考虑inter-source relationships 。可以减少推荐的搜索空间，提供更好的候选</p>
+<p><strong>individual knowledge</strong>，个人历史记录，个人偏好</p>
+</blockquote>
+<p><strong>用户社区检测：</strong></p>
+<p>最小割方法-NP hard问题</p>
+<p>使用谱聚类，GNN，Grassman Manifolds衡量距离，<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200414225744223.png" alt="image-20200414225744223" style="zoom: 67%;" /></p>
+<p><strong>考虑层间关系（相似度）：</strong></p>
+<ul>
+<li>动机：<ul>
+<li>数据模态不同，描述用户方式不同</li>
+<li>有些数据源或者模态更有信息（Foursquare和Twitter在不同方面有优势）</li>
+</ul>
+</li>
+<li>通过inter-layer similarity graph $R$ 和 the adjacency matrix $W_R$得到</li>
+</ul>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200414230836966.png" alt="image-20200414230836966" style="zoom:67%;" />
+
+
+
+
+
+
+
+
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2020/04/12/Cross-domain-Recommendation/" title="Cross-domain Recommendation" target="_blank" rel="external">http://example.com/2020/04/12/Cross-domain-Recommendation/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xmzzyo" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/touxiang.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xmzzyo" target="_blank"><span class="text-dark">zzyo</span><small class="ml-1x"></small></a></h3>
+        <div>技术活，当赏~</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/04/15/Deep-Reinforcement-Learning-for-Recommender-Systems/" title="Deep Reinforcement Learning for Recommender Systems"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/03/30/Domain-Adaptation/" title="Domain Adaptation"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="Catalogue" role="button">
+        <span>[&nbsp;</span><span>Catalogue</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2020 xmz
+        
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+  <script>
+  //利用 FancyBox 实现点击图片放大
+  $(document).ready(function() {
+    $('article img').not('[hidden]').not('.panel-body img').each(function() {
+      var $image = $(this);
+      var imageCaption = $image.attr('alt');
+      var $imageWrapLink = $image.parent('a');
+      if ($imageWrapLink.length < 1) {
+        var src = this.getAttribute('src');
+        var idx = src.lastIndexOf('?');
+        if (idx != -1) {
+          src = src.substring(0, idx);
+        }
+        $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+      }
+      $imageWrapLink.attr('data-fancybox', 'images');
+      if (imageCaption) {
+        $imageWrapLink.attr('data-caption', imageCaption);
+      }
+    });
+    $().fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+    });
+  });
+  </script>
+
+
+
+
+    <script defer>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?5b8968d29b062c2b158f75733d315d20";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+</body>
+</html>

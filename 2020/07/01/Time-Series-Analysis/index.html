@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Time Series Analysis | 洛阳城头看落阳</title>
+  <meta name="description" content="Modeling Extreme Events in Time Series PredictionExtreme Value Loss (EVL)解决长尾分布 记忆网络记忆历史中的极端事件，如自然灾害和经济危机。      RobustSTL: A Robust Seasonal-Trend Decomposition Algorithmfor Long Time Series回归+最小绝对误差">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Time Series Analysis">
+<meta property="og:url" content="http://example.com/2020/07/01/Time-Series-Analysis/index.html">
+<meta property="og:site_name" content="洛阳城头看落阳">
+<meta property="og:description" content="Modeling Extreme Events in Time Series PredictionExtreme Value Loss (EVL)解决长尾分布 记忆网络记忆历史中的极端事件，如自然灾害和经济危机。      RobustSTL: A Robust Seasonal-Trend Decomposition Algorithmfor Long Time Series回归+最小绝对误差">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200701154150169.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200701154209347.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200701164610383.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200702113132096.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200706195200924.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200702190217077.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200702190427295.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200702190537935.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200702212350914.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200703165230471.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200706201517939.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200704125129924.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200704131731484.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200704131755612.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200704131812447.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200706212923342.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200705103645043.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200705103701230.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200705105823623.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200705105851636.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200705113744231.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200705112431387.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200705144328117.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200705185307224.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200705185333733.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200705185459757.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200705192158509.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200705200131834.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200705204452068.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200705210826441.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200705213240375.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200705213257960.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200705214904817.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200705215912572.png">
+<meta property="og:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200705220722468.png">
+<meta property="article:published_time" content="2020-07-01T07:19:35.000Z">
+<meta property="article:modified_time" content="2020-09-18T07:11:31.598Z">
+<meta property="article:author" content="xmz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2020/07/01/asset/Time-Series-Analysis/image-20200701154150169.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2020/07/01/Time-Series-Analysis/index.html">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    <link href="https://cdn.bootcss.com/KaTeX/0.8.3/katex.min.css" rel="stylesheet">
+  
+  
+  
+    <link href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css" rel="stylesheet">
+  
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xmzzyo" target="_blank">
+          <img class="img-circle img-rotate" src="/images/touxiang.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">zzyo</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithms/">Algorithms</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DL/">DL</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DL/NLP/">NLP</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/IELTS/">IELTS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NLP/">NLP</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RL/">RL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RecSys/">RecSys</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SE/">SE</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90/">程序分析</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cross-domain/" rel="tag">Cross-domain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" rel="tag">强化学习</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="tag">推荐系统</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/07/01/Time-Series-Analysis/" class="title">Time Series Analysis</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-07-01T07:19:35.000Z" itemprop="datePublished">2020-07-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/06/10/Life-Time-Value/" class="title">Life-Time Value</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-06-10T12:29:41.000Z" itemprop="datePublished">2020-06-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RL/">RL</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/19/Note-Deep-Reinforce-Learning/" class="title">Note Deep Reinforce Learning</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-19T11:34:53.000Z" itemprop="datePublished">2020-04-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RecSys/">RecSys</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/15/Deep-Reinforcement-Learning-for-Recommender-Systems/" class="title">Deep Reinforcement Learning for Recommender Systems</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-15T08:36:13.000Z" itemprop="datePublished">2020-04-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RecSys/">RecSys</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/12/Cross-domain-Recommendation/" class="title">Cross-domain Recommendation</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-12T10:15:12.000Z" itemprop="datePublished">2020-04-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/crypto-js@4.0.0/crypto-js.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Time-Series-Analysis" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Time Series Analysis
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/07/01/Time-Series-Analysis/" class="article-date">
+	  <time datetime="2020-07-01T07:19:35.000Z" itemprop="datePublished">2020-07-01</time>
+	</a>
+</span>
+        
+        
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 1.3k(words)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 7(minutes)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h3 id="Modeling-Extreme-Events-in-Time-Series-Prediction"><a href="#Modeling-Extreme-Events-in-Time-Series-Prediction" class="headerlink" title="Modeling Extreme Events in Time Series Prediction"></a>Modeling Extreme Events in Time Series Prediction</h3><p>Extreme Value Loss (EVL)解决长尾分布</p>
+<p>记忆网络记忆历史中的极端事件，如自然灾害和经济危机。</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200701154150169.png" alt="image-20200701154150169" style="zoom:50%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200701154209347.png" alt="image-20200701154209347" style="zoom:67%;" />
+
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200701164610383.png" alt="image-20200701164610383"></p>
+<h3 id="RobustSTL-A-Robust-Seasonal-Trend-Decomposition-Algorithmfor-Long-Time-Series"><a href="#RobustSTL-A-Robust-Seasonal-Trend-Decomposition-Algorithmfor-Long-Time-Series" class="headerlink" title="RobustSTL: A Robust Seasonal-Trend Decomposition Algorithmfor Long Time Series"></a>RobustSTL: A Robust Seasonal-Trend Decomposition Algorithmfor Long Time Series</h3><p>回归+最小绝对误差 解决trend分解</p>
+<p>STL不灵活，季节性特征shift，不适合长季节周期</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200702113132096.png" alt="image-20200702113132096" style="zoom:50%;" />
+
+<p>常见的降噪方法是Low-pass filter、移动平均、高斯滤波</p>
+<p>STL不灵活，季节性特征shift，不适合长季节周期</p>
+<ul>
+<li><p>噪声项：使用bilateral ﬁltering降噪</p>
+</li>
+<li><p>趋势项：假设趋势项主导时间序列，重构误差+平滑约束</p>
+</li>
+<li><p>周期项：不固定周期，考虑2H+1窗口内</p>
+</li>
+</ul>
+<h3 id="STFNets-Learning-Sensing-Signals-from-the-Time-Frequency-Perspective-with-Short-Time-Fourier-Neural-Networks"><a href="#STFNets-Learning-Sensing-Signals-from-the-Time-Frequency-Perspective-with-Short-Time-Fourier-Neural-Networks" class="headerlink" title="STFNets: Learning Sensing Signals from the Time-Frequency Perspective with Short-Time Fourier Neural Networks"></a>STFNets: Learning Sensing Signals from the Time-Frequency Perspective with Short-Time Fourier Neural Networks</h3><p>谱操作可分为三类</p>
+<ol>
+<li>filtering：全局模式匹配</li>
+<li>convolution：局部特征</li>
+<li>pooling：降维</li>
+</ol>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200706195200924.png" alt="image-20200706195200924" style="zoom:67%;" />
+
+<h3 id="TiSSA-A-Time-Slice-Self-Attention-Approach-for-Modeling-Sequential-User-Behaviors"><a href="#TiSSA-A-Time-Slice-Self-Attention-Approach-for-Modeling-Sequential-User-Behaviors" class="headerlink" title="TiSSA: A Time Slice Self-Attention Approach for Modeling Sequential User Behaviors"></a>TiSSA: A Time Slice Self-Attention Approach for Modeling Sequential User Behaviors</h3><p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200702190217077.png" alt="image-20200702190217077"></p>
+<p>GRU中加了时间间隔项</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200702190427295.png" alt="image-20200702190427295" style="zoom:67%;" />
+
+<p>Feature Fusion：</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200702190537935.png" alt="image-20200702190537935" style="zoom:67%;" />
+
+<h3 id="N-BEATS-NEURAL-BASIS-EXPANSION-ANALYSIS-FOR-INTERPRETABLE-TIME-SERIES-FORECASTING"><a href="#N-BEATS-NEURAL-BASIS-EXPANSION-ANALYSIS-FOR-INTERPRETABLE-TIME-SERIES-FORECASTING" class="headerlink" title="N-BEATS: NEURAL BASIS EXPANSION ANALYSIS FOR INTERPRETABLE TIME SERIES FORECASTING"></a>N-BEATS: NEURAL BASIS EXPANSION ANALYSIS FOR INTERPRETABLE TIME SERIES FORECASTING</h3><p>DL和统计模型混合效果好</p>
+<p>2H-7H去预测H长度</p>
+<p>可解释性：</p>
+<ol>
+<li><p>Trend：多项式拟合</p>
+</li>
+<li><p>Seasonal：傅里叶级数拟合</p>
+</li>
+</ol>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200702212350914.png" alt="image-20200702212350914" style="zoom:67%;" />
+
+<h3 id="DATA-GRU-Dual-Attention-Time-Aware-Gated-Recurrent-Unit-for-Irregular-Multivariate-Time-Series"><a href="#DATA-GRU-Dual-Attention-Time-Aware-Gated-Recurrent-Unit-for-Irregular-Multivariate-Time-Series" class="headerlink" title="DATA-GRU: Dual-Attention Time-Aware Gated Recurrent Unit for Irregular Multivariate Time Series"></a>DATA-GRU: Dual-Attention Time-Aware Gated Recurrent Unit for Irregular Multivariate Time Series</h3><p>varying time intervals→Time-Aware<br>Gated Recurrent Unit (DATA-GRU)</p>
+<p>missing<br>values→dual-attention</p>
+<p>unreliability-aware attention mechanism to adjust weights<br>assigned to different data to ensure high-quality data play<br>important roles to promote prediction performance while the<br>inﬂuence of low-quality data is limited.</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200703165230471.png" alt="image-20200703165230471" style="zoom:67%;" />
+
+<h3 id="Time-Interval-Aware-Self-Attention-for-Sequential-Recommendation"><a href="#Time-Interval-Aware-Self-Attention-for-Sequential-Recommendation" class="headerlink" title="Time Interval Aware Self-Attention for Sequential Recommendation"></a>Time Interval Aware Self-Attention for Sequential Recommendation</h3><p>they model the time-order<br>but not the actual timestamp</p>
+<p>only concerned about the relative<br>length of time intervals <strong>in one user sequence</strong>.</p>
+<p><strong>Clipping the</strong><br><strong>maximum intervals</strong> also avoids sparse relation encodings and enables the model to generalize to time intervals not seen during training.</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200706201517939.png" alt="image-20200706201517939" style="zoom:50%;" />
+
+<h3 id="Multi-horizon-time-series-forecasting-with-temporal-attention-learning"><a href="#Multi-horizon-time-series-forecasting-with-temporal-attention-learning" class="headerlink" title="Multi-horizon time series forecasting with temporal attention learning"></a>Multi-horizon time series forecasting with temporal attention learning</h3><p>BiLSTM</p>
+<p>decoder的未来不同时期作为不同模态，不同importance，然后combination</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200704125129924.png" alt="image-20200704125129924" style="zoom:67%;" />
+
+<h3 id="Time-Series-Anomaly-Detection-Service-at-Microso"><a href="#Time-Series-Anomaly-Detection-Service-at-Microso" class="headerlink" title="Time-Series Anomaly Detection Service at Microso"></a>Time-Series Anomaly Detection Service at Microso</h3><p>Spectral Residual (SR) +CNN</p>
+<p>The Spectral Residual (SR) algorithm consists of three major steps:</p>
+<ol>
+<li>(1) Fourier Transform to get the log amplitude spectrum; </li>
+<li>(2) calculation of spectral residual; </li>
+<li>(3) Inverse Fourier Transform that transforms the sequence back to spatial domain.</li>
+</ol>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200704131731484.png" alt="image-20200704131731484" style="zoom:67%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200704131755612.png" alt="image-20200704131755612" style="zoom:67%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200704131812447.png" alt="image-20200704131812447" style="zoom:67%;" />
+
+<h3 id="Personalized-Purchase-Prediction-of-Market-Baskets-with-Wasserstein-Based-Sequence-Matching"><a href="#Personalized-Purchase-Prediction-of-Market-Baskets-with-Wasserstein-Based-Sequence-Matching" class="headerlink" title="Personalized Purchase Prediction of Market Baskets with Wasserstein-Based Sequence Matching"></a>Personalized Purchase Prediction of Market Baskets with Wasserstein-Based Sequence Matching</h3><p>KNN-SDTW选最相似的用户历史</p>
+<p>Wasserstein distance作为衡量</p>
+<h3 id="Meta-Learning-with-Relational-Information-for-Short-Sequences"><a href="#Meta-Learning-with-Relational-Information-for-Short-Sequences" class="headerlink" title="Meta Learning with Relational Information for Short Sequences"></a>Meta Learning with Relational Information for Short Sequences</h3><p>learning <strong>heterogeneous</strong><br><strong>point process</strong> models from <strong>short event sequence</strong> data along with a <strong>relational network</strong>.</p>
+<p><strong>hierarchical Bayesian mixture Hawkes process model</strong></p>
+<p>capture the underlying <strong>mixed-community patterns</strong> of the relational network, which<br>simultaneously encourages <strong>knowledge sharing among sequences</strong> and facilitates<br>adaptive learning for each individual sequence</p>
+<p>Many existing literature considers <strong>medium-length or long sequences</strong>. They ﬁrst model a sequence as<br>a parametric point process, e.g., <strong>Poisson process, Hawkes process or their neural variants</strong>, and apply<br>maximum likelihood estimation to ﬁnd the optimal parameters</p>
+<p> across the communities the <strong>variation of the subjects is large</strong>,<br>while within the communities the <strong>variation is small</strong></p>
+<p>in a social<br>network, each user often has multiple identities</p>
+<p>Motivated by above facts, we model <strong>each sequence as a hierarchical Bayesian mixture of</strong><br><strong>Hawkes processes</strong></p>
+<p>the weights of each Hawkes process are determined jointly by the hidden pattern<br>of sequences and the <strong>relational information, e.g., social graphs.</strong></p>
+<p>make <strong>no assumption on the prior distribution</strong> of the parameters of<br>Hawkes process</p>
+<p>Hawkes processes：</p>
+<p>self-exciting, i.e., the past<br>events always increase the chance of arrivals of new events.</p>
+<p>Model-Agnostic Meta Learning：</p>
+<p>exploit the <strong>shared structure of the tasks</strong>, to obtain models<br>that can perform well on each of the tasks. Speciﬁcally, MAML seeks to train a common model for<br>all tasks.</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200706212923342.png" alt="image-20200706212923342" style="zoom:67%;" />
+
+
+
+<h3 id="Time-series-Generative-Adversarial-Networks"><a href="#Time-series-Generative-Adversarial-Networks" class="headerlink" title="Time-series Generative Adversarial Networks"></a>Time-series Generative Adversarial Networks</h3><p>autoregressive 分布+temporal 分布</p>
+<p>global：<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200705103645043.png" alt="image-20200705103645043" style="zoom:67%;" /></p>
+<p>local（step-wise）：<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200705103701230.png" alt="image-20200705103701230" style="zoom:67%;" /></p>
+<p>S是静态特征</p>
+<p>S generator，RNN generator</p>
+<h3 id="GRU-ODE-Bayes-Continuous-modeling-of-sporadically-observed-time-series"><a href="#GRU-ODE-Bayes-Continuous-modeling-of-sporadically-observed-time-series" class="headerlink" title="GRU-ODE-Bayes: Continuous modeling of sporadically-observed time series"></a>GRU-ODE-Bayes: Continuous modeling of sporadically-observed time series</h3><ol>
+<li><p>连续时间GRU</p>
+</li>
+<li><p>Bayesian update network that processes the sporadic observations</p>
+</li>
+</ol>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200705105823623.png" alt="image-20200705105823623" style="zoom:50%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200705105851636.png" alt="image-20200705105851636" style="zoom:50%;" />
+
+<h3 id="Latent-ODEs-for-Irregularly-Sampled-Time-Series"><a href="#Latent-ODEs-for-Irregularly-Sampled-Time-Series" class="headerlink" title="Latent ODEs for Irregularly-Sampled Time Series"></a>Latent ODEs for Irregularly-Sampled Time Series</h3><blockquote>
+<p>Recurrent neural networks (RNNs) are the dominant model class for high-dimensional, regularly-sampled time series data, such as text or speech. However, they are an awkward fit for irregularly-sampled time series data, common in medical or business settings. A standard trick for applying RNNs to irregular time series is to divide the timeline into equally-sized intervals, and impute or aggregate observations using averages. Such preprocessing destroys information, particularly about the timing of measurements, which can be informative about latent variables</p>
+<p>An approach which better matches reality is to construct a continuous-time model with a latent state defined at all times. Recently, steps have been taken in this direction, defining RNNs with continuous dynamics given by a simple exponential decay between observations</p>
+<p>we further <strong>augment</strong> Latent ODEs to jointly model times of observations <strong>using a Poisson process</strong>.</p>
+</blockquote>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200705113744231.png" alt="image-20200705113744231" style="zoom:50%;" />
+
+<h3 id="DTWNet-a-Dynamic-Time-Warping-Network"><a href="#DTWNet-a-Dynamic-Time-Warping-Network" class="headerlink" title="DTWNet: a Dynamic Time Warping Network"></a>DTWNet: a Dynamic Time Warping Network</h3><p>Doppler<br>invariance</p>
+<p>DTW not only outputs the distance value, but also reveals how two sequences are<br>aligned against each other.</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200705112431387.png" alt="image-20200705112431387" style="zoom:67%;" />
+
+<p>Streaming Version of DTW</p>
+<h3 id="Unsupervised-Scalable-Representation-Learning-for-Multivariate-Time-Series"><a href="#Unsupervised-Scalable-Representation-Learning-for-Multivariate-Time-Series" class="headerlink" title="Unsupervised Scalable Representation Learning for Multivariate Time Series"></a>Unsupervised Scalable Representation Learning for Multivariate Time Series</h3><p>只用看相关工作</p>
+<h3 id="Think-Globally-Act-Locally-A-Deep-Neural-Network-Approach-to-High-Dimensional-Time-Series"><a href="#Think-Globally-Act-Locally-A-Deep-Neural-Network-Approach-to-High-Dimensional-Time-Series" class="headerlink" title="Think Globally, Act Locally: A Deep Neural Network Approach to High-Dimensional Time Series"></a>Think Globally, Act Locally: A Deep Neural Network Approach to High-Dimensional Time Series</h3><p>Forecasting</p>
+<p>LeveledInit: Handling Diverse Scales with TCN</p>
+<p>global TCN-MF（TCN+矩阵分解） model + local per time-series properties</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200705144328117.png" alt="image-20200705144328117" style="zoom:67%;" />
+
+<h3 id="Fully-Neural-Network-based-Model-for-General-Temporal-Point-Processes"><a href="#Fully-Neural-Network-based-Model-for-General-Temporal-Point-Processes" class="headerlink" title="Fully Neural Network based Model for General Temporal Point Processes"></a>Fully Neural Network based Model for General Temporal Point Processes</h3><p>神经网络泛化表示hazard function（integral of the intensity function）</p>
+<h3 id="Tensorized-LSTM-with-Adaptive-Shared-Memory-for-Learning-Trends-in-Multivariate-Time-Series"><a href="#Tensorized-LSTM-with-Adaptive-Shared-Memory-for-Learning-Trends-in-Multivariate-Time-Series" class="headerlink" title="Tensorized LSTM with Adaptive Shared Memory for Learning Trends in Multivariate Time Series"></a>Tensorized LSTM with Adaptive Shared Memory for Learning Trends in Multivariate Time Series</h3><p>多任务共享，学习trend</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200705185307224.png" alt="image-20200705185307224" style="zoom:67%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200705185333733.png" alt="image-20200705185333733" style="zoom:67%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200705185459757.png" alt="image-20200705185459757" style="zoom:50%;" />
+
+<h3 id="Deep-Unsupervised-Binary-Coding-Networks-for-Multivariate-Time-Series-Retrieval"><a href="#Deep-Unsupervised-Binary-Coding-Networks-for-Multivariate-Time-Series-Retrieval" class="headerlink" title="Deep Unsupervised Binary Coding Networks for Multivariate Time Series Retrieval"></a>Deep Unsupervised Binary Coding Networks for Multivariate Time Series Retrieval</h3><p>判断时间序列相似：</p>
+<ol>
+<li>DTW</li>
+<li>傅里叶变换</li>
+<li>小波分解</li>
+<li>Piecewise Aggregate Approximation (PAA)</li>
+<li>Locality Sensitive Hashing (LSH)</li>
+<li>Sketch, Single, &amp; Hash (SSH)</li>
+<li>DeepBit and Hash-<br>GAN, have been employed<br>to learn binary representations</li>
+</ol>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200705192158509.png" alt="image-20200705192158509" style="zoom:67%;" />
+
+<p>cluster使用KL距离</p>
+<p>对抗是因为聚类可能会过拟合</p>
+<h3 id="Time2Graph-Revisiting-Time-Series-Modeling-with-Dynamic-Shapelets"><a href="#Time2Graph-Revisiting-Time-Series-Modeling-with-Dynamic-Shapelets" class="headerlink" title="Time2Graph: Revisiting Time Series Modeling with Dynamic Shapelets"></a>Time2Graph: Revisiting Time Series Modeling with Dynamic Shapelets</h3><p>learn the representations of<br>a time series by extracting time-aware shapelets and constructing a shapelet evolution graph</p>
+<p>DTW计算segment和shapelets的相似度，K个候选shapelets</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200705200131834.png" alt="image-20200705200131834" style="zoom:67%;" />
+
+<h3 id="Relation-Inference-among-Sensor-Time-Series-in-Smart-Buildings-with-Metric-Learning"><a href="#Relation-Inference-among-Sensor-Time-Series-in-Smart-Buildings-with-Metric-Learning" class="headerlink" title="Relation Inference among Sensor Time Series in Smart Buildings with Metric Learning"></a>Relation Inference among Sensor Time Series in Smart Buildings with Metric Learning</h3><p>Similarity Metric Learning for Time Series：</p>
+<ol>
+<li>DTW</li>
+<li>Deep Expected Alignment Distance (DECADE)</li>
+<li>Warping Networks (WN)</li>
+<li>Hidden Markov Model (HMM)</li>
+<li>Markovian Event Model (MEMO)</li>
+<li>Siamese network</li>
+</ol>
+<p>短时傅里叶变换+Triple net判断相似性</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200705204452068.png" alt="image-20200705204452068" style="zoom:50%;" />
+
+<h3 id="Block-Hankel-Tensor-ARIMA-for-Multiple-Short-Time-Series-Forecasting"><a href="#Block-Hankel-Tensor-ARIMA-for-Multiple-Short-Time-Series-Forecasting" class="headerlink" title="Block Hankel Tensor ARIMA for Multiple Short Time Series Forecasting"></a>Block Hankel Tensor ARIMA for Multiple Short Time Series Forecasting</h3><p>使用多路延迟MDT把time series矩阵转换为a high-order block Hankel tensor，which represents all the TS at each time point as<br>a tensor in a high-dimensional embedded space. </p>
+<p>高阶Hankel假设有 low-rank or<br>smooth manifold in the embedded space</p>
+<p>然后使用low-rank Tucker decomposition分解出core tensor，在core tensor上使用ARIMA</p>
+<p>最后inverse Tucker<br>decomposition and inverse MDT还原</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200705210826441.png" alt="image-20200705210826441" style="zoom:67%;" />
+
+<h3 id="Joint-Modeling-of-Local-and-Global-Temporal-Dynamics-for-Multivariate-Time-Series-Forecasting-with-Missing-Values"><a href="#Joint-Modeling-of-Local-and-Global-Temporal-Dynamics-for-Multivariate-Time-Series-Forecasting-with-Missing-Values" class="headerlink" title="Joint Modeling of Local and Global Temporal Dynamics for Multivariate Time Series Forecasting with Missing Values"></a>Joint Modeling of Local and Global Temporal Dynamics for Multivariate Time Series Forecasting with Missing Values</h3><p>使用local（统计信息，Last Observation）+Global（local作为key去query，记忆网络）</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200705213240375.png" alt="image-20200705213240375" style="zoom:67%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200705213257960.png" alt="image-20200705213257960" style="zoom:50%;" />
+
+<h3 id="TapNet-Multivariate-Time-Series-Classiﬁcation-with-Attentional-Prototypical-Network"><a href="#TapNet-Multivariate-Time-Series-Classiﬁcation-with-Attentional-Prototypical-Network" class="headerlink" title="TapNet: Multivariate Time Series Classiﬁcation with Attentional Prototypical Network"></a>TapNet: Multivariate Time Series Classiﬁcation with Attentional Prototypical Network</h3><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200705214904817.png" alt="image-20200705214904817" style="zoom:67%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200705215912572.png" alt="image-20200705215912572" style="zoom:67%;" />
+
+
+
+<h3 id="Partial-Correlation-based-Attention-for-Multivariate-Time-Series-Forecasting"><a href="#Partial-Correlation-based-Attention-for-Multivariate-Time-Series-Forecasting" class="headerlink" title="Partial Correlation-based Attention  for Multivariate Time Series Forecasting"></a>Partial Correlation-based Attention  for Multivariate Time Series Forecasting</h3><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Time-Series-Analysis/image-20200705220722468.png" alt="image-20200705220722468" style="zoom:67%;" />
+
+
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2020/07/01/Time-Series-Analysis/" title="Time Series Analysis" target="_blank" rel="external">http://example.com/2020/07/01/Time-Series-Analysis/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xmzzyo" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/touxiang.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xmzzyo" target="_blank"><span class="text-dark">zzyo</span><small class="ml-1x"></small></a></h3>
+        <div>技术活，当赏~</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2020/06/10/Life-Time-Value/" title="Life-Time Value"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2020 xmz
+        
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+  <script>
+  //利用 FancyBox 实现点击图片放大
+  $(document).ready(function() {
+    $('article img').not('[hidden]').not('.panel-body img').each(function() {
+      var $image = $(this);
+      var imageCaption = $image.attr('alt');
+      var $imageWrapLink = $image.parent('a');
+      if ($imageWrapLink.length < 1) {
+        var src = this.getAttribute('src');
+        var idx = src.lastIndexOf('?');
+        if (idx != -1) {
+          src = src.substring(0, idx);
+        }
+        $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+      }
+      $imageWrapLink.attr('data-fancybox', 'images');
+      if (imageCaption) {
+        $imageWrapLink.attr('data-caption', imageCaption);
+      }
+    });
+    $().fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+    });
+  });
+  </script>
+
+
+
+
+    <script defer>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?5b8968d29b062c2b158f75733d315d20";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+</body>
+</html>

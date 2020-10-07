@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Robust PCA &amp; 增广拉格朗日乘子法 | 洛阳城头看落阳</title>
+  <meta name="description" content="Robust PCA进行背景建模1. 原理1.1 Robust PCAPrincipal Component Analysis (PCA) 是一种降维的常用手段，可以去除噪声和冗余，使用另一组基去重新描述得到的新的数据空间 ，并且尽可能得使约减后的维度尽可能接近原数据，也即最小化重构误差E&#x3D;M-L。但是由于PCA前提假设数据的噪声是高斯的，对于大的噪声或者严重的离群点，PCA会被它影响，导致其无法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Robust PCA &amp; 增广拉格朗日乘子法">
+<meta property="og:url" content="http://example.com/2018/07/23/Robust-PCA-%E5%A2%9E%E5%B9%BF%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95/index.html">
+<meta property="og:site_name" content="洛阳城头看落阳">
+<meta property="og:description" content="Robust PCA进行背景建模1. 原理1.1 Robust PCAPrincipal Component Analysis (PCA) 是一种降维的常用手段，可以去除噪声和冗余，使用另一组基去重新描述得到的新的数据空间 ，并且尽可能得使约减后的维度尽可能接近原数据，也即最小化重构误差E&#x3D;M-L。但是由于PCA前提假设数据的噪声是高斯的，对于大的噪声或者严重的离群点，PCA会被它影响，导致其无法">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/2018/07/23/asset/Robust-PCA-%E5%A2%9E%E5%B9%BF%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95/32801831.jpg">
+<meta property="og:image" content="http://example.com/2018/07/23/asset/Robust-PCA-%E5%A2%9E%E5%B9%BF%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95/59747184.jpg">
+<meta property="og:image" content="http://example.com/2018/07/23/asset/Robust-PCA-%E5%A2%9E%E5%B9%BF%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95/57586547.jpg">
+<meta property="og:image" content="http://example.com/2018/07/23/asset/Robust-PCA-%E5%A2%9E%E5%B9%BF%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95/53180618.jpg">
+<meta property="og:image" content="http://example.com/2018/07/23/asset/Robust-PCA-%E5%A2%9E%E5%B9%BF%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95/52819459.jpg">
+<meta property="article:published_time" content="2018-07-23T13:33:31.000Z">
+<meta property="article:modified_time" content="2020-09-18T07:11:31.598Z">
+<meta property="article:author" content="xmz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2018/07/23/asset/Robust-PCA-%E5%A2%9E%E5%B9%BF%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95/32801831.jpg">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2018/07/23/Robust-PCA-%E5%A2%9E%E5%B9%BF%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95/index.html">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    <link href="https://cdn.bootcss.com/KaTeX/0.8.3/katex.min.css" rel="stylesheet">
+  
+  
+  
+    <link href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css" rel="stylesheet">
+  
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xmzzyo" target="_blank">
+          <img class="img-circle img-rotate" src="/images/touxiang.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">zzyo</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithms/">Algorithms</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DL/">DL</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DL/NLP/">NLP</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/IELTS/">IELTS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NLP/">NLP</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RL/">RL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RecSys/">RecSys</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SE/">SE</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90/">程序分析</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cross-domain/" rel="tag">Cross-domain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" rel="tag">强化学习</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="tag">推荐系统</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/07/01/Time-Series-Analysis/" class="title">Time Series Analysis</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-07-01T07:19:35.000Z" itemprop="datePublished">2020-07-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/06/10/Life-Time-Value/" class="title">Life-Time Value</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-06-10T12:29:41.000Z" itemprop="datePublished">2020-06-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RL/">RL</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/19/Note-Deep-Reinforce-Learning/" class="title">Note Deep Reinforce Learning</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-19T11:34:53.000Z" itemprop="datePublished">2020-04-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RecSys/">RecSys</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/15/Deep-Reinforcement-Learning-for-Recommender-Systems/" class="title">Deep Reinforcement Learning for Recommender Systems</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-15T08:36:13.000Z" itemprop="datePublished">2020-04-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RecSys/">RecSys</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/12/Cross-domain-Recommendation/" class="title">Cross-domain Recommendation</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-12T10:15:12.000Z" itemprop="datePublished">2020-04-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/crypto-js@4.0.0/crypto-js.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Robust-PCA-增广拉格朗日乘子法" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Robust PCA &amp; 增广拉格朗日乘子法
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2018/07/23/Robust-PCA-%E5%A2%9E%E5%B9%BF%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95/" class="article-date">
+	  <time datetime="2018-07-23T13:33:31.000Z" itemprop="datePublished">2018-07-23</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Machine-Learning/">Machine Learning</a>
+  </span>
+
+        
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 1.1k(words)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 5(minutes)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="Robust-PCA进行背景建模"><a href="#Robust-PCA进行背景建模" class="headerlink" title="Robust PCA进行背景建模"></a>Robust PCA进行背景建模</h2><h3 id="1-原理"><a href="#1-原理" class="headerlink" title="1. 原理"></a>1. 原理</h3><h4 id="1-1-Robust-PCA"><a href="#1-1-Robust-PCA" class="headerlink" title="1.1 Robust PCA"></a>1.1 Robust PCA</h4><p>Principal Component Analysis (PCA) 是一种降维的常用手段，可以去除噪声和冗余，使用另一组基去重新描述得到的新的数据空间 ，并且尽可能得使约减后的维度尽可能接近原数据，也即最小化重构误差E=M-L。但是由于PCA前提假设数据的噪声是高斯的，对于大的噪声或者严重的离群点，PCA会被它影响，导致其无法正常工作。 </p>
+<p>Robust PCA也是一种降维的方法。Robust PCA能够从corruption较大且稀疏噪声污染的观测数据中提取出低秩的数据。Robust PCA考虑的是这样一个问题：一般的数据矩阵D包含结构信息，也包含噪声。那么可以将这个矩阵分解为两个矩阵相加:D = A + E，A是低秩的（由于内部有一定的结构信息造成各行或列间是线性相关的，比如背景建模中的背景，基本保持不变，是线性相关的），E是稀疏的（含有噪声，则是稀疏的，比如背景建模中运动的物体），则Robust PCA可以写成以下的优化问题：$\min\limits_{A,E}\ rank(A)+\lambda ||E||_0\ s.t.\ A+E=D$，由于rank和$L_0$范数在优化上存在非凸和非光滑特性，所以一般将这个NP问题转换成求解一个松弛的凸优化问题： $\min\limits_{A,E}\ ||A||_*+\lambda ||E||_1\ s.t.\ A+E=D$。</p>
+<h4 id="1-2-增广拉格朗日算法"><a href="#1-2-增广拉格朗日算法" class="headerlink" title="1.2 增广拉格朗日算法"></a>1.2 增广拉格朗日算法</h4><p>在朴素拉格朗日形式上加上一个惩罚项 :</p>
+<p>$$L(A,Z,Y)=||A||_*+\lambda||Z||_1+\frac{1}{2}\mu||D-A-E||^2_F+&lt;Y,D-A-E&gt;$$</p>
+<p>$$其中||A||_*是nuclear\ norm，保证A是低秩的，||.||_F表示Frobenius范数$$</p>
+<p>精确拉格朗日乘子法算法迭代过程如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Robust-PCA-%E5%A2%9E%E5%B9%BF%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95/32801831.jpg"></p>
+<p>非精确的增广拉格朗日乘子法，也即交替方向法：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Robust-PCA-%E5%A2%9E%E5%B9%BF%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95/59747184.jpg"></p>
+<p>几种优化算法对比：(<a target="_blank" rel="noopener" href="http://perception.csl.illinois.edu/matrix-rank/sample_code.html">http://perception.csl.illinois.edu/matrix-rank/sample_code.html</a>)</p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Robust-PCA-%E5%A2%9E%E5%B9%BF%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95/57586547.jpg"></p>
+<h3 id="2-实验"><a href="#2-实验" class="headerlink" title="2. 实验"></a>2. 实验</h3><p>代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> tkinter</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image, ImageTk</span><br><span class="line"><span class="keyword">from</span> scipy.linalg <span class="keyword">import</span> svd</span><br><span class="line"></span><br><span class="line">MAX_ITERS = <span class="number">1000</span></span><br><span class="line">TOL = <span class="number">1.0e-7</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bitmap_to_mat</span>(<span class="params">bitmap_seq</span>):</span></span><br><span class="line">    matrix = []</span><br><span class="line">    <span class="keyword">for</span> bitmap_file <span class="keyword">in</span> bitmap_seq:</span><br><span class="line">        im = Image.open(bitmap_file).convert(<span class="string">&#x27;L&#x27;</span>)</span><br><span class="line">        pixels = list(im.getdata())</span><br><span class="line">        matrix.append(pixels)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> np.array(matrix)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">bmp_seq = map(</span><br><span class="line">    <span class="keyword">lambda</span> s: os.path.join(<span class="string">&quot;bmp_dir&quot;</span>, s),</span><br><span class="line">    os.listdir(<span class="string">&quot;bmp_dir&quot;</span>)</span><br><span class="line">)</span><br><span class="line">res = bitmap_to_mat(bmp_seq)</span><br><span class="line">np.save(<span class="string">&quot;bmp_out&quot;</span>, res)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show_img</span>(<span class="params">matrices, w, h</span>):</span></span><br><span class="line">    mats = [np.load(x) <span class="keyword">for</span> x <span class="keyword">in</span> matrices]</span><br><span class="line">    tk_win = tkinter.Toplevel()</span><br><span class="line">    tk_win.title(<span class="string">&#x27;RPCA&#x27;</span>)</span><br><span class="line">    canvas = tkinter.Canvas(tk_win, width=<span class="number">4</span> * w, height=<span class="number">2</span> * h)</span><br><span class="line">    canvas.pack()</span><br><span class="line">    tk_ims = [<span class="literal">None</span> <span class="keyword">for</span> _ <span class="keyword">in</span> mats]</span><br><span class="line">    <span class="keyword">for</span> i, row <span class="keyword">in</span> enumerate(mats[<span class="number">0</span>]):</span><br><span class="line">        ims = [Image.new(<span class="string">&#x27;L&#x27;</span>, (w, h)) <span class="keyword">for</span> _ <span class="keyword">in</span> mats]</span><br><span class="line">        <span class="keyword">for</span> j, im <span class="keyword">in</span> enumerate(ims):</span><br><span class="line">            im.putdata(list(map(float, list(mats[j][i]))))</span><br><span class="line">            tk_ims[j] = ImageTk.PhotoImage(im)</span><br><span class="line">            canvas.create_image((j * w) + <span class="number">200</span>, h, image=tk_ims[j])</span><br><span class="line">            canvas.update()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">converged</span>(<span class="params">Z, d_norm</span>):</span></span><br><span class="line">    err = np.linalg.norm(Z, <span class="string">&#x27;fro&#x27;</span>) / d_norm</span><br><span class="line">    print(<span class="string">&#x27;ERR&#x27;</span>, err)</span><br><span class="line">    <span class="keyword">return</span> err &lt; TOL</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">svd_</span>(<span class="params">X, k=<span class="number">-1</span></span>):</span></span><br><span class="line">    U, S, V = svd(X, full_matrices=<span class="literal">False</span>)</span><br><span class="line">    <span class="keyword">if</span> k &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> U, S, V</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> U[:, :k], S[:k], V[:k, :]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rpca</span>(<span class="params">X</span>):</span></span><br><span class="line">    m, n = X.shape</span><br><span class="line">    lamda = <span class="number">1.</span> / np.sqrt(m)</span><br><span class="line">    Y = X</span><br><span class="line">    u, s, v = svd_(Y, k=<span class="number">1</span>)</span><br><span class="line">    norm_two = s[<span class="number">0</span>]</span><br><span class="line">    norm_inf = np.linalg.norm(Y[:], np.inf) / lamda</span><br><span class="line">    dual_norm = max(norm_two, norm_inf)</span><br><span class="line">    Y = Y / dual_norm</span><br><span class="line">    A_hat = np.zeros((m, n))</span><br><span class="line">    E_hat = np.zeros((m, n))</span><br><span class="line">    mu = <span class="number">1.25</span> / norm_two</span><br><span class="line">    mu_bar = mu * <span class="number">1e7</span></span><br><span class="line">    rho = <span class="number">1.5</span></span><br><span class="line">    d_norm = np.linalg.norm(X, <span class="string">&#x27;fro&#x27;</span>)</span><br><span class="line">    num_iters = <span class="number">0</span></span><br><span class="line">    total_svd = <span class="number">0</span></span><br><span class="line">    sv = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        num_iters += <span class="number">1</span></span><br><span class="line">        temp_T = X - A_hat + (<span class="number">1</span> / mu) * Y</span><br><span class="line">        E_hat = np.maximum(temp_T - lamda / mu, <span class="number">0</span>)</span><br><span class="line">        E_hat = E_hat + np.minimum(temp_T + lamda / mu, <span class="number">0</span>)</span><br><span class="line">        u, s, v = svd_(X - E_hat + (<span class="number">1</span> / mu) * Y, sv)</span><br><span class="line">        diagS = np.diag(s)</span><br><span class="line">        svp = len(np.where(s &gt; <span class="number">1</span> / mu))</span><br><span class="line">        <span class="keyword">if</span> svp &lt; sv:</span><br><span class="line">            sv = min(svp + <span class="number">1</span>, n)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            sv = min(svp + round(<span class="number">0.05</span> * n), n)</span><br><span class="line">        A_hat = np.dot(</span><br><span class="line">            np.dot(</span><br><span class="line">                u[:, <span class="number">0</span>:svp],</span><br><span class="line">                np.diag(s[<span class="number">0</span>:svp] - <span class="number">1</span> / mu)</span><br><span class="line">            ),</span><br><span class="line">            v[<span class="number">0</span>:svp, :]</span><br><span class="line">        )</span><br><span class="line">        total_svd = total_svd + <span class="number">1</span></span><br><span class="line">        Z = X - A_hat - E_hat</span><br><span class="line">        Y = Y + mu * Z</span><br><span class="line">        mu = min(mu * rho, mu_bar)</span><br><span class="line">        <span class="keyword">if</span> converged(Z, d_norm) <span class="keyword">or</span> num_iters &gt;= MAX_ITERS:</span><br><span class="line">            <span class="keyword">return</span> A_hat, E_hat</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">data = np.load(<span class="string">&quot;bmp_out.npy&quot;</span>)</span><br><span class="line">A_hat, E_hat = rpca(data)</span><br><span class="line">np.save(<span class="string">&quot;out_low_rank&quot;</span>, A_hat)</span><br><span class="line">np.save(<span class="string">&quot;out_sparse&quot;</span>, E_hat)</span><br><span class="line">show_img([<span class="string">&quot;bmp_out.npy&quot;</span>, <span class="string">&quot;out_low_rank.npy&quot;</span>, <span class="string">&quot;out_sparse.npy&quot;</span>], <span class="number">176</span>, <span class="number">144</span>)</span><br></pre></td></tr></table></figure>
+
+<p>其中RPCA.py为代码文件，bmp_out.npy是原图像，out_low_rank.npy是背景，out_sparse.npy是前景。</p>
+<p>如下图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Robust-PCA-%E5%A2%9E%E5%B9%BF%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95/53180618.jpg"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Robust-PCA-%E5%A2%9E%E5%B9%BF%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95/52819459.jpg"></p>
+<h3 id="3-参考文献："><a href="#3-参考文献：" class="headerlink" title="3. 参考文献："></a>3. 参考文献：</h3><p>[1] Lin Z, Chen M, Ma Y. The Augmented Lagrange Multiplier Method for Exact Recovery of Corrupted Low-Rank Matrices[J]. Eprint Arxiv, 2009, 9. </p>
+<p>[2] 周密, 宋占杰. 基于稀疏与低秩矩阵分解的视频背景建模[J]. 计算机应用研究, 2015, 32(10):3175-3178. </p>
+<p>[3] <a target="_blank" rel="noopener" href="https://blog.csdn.net/u010510350/article/details/77803572">https://blog.csdn.net/u010510350/article/details/77803572</a></p>
+<p>[4] <a target="_blank" rel="noopener" href="https://jeremykarnowski.wordpress.com/2015/08/31/robust-principal-component-analysis-via-admm-in-python/">https://jeremykarnowski.wordpress.com/2015/08/31/robust-principal-component-analysis-via-admm-in-python/</a></p>
+<p>[5] <a target="_blank" rel="noopener" href="http://blog.shriphani.com/2013/12/18/robust-principal-component-pursuit-background-matrix-recovery/">http://blog.shriphani.com/2013/12/18/robust-principal-component-pursuit-background-matrix-recovery/</a></p>
+<p>[6] <a target="_blank" rel="noopener" href="http://perception.csl.illinois.edu/matrix-rank/introduction.html">http://perception.csl.illinois.edu/matrix-rank/introduction.html</a> </p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2018/07/23/Robust-PCA-%E5%A2%9E%E5%B9%BF%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95/" title="Robust PCA &amp; 增广拉格朗日乘子法" target="_blank" rel="external">http://example.com/2018/07/23/Robust-PCA-%E5%A2%9E%E5%B9%BF%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xmzzyo" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/touxiang.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xmzzyo" target="_blank"><span class="text-dark">zzyo</span><small class="ml-1x"></small></a></h3>
+        <div>技术活，当赏~</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2018/07/31/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90-SOOT-%E6%8C%87%E9%92%88%E5%88%86%E6%9E%90/" title="程序分析-SOOT-指针分析"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2018/07/18/NLP-Chp12-%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%E3%80%81%E8%81%9A%E7%B1%BB%E5%92%8C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/" title="NLP-Chp12-文本分类、聚类和情感分析"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2020 xmz
+        
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+  <script>
+  //利用 FancyBox 实现点击图片放大
+  $(document).ready(function() {
+    $('article img').not('[hidden]').not('.panel-body img').each(function() {
+      var $image = $(this);
+      var imageCaption = $image.attr('alt');
+      var $imageWrapLink = $image.parent('a');
+      if ($imageWrapLink.length < 1) {
+        var src = this.getAttribute('src');
+        var idx = src.lastIndexOf('?');
+        if (idx != -1) {
+          src = src.substring(0, idx);
+        }
+        $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+      }
+      $imageWrapLink.attr('data-fancybox', 'images');
+      if (imageCaption) {
+        $imageWrapLink.attr('data-caption', imageCaption);
+      }
+    });
+    $().fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+    });
+  });
+  </script>
+
+
+
+
+    <script defer>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?5b8968d29b062c2b158f75733d315d20";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+</body>
+</html>

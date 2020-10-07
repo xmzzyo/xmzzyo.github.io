@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Pre-trained RecSys | 洛阳城头看落阳</title>
+  <meta name="description" content="Pre-train BERT Model for RecSys1.Dataset statistics   Dataset #users #items avg_action&#x2F;user avg_action&#x2F;item #action    Book 603668 367982 14.7 24.2 8898041   Movies_and_TV 123960 50052 8.7 21.7 108457">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pre-trained RecSys">
+<meta property="og:url" content="http://example.com/2019/01/30/Pre-trained-RecSys/index.html">
+<meta property="og:site_name" content="洛阳城头看落阳">
+<meta property="og:description" content="Pre-train BERT Model for RecSys1.Dataset statistics   Dataset #users #items avg_action&#x2F;user avg_action&#x2F;item #action    Book 603668 367982 14.7 24.2 8898041   Movies_and_TV 123960 50052 8.7 21.7 108457">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/2019/01/30/asset/Pre-trained-RecSys/20190130221850.png">
+<meta property="article:published_time" content="2019-01-30T09:04:30.000Z">
+<meta property="article:modified_time" content="2020-09-18T07:11:31.597Z">
+<meta property="article:author" content="xmz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2019/01/30/asset/Pre-trained-RecSys/20190130221850.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2019/01/30/Pre-trained-RecSys/index.html">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    <link href="https://cdn.bootcss.com/KaTeX/0.8.3/katex.min.css" rel="stylesheet">
+  
+  
+  
+    <link href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css" rel="stylesheet">
+  
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xmzzyo" target="_blank">
+          <img class="img-circle img-rotate" src="/images/touxiang.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">zzyo</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithms/">Algorithms</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DL/">DL</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DL/NLP/">NLP</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/IELTS/">IELTS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NLP/">NLP</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RL/">RL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RecSys/">RecSys</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SE/">SE</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90/">程序分析</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cross-domain/" rel="tag">Cross-domain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" rel="tag">强化学习</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="tag">推荐系统</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/07/01/Time-Series-Analysis/" class="title">Time Series Analysis</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-07-01T07:19:35.000Z" itemprop="datePublished">2020-07-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/06/10/Life-Time-Value/" class="title">Life-Time Value</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-06-10T12:29:41.000Z" itemprop="datePublished">2020-06-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RL/">RL</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/19/Note-Deep-Reinforce-Learning/" class="title">Note Deep Reinforce Learning</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-19T11:34:53.000Z" itemprop="datePublished">2020-04-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RecSys/">RecSys</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/15/Deep-Reinforcement-Learning-for-Recommender-Systems/" class="title">Deep Reinforcement Learning for Recommender Systems</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-15T08:36:13.000Z" itemprop="datePublished">2020-04-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RecSys/">RecSys</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/12/Cross-domain-Recommendation/" class="title">Cross-domain Recommendation</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-12T10:15:12.000Z" itemprop="datePublished">2020-04-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/crypto-js@4.0.0/crypto-js.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Pre-trained-RecSys" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Pre-trained RecSys
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2019/01/30/Pre-trained-RecSys/" class="article-date">
+	  <time datetime="2019-01-30T09:04:30.000Z" itemprop="datePublished">2019-01-30</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a>
+  </span>
+
+        
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 759(words)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 3(minutes)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="Pre-train-BERT-Model-for-RecSys"><a href="#Pre-train-BERT-Model-for-RecSys" class="headerlink" title="Pre-train BERT Model for RecSys"></a>Pre-train BERT Model for RecSys</h2><h3 id="1-Dataset-statistics"><a href="#1-Dataset-statistics" class="headerlink" title="1.Dataset statistics"></a>1.Dataset statistics</h3><table>
+<thead>
+<tr>
+<th>Dataset</th>
+<th>#users</th>
+<th>#items</th>
+<th>avg_action/user</th>
+<th>avg_action/item</th>
+<th>#action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Book</td>
+<td>603668</td>
+<td>367982</td>
+<td>14.7</td>
+<td>24.2</td>
+<td>8898041</td>
+</tr>
+<tr>
+<td>Movies_and_TV</td>
+<td>123960</td>
+<td>50052</td>
+<td>8.7</td>
+<td>21.7</td>
+<td>1084572</td>
+</tr>
+<tr>
+<td>Digital_Music</td>
+<td>5541</td>
+<td>3568</td>
+<td>11.7</td>
+<td>18.1</td>
+<td>64706</td>
+</tr>
+</tbody></table>
+<p>使用数据量较小的<a target="_blank" rel="noopener" href="http://snap.stanford.edu/data/amazon/productGraph/categoryFiles/reviews_Digital_Music_5.json.gz">Digital_Music</a>进行训练。</p>
+<h3 id="2-训练过程"><a href="#2-训练过程" class="headerlink" title="2.训练过程"></a>2.训练过程</h3><h4 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h4><p>统计每个用户的action，过滤掉出现次数少于5的user、item，并按<strong>unixReviewTime</strong>排序</p>
+<p><strong>sequence长度统计：</strong></p>
+<table>
+<thead>
+<tr>
+<th>max</th>
+<th>min</th>
+<th>average</th>
+<th>median</th>
+<th>std</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>578</td>
+<td>5</td>
+<td>11.7</td>
+<td>7</td>
+<td>18.2</td>
+</tr>
+</tbody></table>
+<p><strong>split sequence:</strong></p>
+<p>根据time span分割：</p>
+<ol>
+<li><p>固定间隔：</p>
+<p>两个连续action的时间间隔大于max_time_interval，就分割</p>
+<p><a target="_blank" rel="noopener" href="https://www.kdd.org/kdd2018/accepted-papers/view/real-time-personalization-using-embeddings-for-search-ranking-at-airbnb">Real-time Personalization using Embeddings for Search Ranking at Airbnb</a>中，30分钟无click，就划为一个session</p>
+</li>
+<li><p>按子序列最大间隔分割：</p>
+<p>每次挑选序列时间间隔最大的action进行分割，直到每个子序列长度小于max_length</p>
+</li>
+</ol>
+<p>第2种方法分割的时间间隔比较adaptive，并且可以约束max_length，暂时使用第2种方法分割sequence来进行Next Sentence Prediction</p>
+<h4 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h4><p><strong>Requirements：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/huggingface/pytorch-pretrained-BERT">pytorch-pretrained-BERT</a></p>
+<blockquote>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pytorch<span class="literal">-pretrained</span><span class="literal">-bert</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<p><strong>参数：</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>BERT base</th>
+<th>Ours</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>hidden_size</td>
+<td>768</td>
+<td>512</td>
+</tr>
+<tr>
+<td>num_hidden_layers</td>
+<td>12</td>
+<td>8</td>
+</tr>
+<tr>
+<td>num_attention_heads</td>
+<td>12</td>
+<td>8</td>
+</tr>
+<tr>
+<td>intermediate_size</td>
+<td>3076</td>
+<td>1024</td>
+</tr>
+<tr>
+<td>max_position_embeddings</td>
+<td>512</td>
+<td>128</td>
+</tr>
+</tbody></table>
+<p>在Digital_Music数据集上训练3个epoch，每个epoch训练所有sample，batch_size为32</p>
+<p>训练时间为1h，电脑配置为i5低压CPU(主频1.6GHZ)，8G内存，无GPU</p>
+<p>没有GPU训练经验，，估计在当前参数(Ours)下，Book数据集(Digital_Music的一百多倍大小)在16G内存，GPU上2-3天能训练3个epoch？（Book数据集是<a target="_blank" rel="noopener" href="http://jmcauley.ucsd.edu/data/amazon/index.html">Amazon</a>里面最大的数据集，其他类别数据集应该能在更短时间内训练完）</p>
+<p>BERT文章中使用BooksCorpus(800M words)、WikiPedia(2500M words)，一共3.3billion，batch_size为256，40个epoch，16个TPU，训练时间为4天</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/huggingface/pytorch-pretrained-BERT#Training-large-models-introduction,-tools-and-examples">加速训练技巧</a>  <a target="_blank" rel="noopener" href="https://colab.research.google.com/notebooks/tpu.ipynb">Google Colab</a> 免费TPU(需翻墙，打不开)</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/xmzzyo/BERT4RS">代码 GitHub</a></p>
+<h4 id="获取item-representation"><a href="#获取item-representation" class="headerlink" title="获取item representation"></a>获取item representation</h4><p>加载训练好的pytorch_model.bin，输入以“|||”分隔的序列，获取all_encoder_layers以及pooled_output</p>
+<p>all_encoder_layers[-4:]后四层hidden state concat 作为 feature（Top layers一般效果较好）</p>
+<p><em>存在问题：随机生成序列，获取item representation，计算item的余弦相似度都是0.99（可能是训练样本太少，参数量太大，epoch小？）</em></p>
+<h3 id="3-TODO"><a href="#3-TODO" class="headerlink" title="3.TODO"></a>3.TODO</h3><ol>
+<li><p>Position Embedding:</p>
+<p>推荐系统中的sequence不只含有序列位置信息，还有时间间隔信息</p>
+<p>BERT中的Position Embedding为：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Pre-trained-RecSys/20190130221850.png"></p>
+<p>只含有位置信息，应该加入时间间隔信息 <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1609.05787">Context-aware Sequential Recommendation</a></p>
+<p>Position Embedding + Time Interval Embedding </p>
+</li>
+<li><p>冷启动:</p>
+<p>item冷启动类似于OOV问题。加入其它信息？(product description etc.)；OOV的解决方法？</p>
+<p>user冷启动</p>
+</li>
+<li><p>训练domain specific parameter:</p>
+<p>长短期依赖：<a target="_blank" rel="noopener" href="http://iridia.ulb.ac.be/~rdevooght/papers/UMAP__Long_and_short_term_with_RNN.pdf">Long and Short-Term Recommendations with Recurrent Neural Networks</a></p>
+<ul>
+<li><p>短期兴趣：音乐、视频</p>
+</li>
+<li><p>长期兴趣：读书</p>
+</li>
+</ul>
+</li>
+<li><p>item聚类</p>
+<p>NLP中的vocab数量有限(几万-几十万)，推荐系统中的item数量较大，使用BERT训练参数量太大</p>
+<p>可以根据item信息(description，review text etc.)使用LDA，或者对user-item矩阵进行矩阵分解等方法对item进行聚类，即不学习item representation，学习cluster representation</p>
+<p>Benefit:</p>
+<ul>
+<li><p>减少计算量，加速训练</p>
+</li>
+<li><p>增加泛化能力？</p>
+</li>
+<li><p>多样化推荐</p>
+<ul>
+<li>不对item进行推荐，对cluster进行推荐</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>可解释性</p>
+<p>Self Attention 可视化 <a target="_blank" rel="noopener" href="https://cseweb.ucsd.edu/~jmcauley/pdfs/icdm18.pdf">Self-Attentive Sequential Recommendation</a></p>
+</li>
+</ol>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2019/01/30/Pre-trained-RecSys/" title="Pre-trained RecSys" target="_blank" rel="external">http://example.com/2019/01/30/Pre-trained-RecSys/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xmzzyo" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/touxiang.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xmzzyo" target="_blank"><span class="text-dark">zzyo</span><small class="ml-1x"></small></a></h3>
+        <div>技术活，当赏~</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2019/07/21/Neural-Variational-Inference/" title="Neural Variational Inference"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2019/01/17/Joint%20Models%20for%20NLP/" title="Joint Models for NLP"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2020 xmz
+        
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+  <script>
+  //利用 FancyBox 实现点击图片放大
+  $(document).ready(function() {
+    $('article img').not('[hidden]').not('.panel-body img').each(function() {
+      var $image = $(this);
+      var imageCaption = $image.attr('alt');
+      var $imageWrapLink = $image.parent('a');
+      if ($imageWrapLink.length < 1) {
+        var src = this.getAttribute('src');
+        var idx = src.lastIndexOf('?');
+        if (idx != -1) {
+          src = src.substring(0, idx);
+        }
+        $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+      }
+      $imageWrapLink.attr('data-fancybox', 'images');
+      if (imageCaption) {
+        $imageWrapLink.attr('data-caption', imageCaption);
+      }
+    });
+    $().fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+    });
+  });
+  </script>
+
+
+
+
+    <script defer>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?5b8968d29b062c2b158f75733d315d20";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+</body>
+</html>

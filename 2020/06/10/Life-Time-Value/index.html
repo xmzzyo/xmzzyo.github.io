@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Life-Time Value | 洛阳城头看落阳</title>
+  <meta name="description" content="公司和客户三阶段关系AARRR：  相识 留存 扩张  获取新用户的成本是维持已有用户成本的5倍 RFM (Recency, Frequency, Monetary Value) framework 关于用户价值分层，业界最权威的是RFM模型。R是指最近一次购买时间(用户活跃的时效性)，F是指购买次数(用户活跃次数)，M是指消费金额(用户消费金额贡献度)。其实也就是通过用户的三个特征，来对用户进行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Life-Time Value">
+<meta property="og:url" content="http://example.com/2020/06/10/Life-Time-Value/index.html">
+<meta property="og:site_name" content="洛阳城头看落阳">
+<meta property="og:description" content="公司和客户三阶段关系AARRR：  相识 留存 扩张  获取新用户的成本是维持已有用户成本的5倍 RFM (Recency, Frequency, Monetary Value) framework 关于用户价值分层，业界最权威的是RFM模型。R是指最近一次购买时间(用户活跃的时效性)，F是指购买次数(用户活跃次数)，M是指消费金额(用户消费金额贡献度)。其实也就是通过用户的三个特征，来对用户进行">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/2020/06/10/asset/Life-Time-Value/image-20200704122902848.png">
+<meta property="og:image" content="http://example.com/2020/06/10/asset/Life-Time-Value/image-20200622093622744.png">
+<meta property="og:image" content="http://example.com/2020/06/10/asset/Life-Time-Value/image-20200622093711954.png">
+<meta property="og:image" content="http://example.com/2020/06/10/asset/Life-Time-Value/image-20200622123743049.png">
+<meta property="og:image" content="http://example.com/2020/06/10/asset/Life-Time-Value/image-20200622123813932.png">
+<meta property="og:image" content="http://example.com/2020/06/10/asset/Life-Time-Value/image-20200622123656573.png">
+<meta property="og:image" content="http://example.com/2020/06/10/asset/Life-Time-Value/image-20200704123051283.png">
+<meta property="og:image" content="http://example.com/2020/06/10/asset/Life-Time-Value/image-20200704123707595.png">
+<meta property="article:published_time" content="2020-06-10T12:29:41.000Z">
+<meta property="article:modified_time" content="2020-09-18T07:11:31.594Z">
+<meta property="article:author" content="xmz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2020/06/10/asset/Life-Time-Value/image-20200704122902848.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2020/06/10/Life-Time-Value/index.html">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    <link href="https://cdn.bootcss.com/KaTeX/0.8.3/katex.min.css" rel="stylesheet">
+  
+  
+  
+    <link href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css" rel="stylesheet">
+  
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xmzzyo" target="_blank">
+          <img class="img-circle img-rotate" src="/images/touxiang.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">zzyo</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithms/">Algorithms</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DL/">DL</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DL/NLP/">NLP</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/IELTS/">IELTS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NLP/">NLP</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RL/">RL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RecSys/">RecSys</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SE/">SE</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90/">程序分析</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cross-domain/" rel="tag">Cross-domain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" rel="tag">强化学习</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="tag">推荐系统</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/07/01/Time-Series-Analysis/" class="title">Time Series Analysis</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-07-01T07:19:35.000Z" itemprop="datePublished">2020-07-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/06/10/Life-Time-Value/" class="title">Life-Time Value</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-06-10T12:29:41.000Z" itemprop="datePublished">2020-06-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RL/">RL</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/19/Note-Deep-Reinforce-Learning/" class="title">Note Deep Reinforce Learning</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-19T11:34:53.000Z" itemprop="datePublished">2020-04-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RecSys/">RecSys</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/15/Deep-Reinforcement-Learning-for-Recommender-Systems/" class="title">Deep Reinforcement Learning for Recommender Systems</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-15T08:36:13.000Z" itemprop="datePublished">2020-04-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RecSys/">RecSys</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/12/Cross-domain-Recommendation/" class="title">Cross-domain Recommendation</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-12T10:15:12.000Z" itemprop="datePublished">2020-04-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/crypto-js@4.0.0/crypto-js.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Life-Time-Value" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Life-Time Value
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/06/10/Life-Time-Value/" class="article-date">
+	  <time datetime="2020-06-10T12:29:41.000Z" itemprop="datePublished">2020-06-10</time>
+	</a>
+</span>
+        
+        
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 2.1k(words)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 7(minutes)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>公司和客户三阶段关系AARRR：</p>
+<ol>
+<li>相识</li>
+<li>留存</li>
+<li>扩张</li>
+</ol>
+<p>获取新用户的成本是维持已有用户成本的5倍</p>
+<p>RFM (Recency, Frequency, Monetary Value) framework</p>
+<p>关于用户价值分层，业界最权威的是<strong>RFM模型</strong>。R是指最近一次购买时间(用户活跃的时效性)，F是指购买次数(用户活跃次数)，M是指消费金额(用户消费金额贡献度)。其实也就是通过用户的三个特征，来对用户进行类别判断。</p>
+<p>Buy Till You Die (BTYD) family(概率生成模型)</p>
+<h2 id="An-Engagement-Based-Customer-Lifetime-Value-System-for-E-commerce"><a href="#An-Engagement-Based-Customer-Lifetime-Value-System-for-E-commerce" class="headerlink" title="An Engagement-Based Customer Lifetime Value System for E-commerce"></a>An Engagement-Based Customer Lifetime Value System for E-commerce</h2><p>技术困难：</p>
+<ul>
+<li>用户级别行为的噪声属性， engagement程度</li>
+<li>大量潜在的用户</li>
+</ul>
+<p>模型：随机森林</p>
+<p>特征集：Email，app， purchase behavior</p>
+<p>客户类型：one-time，power user（使用不同特征权重，可解释性）</p>
+<h3 id="1-特征集"><a href="#1-特征集" class="headerlink" title="1. 特征集"></a>1. 特征集</h3><p>Engagement（最重要特征）：</p>
+<ol>
+<li><p>open Email</p>
+</li>
+<li><p>click Email</p>
+</li>
+</ol>
+<p>User experience：</p>
+<ol>
+<li>附近商品质量（对新用户和回流用户）</li>
+<li>customer service（user review）</li>
+</ol>
+<p>User behavior：</p>
+<ol>
+<li>不同时间尺度购买记录</li>
+<li>preference是否随时间变化</li>
+<li>未兑换、赎回、折扣</li>
+</ol>
+<p>其他：</p>
+<ol>
+<li>年龄、性别、城市、距离</li>
+<li>原始订阅和首次购买</li>
+</ol>
+<h3 id="2-模型"><a href="#2-模型" class="headerlink" title="2. 模型"></a>2. 模型</h3><p>用户划分：</p>
+<p>​    经常购买的可以根据历史购买记录准确预测</p>
+<p>根据购买频率分为六组：</p>
+<ol>
+<li>Unactivated：没买过</li>
+<li>New users：买过，但数据少不足以分组</li>
+<li>One-time buyers：买一次</li>
+<li>Sporadic buyers：大于一次</li>
+<li>Power users：经常买</li>
+</ol>
+<p>两阶段：</p>
+<ol>
+<li>判断是否购买</li>
+<li>购买价值</li>
+</ol>
+<p>季节性和decay：</p>
+<p>​    decay：自从上一个trigger event（购买行为）开始decay</p>
+<h2 id="Customer-Lifetime-Value-Prediction-Using-Embeddings"><a href="#Customer-Lifetime-Value-Prediction-Using-Embeddings" class="headerlink" title="Customer Lifetime Value Prediction Using Embeddings"></a>Customer Lifetime Value Prediction Using Embeddings</h2><p>目的：</p>
+<ol>
+<li>shopping频率</li>
+<li>订单大小</li>
+<li>用户留存率</li>
+</ol>
+<p>问题：大量user 的CLTV是0</p>
+<p>特征：</p>
+<ol>
+<li>user信息</li>
+<li>购买记录</li>
+<li>收益信息</li>
+<li>session log</li>
+</ol>
+<p>订单数量、购买的item数量、session数最重要</p>
+<p>users views学习user 的embedding</p>
+<h2 id="A-DEEP-PROBABILISTIC-MODEL-FOR-CUSTOMER-LIFETIME-VALUE-PREDICTION"><a href="#A-DEEP-PROBABILISTIC-MODEL-FOR-CUSTOMER-LIFETIME-VALUE-PREDICTION" class="headerlink" title="A DEEP PROBABILISTIC MODEL FOR CUSTOMER LIFETIME VALUE PREDICTION"></a>A DEEP PROBABILISTIC MODEL FOR CUSTOMER LIFETIME VALUE PREDICTION</h2><p>根据预测的LTV对用户分类，然后投放广告</p>
+<p>guide customer relationship management (CRM)</p>
+<p>挑战:</p>
+<ol>
+<li>长尾分布,大量用户是Unactivated or one-time,新用户的purchase frequency和recency都一样(2/8原则)</li>
+<li>MSE不适合0值LTV和对大值LTV比较敏感</li>
+<li>对于回头客,LTV易变,LTV的分布highly倾斜</li>
+</ol>
+<p>同时预测流失率和LTV(不用构建two-stage模型-二分类重复购买和回归模型后头客的LTV,或者购买频率和购买值两个回归)</p>
+<p>验证时采用normalized基尼系数,衡量从high-value到low-value</p>
+<p>特征:购买历史(最重要),用户信息,订单,回流历史,客户服务</p>
+<h2 id="To-Be-or-Not-to-Be…-Social-Incorporating-Simple-Social-Features-in-Mobile-Game-Customer-Lifetime"><a href="#To-Be-or-Not-to-Be…-Social-Incorporating-Simple-Social-Features-in-Mobile-Game-Customer-Lifetime" class="headerlink" title="To Be or Not to Be… Social: Incorporating Simple Social Features in Mobile Game Customer Lifetime"></a>To Be or Not to Be… Social: Incorporating Simple Social Features in Mobile Game Customer Lifetime</h2><p>Value Predictions<br>加入社交属性,构建社交图,closeness, betweeness, PageRank等</p>
+<h2 id="optimove-com"><a href="#optimove-com" class="headerlink" title="optimove.com"></a>optimove.com</h2><h3 id="customer-behavior-model"><a href="#customer-behavior-model" class="headerlink" title="customer behavior model"></a>customer behavior model</h3><p>客户行为建模被定义为创建数学结构以表示在特定客户组之间观察到的常见行为，以便预测相似客户在相似情况下的行为。</p>
+<p>难点：</p>
+<ol>
+<li>经验丰富的<a target="_blank" rel="noopener" href="https://www.optimove.com/learning-center/deep-customer-analytics/">客户分析</a>专家既昂贵又很难找到，并且他们需要使用的数学技术复杂且风险很大。</li>
+<li>即使已经建立了客户行为模型，也很难为营销人员的目的来操纵它，即，确切地为每个客户或一组客户采取何种营销措施。</li>
+<li>尽管数学模型很复杂，但大多数客户模型实际上都相对简单。由于这种必要性，大多数客户行为模型忽略了许多相关因素，以至于他们生成的预测通常不是很可靠。</li>
+</ol>
+<p>RFM问题：</p>
+<ol>
+<li>RFM模型仅描述客户过去所做的事情，而不能准确预测未来的行为。</li>
+<li>RFM模型在特定时间点查看客户，而不考虑客户过去的行为方式或当前找到客户的生命周期阶段；除非随时间推移分析客户的行为，否则准确的客户建模非常薄弱。</li>
+</ol>
+<p>Optimove：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.optimove.com/learning-center/customer-segmentation/">将客户</a>分成小组并根据实际行为解决单个客户–而不是硬编码任何使客户彼此相似的先入为主的观念或假设，而不是仅查看隐藏了重要事实的汇总/平均数据个人客户</li>
+<li>跟踪客户及其随时间推移在不同细分之间的移动方式（即动态细分），包括客户生命周期背景和同类分析-而不是仅仅确定客户现在处于哪个细分中而无需考虑他们如何到达那里</li>
+<li>使用预测性客户行为建模技术准确地<a target="_blank" rel="noopener" href="https://www.optimove.com/learning-center/predictive-behavior-modeling/">预测</a>客户<a target="_blank" rel="noopener" href="https://www.optimove.com/learning-center/predictive-behavior-modeling/">的未来行为</a>（例如，转化，流失，花费更多，花费更少）–而不是仅仅查看历史数据的后视镜</li>
+<li>使用高级计算来确定每个客户的<a target="_blank" rel="noopener" href="https://www.optimove.com/learning-center/customer-lifetime-value/">客户生命周期价值</a>（LTV）并以此为依据-而不是只看客户可能给公司带来的短期收入</li>
+<li>基于客观指标，确切地<a target="_blank" rel="noopener" href="https://www.optimove.com/learning-center/marketing-action-optimization/">知道</a>每个客户<a target="_blank" rel="noopener" href="https://www.optimove.com/learning-center/marketing-action-optimization/">现在要做什么营销活动</a>，以最大化每个客户的长期价值，而不是试图根据仪表板或大量报告来弄清楚该做什么。</li>
+<li>使用<a target="_blank" rel="noopener" href="https://www.optimove.com/learning-center/machine-learning/">行销机器学习</a>技术，这些技术可以揭示洞察力并提出建议，以改善人类行销商不太可能自己发现的客户行销。</li>
+</ol>
+<p>传统方法和Optimove方法之间差异是，前者就像是客户快照，而后者是客户动画。客户的动画视图更具启发性，可以更准确地预测客户行为。</p>
+<ul>
+<li>哪些营销活动最有效地将每个免费用户转换为付费客户？</li>
+<li>哪些客户将流失，哪些营销活动最有效地挽留每个客户？</li>
+<li>哪些客户将来会减少支出，哪些营销措施最有效地使他们保持当前的支出水平？</li>
+<li>哪些客户有潜力成为大客户，哪些营销活动将最有效地增加每个客户的支出？</li>
+</ul>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Life-Time-Value/image-20200704122902848.png" alt="image-20200704122902848" style="zoom:67%;" />
+
+<p>different stages of the customer lifecycle：</p>
+<ol>
+<li><strong>Anonymous site visitors</strong></li>
+<li><strong>Registered users</strong></li>
+<li><strong>First-time users</strong></li>
+<li><strong>Sporadic users</strong></li>
+<li><strong>Frequent users</strong></li>
+<li><strong>Risk-of-churn users</strong></li>
+<li><strong>Churned users</strong></li>
+<li><strong>Reactivated users</strong></li>
+<li><strong>Terminate</strong></li>
+</ol>
+<p>RFM细分（每个维度将客户划分为四个层）：</p>
+<table>
+<thead>
+<tr>
+<th><strong>新近度</strong></th>
+<th><strong>频率</strong></th>
+<th><strong>货币</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>R-Tier-1（最新）</td>
+<td>F-Tier-1（最常见）</td>
+<td>M-Tier-1（支出最高）</td>
+</tr>
+<tr>
+<td>R-Tier-2</td>
+<td>F-Tier-2</td>
+<td>M-Tier-2</td>
+</tr>
+<tr>
+<td>R-Tier-3</td>
+<td>F-Tier-3</td>
+<td>M-Tier-3</td>
+</tr>
+<tr>
+<td>R-Tier-4（最新）</td>
+<td>F-Tier-4（仅一笔交易）</td>
+<td>M-Tier-4（支出最低）</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>最佳客户</strong> –该组由在R-Tier-1，F-Tier-1和M-Tier-1中找到的那些客户组成，这意味着他们最近进行交易的频率高，交易频繁且花费比其他客户更多。该段的缩写符号为1-1-1。</li>
+<li><strong>高消费新客户</strong> –该组由1-4-1和1-4-2中的那些客户组成。这些客户只进行过一次交易，但是最近才交易，他们花了很多钱。</li>
+<li><strong>支出最低的活跃忠诚客户</strong> –该组由细分市场1-1-3和1-1-4中的那些客户组成（他们最近才交易，并且交易频繁，但花费最少）。</li>
+<li><strong>流失的最佳客户</strong> –此细分受众群包括<strong>4-1-1、4-1-2、4-2-1</strong>和4-2-2组中的那些客户（他们交易频繁且花费很多，但时间长了因为他们已经交易了）。</li>
+</ul>
+<h2 id="Customer-Sequence-Behavior-model"><a href="#Customer-Sequence-Behavior-model" class="headerlink" title="Customer Sequence Behavior model"></a>Customer Sequence Behavior model</h2><h3 id="Behavior-Sequence-Transformer-for-E-commerce-Recommendation-in-Alibaba"><a href="#Behavior-Sequence-Transformer-for-E-commerce-Recommendation-in-Alibaba" class="headerlink" title="Behavior Sequence Transformer for E-commerce Recommendation in Alibaba"></a>Behavior Sequence Transformer for E-commerce Recommendation in Alibaba</h3><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Life-Time-Value/image-20200622093622744.png" alt="image-20200622093622744" style="zoom:67%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Life-Time-Value/image-20200622093711954.png" alt="image-20200622093711954" style="zoom: 67%;" />
+
+<h3 id="Customer-Shopping-Pattern-Prediction-A-Recurrent-Neural-Network-Approach"><a href="#Customer-Shopping-Pattern-Prediction-A-Recurrent-Neural-Network-Approach" class="headerlink" title="Customer Shopping Pattern Prediction: A Recurrent Neural Network Approach"></a>Customer Shopping Pattern Prediction: A Recurrent Neural Network Approach</h3><p>customer behavior prediction model</p>
+<ol>
+<li><p>client loyalty number→user ID</p>
+</li>
+<li><p>RFM→做user segment</p>
+</li>
+</ol>
+<p>This model incorporates <strong>social media location check-ins</strong>, <strong>historical preferences</strong> of the customer, the <strong>inﬂuence of the</strong><br><strong>customer’s social network</strong>, and <strong>customer’s mobility characteristics</strong> as inputs to the model.</p>
+<hr>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Life-Time-Value/image-20200622123743049.png" alt="image-20200622123743049" style="zoom: 67%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Life-Time-Value/image-20200622123813932.png" alt="image-20200622123813932" style="zoom:67%;" />
+
+
+
+<h3 id="Deep-Session-Interest-Network-for-Click-Through-Rate-Prediction"><a href="#Deep-Session-Interest-Network-for-Click-Through-Rate-Prediction" class="headerlink" title="Deep Session Interest Network for Click-Through Rate Prediction"></a>Deep Session Interest Network for Click-Through Rate Prediction</h3><p>考虑session，30min分割：方便对用户时序的兴趣变化进行建模。</p>
+<ol>
+<li><p><strong>同一个session内的行为高度同构</strong></p>
+</li>
+<li><p><strong>不同sessions间的behavior异构</strong></p>
+</li>
+</ol>
+<p>session内部：Transformer，优化position embedding→Bias embedding</p>
+<p>session之间：BiLSTM</p>
+<p>session之间activation unit门机制改进</p>
+<h3 id="Deep-Spatio-Temporal-Neural-Networks-for-Click-Through-Rate-Prediction"><a href="#Deep-Spatio-Temporal-Neural-Networks-for-Click-Through-Rate-Prediction" class="headerlink" title="Deep Spatio-Temporal Neural Networks for Click-Through Rate Prediction"></a>Deep Spatio-Temporal Neural Networks for Click-Through Rate Prediction</h3><p>上下文广告、用户点击过的广告、用户未点击的广告</p>
+<p>DSTN - Interactive Attention Model：针对不同的目标广告，不同类型的辅助广告信息的权重会不断变化，同时权重也没有进行归一化，避免了归一化带来的种种问题。</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Life-Time-Value/image-20200622123656573.png" alt="image-20200622123656573" style="zoom:50%;" />
+
+
+
+<h3 id="Modeling-Dwell-Time-Engagement-on-Visual-Multimedia"><a href="#Modeling-Dwell-Time-Engagement-on-Visual-Multimedia" class="headerlink" title="Modeling Dwell Time Engagement on Visual Multimedia"></a>Modeling Dwell Time Engagement on Visual Multimedia</h3><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Life-Time-Value/image-20200704123051283.png" alt="image-20200704123051283" style="zoom:67%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Life-Time-Value/image-20200704123707595.png" alt="image-20200704123707595" style="zoom:50%;" />
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2020/06/10/Life-Time-Value/" title="Life-Time Value" target="_blank" rel="external">http://example.com/2020/06/10/Life-Time-Value/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xmzzyo" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/touxiang.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xmzzyo" target="_blank"><span class="text-dark">zzyo</span><small class="ml-1x"></small></a></h3>
+        <div>技术活，当赏~</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/07/01/Time-Series-Analysis/" title="Time Series Analysis"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/04/19/Note-Deep-Reinforce-Learning/" title="Note Deep Reinforce Learning"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2020 xmz
+        
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+  <script>
+  //利用 FancyBox 实现点击图片放大
+  $(document).ready(function() {
+    $('article img').not('[hidden]').not('.panel-body img').each(function() {
+      var $image = $(this);
+      var imageCaption = $image.attr('alt');
+      var $imageWrapLink = $image.parent('a');
+      if ($imageWrapLink.length < 1) {
+        var src = this.getAttribute('src');
+        var idx = src.lastIndexOf('?');
+        if (idx != -1) {
+          src = src.substring(0, idx);
+        }
+        $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+      }
+      $imageWrapLink.attr('data-fancybox', 'images');
+      if (imageCaption) {
+        $imageWrapLink.attr('data-caption', imageCaption);
+      }
+    });
+    $().fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+    });
+  });
+  </script>
+
+
+
+
+    <script defer>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?5b8968d29b062c2b158f75733d315d20";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+</body>
+</html>

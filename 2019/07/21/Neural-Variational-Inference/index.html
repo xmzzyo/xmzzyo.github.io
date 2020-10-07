@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Neural Variational Inference | 洛阳城头看落阳</title>
+  <meta name="description" content="一、Probabilistic Generative Models1. LDA 参考：  https:&#x2F;&#x2F;www.cnblogs.com&#x2F;pinard&#x2F;p&#x2F;6831308.html   引入隐藏变量—主题： $P(w_{j}|d_{i}) &#x3D; \sum {k} P(w{j}|z_{k}) \cdot  P(z_{k}|d_{i})$ 共轭分布：分布的分布，先验(Dir) + 数据似然(多项式)&#x3D;后">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Neural Variational Inference">
+<meta property="og:url" content="http://example.com/2019/07/21/Neural-Variational-Inference/index.html">
+<meta property="og:site_name" content="洛阳城头看落阳">
+<meta property="og:description" content="一、Probabilistic Generative Models1. LDA 参考：  https:&#x2F;&#x2F;www.cnblogs.com&#x2F;pinard&#x2F;p&#x2F;6831308.html   引入隐藏变量—主题： $P(w_{j}|d_{i}) &#x3D; \sum {k} P(w{j}|z_{k}) \cdot  P(z_{k}|d_{i})$ 共轭分布：分布的分布，先验(Dir) + 数据似然(多项式)&#x3D;后">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/2019/07/21/asset/Neural-Variational-Inference/lda-model.png">
+<meta property="og:image" content="http://example.com/2019/07/21/asset/Neural-Variational-Inference/lda-gen.png">
+<meta property="og:image" content="http://example.com/2019/07/21/asset/Neural-Variational-Inference/lda-mean-field.png">
+<meta property="og:image" content="http://example.com/2019/07/21/asset/Neural-Variational-Inference/vae-model.png">
+<meta property="og:image" content="http://example.com/2019/07/21/asset/Neural-Variational-Inference/vae-loss.png">
+<meta property="og:image" content="http://example.com/2019/07/21/asset/Neural-Variational-Inference/vae-reparam-trick.png">
+<meta property="og:image" content="http://example.com/2019/07/21/asset/Neural-Variational-Inference/NVDM-loss.png">
+<meta property="og:image" content="http://example.com/2019/07/21/asset/Neural-Variational-Inference/NVDM-loss2.png">
+<meta property="og:image" content="http://example.com/2019/07/21/asset/Neural-Variational-Inference/NVDM-model.png">
+<meta property="og:image" content="http://example.com/2019/07/21/asset/Neural-Variational-Inference/NVDM-ELBO.png">
+<meta property="og:image" content="http://example.com/2019/07/21/asset/Neural-Variational-Inference/BTM-la.png">
+<meta property="og:image" content="http://example.com/2019/07/21/asset/Neural-Variational-Inference/BTM-gen.png">
+<meta property="og:image" content="http://example.com/2019/07/21/asset/Neural-Variational-Inference/BTM-jp.png">
+<meta property="og:image" content="http://example.com/2019/07/21/asset/Neural-Variational-Inference/GBTM-siran.png">
+<meta property="og:image" content="http://example.com/2019/07/21/asset/Neural-Variational-Inference/householder-matrix.png">
+<meta property="og:image" content="http://example.com/2019/07/21/asset/Neural-Variational-Inference/householder-trans.png">
+<meta property="og:image" content="http://example.com/2019/07/21/asset/Neural-Variational-Inference/CTF.png">
+<meta property="og:image" content="http://example.com/2019/07/21/asset/Neural-Variational-Inference/CTF-model.png">
+<meta property="og:image" content="http://example.com/2019/07/21/asset/Neural-Variational-Inference/NVCTM-obj.png">
+<meta property="og:image" content="http://example.com/2019/07/21/asset/Neural-Variational-Inference/NVCTM-kl.png">
+<meta property="og:image" content="http://example.com/2019/07/21/asset/Neural-Variational-Inference/NVCTM-tflb.png">
+<meta property="article:published_time" content="2019-07-21T06:30:59.000Z">
+<meta property="article:modified_time" content="2020-09-18T07:11:31.596Z">
+<meta property="article:author" content="xmz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2019/07/21/asset/Neural-Variational-Inference/lda-model.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2019/07/21/Neural-Variational-Inference/index.html">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    <link href="https://cdn.bootcss.com/KaTeX/0.8.3/katex.min.css" rel="stylesheet">
+  
+  
+  
+    <link href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css" rel="stylesheet">
+  
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xmzzyo" target="_blank">
+          <img class="img-circle img-rotate" src="/images/touxiang.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">zzyo</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithms/">Algorithms</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DL/">DL</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DL/NLP/">NLP</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/IELTS/">IELTS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NLP/">NLP</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RL/">RL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RecSys/">RecSys</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SE/">SE</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90/">程序分析</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cross-domain/" rel="tag">Cross-domain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" rel="tag">强化学习</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="tag">推荐系统</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/07/01/Time-Series-Analysis/" class="title">Time Series Analysis</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-07-01T07:19:35.000Z" itemprop="datePublished">2020-07-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/06/10/Life-Time-Value/" class="title">Life-Time Value</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-06-10T12:29:41.000Z" itemprop="datePublished">2020-06-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RL/">RL</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/19/Note-Deep-Reinforce-Learning/" class="title">Note Deep Reinforce Learning</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-19T11:34:53.000Z" itemprop="datePublished">2020-04-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RecSys/">RecSys</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/15/Deep-Reinforcement-Learning-for-Recommender-Systems/" class="title">Deep Reinforcement Learning for Recommender Systems</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-15T08:36:13.000Z" itemprop="datePublished">2020-04-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RecSys/">RecSys</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/12/Cross-domain-Recommendation/" class="title">Cross-domain Recommendation</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-12T10:15:12.000Z" itemprop="datePublished">2020-04-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/crypto-js@4.0.0/crypto-js.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Neural-Variational-Inference" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Neural Variational Inference
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2019/07/21/Neural-Variational-Inference/" class="article-date">
+	  <time datetime="2019-07-21T06:30:59.000Z" itemprop="datePublished">2019-07-21</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/DL/">DL</a>►<a class="article-category-link" href="/categories/DL/NLP/">NLP</a>
+  </span>
+
+        
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 2.9k(words)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 12(minutes)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="一、Probabilistic-Generative-Models"><a href="#一、Probabilistic-Generative-Models" class="headerlink" title="一、Probabilistic Generative Models"></a>一、Probabilistic Generative Models</h2><h3 id="1-LDA"><a href="#1-LDA" class="headerlink" title="1. LDA"></a>1. LDA</h3><blockquote>
+<p><em>参考：</em></p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/pinard/p/6831308.html">https://www.cnblogs.com/pinard/p/6831308.html</a></li>
+</ol>
+</blockquote>
+<p>引入隐藏变量—主题：</p>
+<p>$P(w_{j}|d_{i}) = \sum <em>{k} P(w</em>{j}|z_{k}) \cdot  P(z_{k}|d_{i})$</p>
+<p>共轭分布：分布的分布，先验(Dir) + 数据似然(多项式)=后验(Dir)；一方面符合直觉，另一方面可作为先验链，在Gibbs采样中有用</p>
+<p>模型结构：</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/lda-model.png" alt="lda-model" style="zoom:50%;" />
+
+<p>生成过程：</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/lda-gen.png" style="zoom:50%;" />
+
+<p>其中$\beta=(\beta_1,\beta_2\dots \beta_k)$，k是topic数，$\beta_i$是topic-word的概率分布</p>
+<p>参数求解：</p>
+<ul>
+<li><p>Gibbs采样：</p>
+<ul>
+<li><p>Training：</p>
+<p>1.选择合适的主题数K, 选择合适的超参数向量$\alpha\ \eta $</p>
+<p>2.对应语料库中每一篇文档的每一个词，随机的赋予一个主题编号z</p>
+<p>3.重新扫描语料库，对于每一个词，利用Gibbs采样公式更新它的topic编号，并更新语料库中该词的编号</p>
+<p>4.重复第3步的基于坐标轴轮换的Gibbs采样，直到Gibbs采样收敛</p>
+<p>5.统计语料库中的各个文档各个词的主题，得到文档主题分布$\theta_d$，统计语料库中各个主题词的分布，得到LDA的主题与词的分布$\beta_k$</p>
+</li>
+<li><p>Inference：</p>
+<p><em>利用topic-word分布$E_{Dir(\beta_k)}(\beta_{kt})$，需要得到该新文档的主题分布$E_{Dir(\theta_d)}(\theta_{dk})$</em></p>
+<p>1.对应当前文档的每一个词，随机的赋予一个主题编号z</p>
+<p>2.重新扫描当前文档，对于每一个词，利用Gibbs采样公式更新它的topic编号</p>
+<p>3.重复第2步的基于坐标轴轮换的Gibbs采样，直到Gibbs采样收敛</p>
+<p>4.统计文档中各个词的主题，得到该文档主题分布</p>
+</li>
+</ul>
+</li>
+<li><p>Variational Inference</p>
+<p>模型参数是$\alpha \ \eta$，求解目标是$\theta\ \beta\ z$，由于$\theta\ \beta\ z$之间的耦合性，需要使用变分假设，假设所有的隐藏变量都是通过各自的独立分布形成的(mean field theory)，这样就去掉了隐藏变量之间的耦合关系。</p>
+<p>隐藏变量的概率分布为：$p(\theta,\beta, z | w, \alpha, \eta) = \frac{p(\theta,\beta, z,  w| \alpha, \eta)}{p(w|\alpha, \eta)}$</p>
+<p>引入平均场理论后，隐藏变量的分布相对独立：</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/lda-mean-field.png" alt="lda-mean-field" style="zoom:50%;" />
+
+<p>$\begin{align} q(\beta, z, \theta|\lambda,\phi, \gamma)   =  \prod_{k=1}^Kq(\beta_k|\lambda_k)\prod_{d=1}^M(q(\theta_d|\gamma_d)\prod_{n=1}^{N_d}q(z_{dn}| \phi_{dn})) \end{align}$</p>
+<p>最小化估计分布和真实分布：</p>
+<p>$(\lambda^*,\phi^*, \gamma^*) = \underbrace{arg ;min}_{\lambda,\phi, \gamma} KL(q(\beta, z, \theta|\lambda,\phi, \gamma) || p(\theta,\beta, z | w, \alpha, \eta))$</p>
+<p>$\begin{align} log(w|\alpha,\eta) &amp; = log \int\int \sum\limits_z p(\theta,\beta, z,  w| \alpha, \eta) d\theta d\beta \ &amp; = log \int\int \sum\limits_z \frac{p(\theta,\beta, z,  w| \alpha, \eta) q(\beta, z, \theta|\lambda,\phi, \gamma)}{q(\beta, z, \theta|\lambda,\phi, \gamma)}d\theta d\beta  \ &amp; = log;E_q \frac{p(\theta,\beta, z,  w| \alpha, \eta) }{q(\beta, z, \theta|\lambda,\phi, \gamma)} \ &amp; \geq E_q; log\frac{p(\theta,\beta, z,  w| \alpha, \eta) }{q(\beta, z, \theta|\lambda,\phi, \gamma)} \ &amp; = E_q; log{p(\theta,\beta, z,  w| \alpha, \eta) } - E_q; log{q(\beta, z, \theta|\lambda,\phi, \gamma)} \end{align}$</p>
+<p>$\begin{align} log(w|\alpha,\eta) =  L(\lambda,\phi, \gamma; \alpha, \eta)  + KL(q(\beta, z, \theta|\lambda,\phi, \gamma) || p(\theta,\beta, z | w, \alpha, \eta))   \end{align}$</p>
+<p>其中$L(\lambda,\phi, \gamma; \alpha, \eta) = E_q; log{p(\theta,\beta, z,  w| \alpha, \eta) } - E_q; log{q(\beta, z, \theta|\lambda,\phi, \gamma)}$成为变分下界ELBO(Evidence Lower Bound)</p>
+<p>由于对数似然部分为常量，因此最小化KL散度等价于最大化ELBO</p>
+<p>$\begin{align} L(\lambda,\phi, \gamma; \alpha, \eta) &amp; = E_q[logp(\beta|\eta)] +  E_q[logp(z|\theta)]  + E_q[logp(\theta|\alpha)] \ &amp; +  E_q[logp(w|z, \beta)] - E_q[logq(\beta|\lambda)] \ &amp; - E_q[logq(z|\phi)]   - E_q[logq(\theta|\gamma)]  \end{align}$</p>
+<p>指数分布族$p(x|\theta) = h(x) exp(\eta(\theta)*T(x) -A(\theta))$的性质:</p>
+<blockquote>
+<p>如果($x_1,x_2\dots x_n \sim Dir(\alpha)$)</p>
+<p>$E(x_i)=\frac{\alpha_i}{\sum\alpha_i}$</p>
+<p>$E(\log_{x_i})= \Psi(\lambda_{\alpha_i}) - \Psi(\sum\limits_{i^{‘}=1}^V\lambda_{\alpha_i^{‘}})$</p>
+<p>其中$\Psi(x) = \frac{d}{d x}log\Gamma(x) = \frac{\Gamma^{‘}(x)}{\Gamma(x)}$</p>
+</blockquote>
+<p>意味着在ELBO里面的期望表达式可以转化为求导来完成，这个技巧大大简化了计算量。</p>
+<p>然后利用EM算法求解模型参数</p>
+</li>
+</ul>
+<h3 id="2-VAE"><a href="#2-VAE" class="headerlink" title="2. VAE"></a>2. VAE</h3><blockquote>
+<p><em>参考：</em></p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://kexue.fm/archives/5253">https://kexue.fm/archives/5253</a></li>
+<li><a target="_blank" rel="noopener" href="https://tiffer.cn/variational-autoencoder.html">https://tiffer.cn/variational-autoencoder.html</a></li>
+</ol>
+</blockquote>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/vae-model.png" alt="vae-model" style="zoom:50%;" />
+
+<p>$\log P(X) = ELBO + KL(Q||P)$</p>
+<p>目标函数为y优化变分下界：</p>
+<p>$ELBO= \log P(X) - D_{KL}[Q(z \vert X) \Vert P(z \vert X)] = E_{z \sim Q} [\log P(X \vert z)] - D_{KL}[Q(z \vert X) \Vert P(z)] $</p>
+<p>最大化$E_{z \sim Q} [\log P(X \vert z)]$可以通过极大似然得到</p>
+<p>对于$D_{KL}[Q(z \vert X) \Vert P(z)]$，假设$P(z) = N(0,1)$，</p>
+<p>$\begin{aligned}&amp;KL\Big(N(\mu,\sigma^2)\Big\Vert N(0,1)\Big)\  =&amp;\int \frac{1}{\sqrt{2\pi\sigma^2}}e^{-(x-\mu)^2/2\sigma^2} \left(\log \frac{e^{-(x-\mu)^2/2\sigma^2}/\sqrt{2\pi\sigma^2}}{e^{-x^2/2}/\sqrt{2\pi}}\right)dx\  =&amp;\int \frac{1}{\sqrt{2\pi\sigma^2}}e^{-(x-\mu)^2/2\sigma^2} \log \left{\frac{1}{\sqrt{\sigma^2}}\exp\left{\frac{1}{2}\big[x^2-(x-\mu)^2/\sigma^2\big]\right} \right}dx\  =&amp;\frac{1}{2}\int \frac{1}{\sqrt{2\pi\sigma^2}}e^{-(x-\mu)^2/2\sigma^2} \Big[-\log \sigma^2+x^2-(x-\mu)^2/\sigma^2 \Big] dx\end{aligned}$</p>
+<p>整个结果分为三项积分，第一项实际上就是$-\log \sigma^2$乘以概率密度的积分（也就是1），所以结果是$-\log \sigma^2$；第二项实际是正态分布的二阶矩，正态分布的二阶矩为$\mu^2+\sigma^2$；而根据定义，第三项实际上就是“-方差除以方差=-1”。所以总结果就是$KL\Big(N(\mu,\sigma^2)\Big\Vert N(0,1)\Big)=\frac{1}{2}\Big(-\log \sigma^2+\mu^2+\sigma^2-1\Big)$，相当于对$\mu \ \sigma$加$L_2$正则</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/vae-loss.png" alt="vae-model" style="zoom: 67%;" />
+
+<p><strong>Reparameterization Trick:</strong></p>
+<p>采样操作是不可导的，而采样的结果是可导的</p>
+<p>从$\mathcal{N}(\mu,\sigma^2)$中采样一个$Z$，相当于从$\mathcal{N}(0,I)$中采样一个$\varepsilon$，然后让$Z=\mu + \varepsilon \times \sigma$。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/vae-reparam-trick.png" alt="vae-model"></p>
+<h2 id="二、Neural-Variational-Inference"><a href="#二、Neural-Variational-Inference" class="headerlink" title="二、Neural Variational Inference"></a>二、Neural Variational Inference</h2><h3 id="1-NVDM-Neural-Variational-Document-Model"><a href="#1-NVDM-Neural-Variational-Document-Model" class="headerlink" title="1. NVDM (Neural Variational Document Model)"></a>1. NVDM (Neural Variational Document Model)</h3><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1511.06038.pdf">Neural Variational Inference for Text Processing</a></p>
+<p>传统方法的约束：随着generation模型复杂度、深度的提升，高维积分给对后验分布的变分推断带来了困难；模型的微小改变就需要重新求导，限制了对数据的不同分布假设；数据规模较大时Gibbs采样效率低</p>
+<p>于是，不同于传统的变分推断、近似采样等方法，NVI通过Black-Box直接对h后验概率进行建模，取得强大的生成能力。</p>
+<p>Inference网络可以使用传统方法中较少使用的MLP、CNN、RNN等</p>
+<p>通过Reparameterization trick (RT)，Inference网络可以通过反向传播来学习</p>
+<h4 id="Neural-Variational-Inference-Framework"><a href="#Neural-Variational-Inference-Framework" class="headerlink" title="Neural Variational Inference Framework"></a>Neural Variational Inference Framework</h4><p>对于隐变量的后验分布$q(h)$，我们希望尽量接近真实的分布$p(h|x,y)$</p>
+<p>对于$q_i(h|x,y)$，应用平均场理论，使其为对角高斯分布</p>
+<p>构建Inference 网络的三步:</p>
+<ul>
+<li>对观测数据进行向量化表达$u=f_x(x),v=f_y(y)$</li>
+<li>学习隐变量$\pi=g(u,v)$</li>
+<li>隐变量分布参数$\mu=l_1(\pi),\log\sigma=l_2(\pi)$</li>
+</ul>
+<p>得到隐变量$h$后，变分下界对模型参数$\theta$求导为：</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/NVDM-loss.png" style="zoom:67%;" />
+
+<p>对于Inference网络参数$\phi$，经过RT后$h=\mu+\sigma$，</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/NVDM-loss2.png" style="zoom:67%;" />
+
+<h4 id="Neural-Variational-Document-Model"><a href="#Neural-Variational-Document-Model" class="headerlink" title="Neural Variational Document Model"></a>Neural Variational Document Model</h4><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/NVDM-model.png" style="zoom:67%;" />
+
+<p>Inference网络：MLP：$X-&gt;h, p(h|X)$，推断隐藏话题分布</p>
+<p>Generation网络：softmax decoder: $p(X|h)=\prod_i p(x_i|h)$</p>
+<p>变分下界：</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/NVDM-ELBO.png" style="zoom:50%;" />
+
+<h3 id="2-AVITM"><a href="#2-AVITM" class="headerlink" title="2. AVITM"></a>2. AVITM</h3><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1703.01488.pdf">AutoEncoding Varitional Inference For Topic Models</a></p>
+<p>使用 autoencoding variational Bayes (AEVB)解决传统LDA的缺点</p>
+<p>-&gt;   Autoencoded Variational Inference For Topic Model(AVITM)，和标准的mean field 推断达到相似效果</p>
+<p>两个挑战：</p>
+<ul>
+<li><p>Dirichlet分布限制了RT</p>
+<p>Dirichlet可以使用Laplace approximation 将其近似为 logistic normal 分布，于是Dirichlet可以近似为K(Topic 数，值较大)个独立的高斯分布，然后就可以通过RT采样出Dirichlet分布</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/BTM-la.png" style="zoom:50%;" />
+
+<p>于是将$p(\theta|\alpha)$近似为$\hat{p}(\mu_1|\sum_1)=\mathcal{NL}(\theta|\mu_1,\sum_1)$</p>
+</li>
+<li><p>component collapsing：当latent 维度增加时，KL距离占主导，使隐变量后验分布逼近先验，陷入局部最优，topic都是相同的</p>
+<ol>
+<li>ADAM优化器，使用高动量权重和学习率</li>
+<li>梯度裁剪</li>
+</ol>
+</li>
+</ul>
+<h3 id="3-GraphBTM"><a href="#3-GraphBTM" class="headerlink" title="3. GraphBTM"></a>3. GraphBTM</h3><p><a target="_blank" rel="noopener" href="https://www.aclweb.org/anthology/D18-1495">GraphBTM: Graph Enhanced Autoencoded Variational Inference for Biterm Topic Model</a></p>
+<p>传统LDA的约束：在短文本上由于数据稀疏性(词共现稀疏)而表现不好</p>
+<h4 id="BTM"><a href="#BTM" class="headerlink" title="BTM"></a>BTM</h4><p>于是提出了BTM(Biterm Topic Model)，通过建模word-paris来学习topic，其缺点是没有体现Biterm之间的transitivity ；对整个语料学习一个topic分布而不是LDA中的每个文档</p>
+<p><strong>生成过程：</strong></p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/BTM-gen.png" style="zoom:50%;" />
+
+<p>对于$b=(w_i,w_j)$</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/BTM-jp.png" style="zoom:50%;" />
+
+<p>由于BTM和LDA一样对topic和word的先验分布的参数使用Dirichlet分布，但对于Dirichlet很难使用RT对ELBO得到一个可导的 Monte Carlo estimator，Dirichlet可以使用Laplace approximation 将其近似为 logistic normal 分布</p>
+<h4 id="GraphBTM"><a href="#GraphBTM" class="headerlink" title="GraphBTM"></a>GraphBTM</h4><ul>
+<li><p>使用带有残差链接的GCN( Graph Convolutional Networks)来提取Biterm之间的transitivity，对于Biterm (A,B)和(A,C)，使用图来建模其间的transitivity，图的node为词，edge的weight为Biterms的共现次数；</p>
+<p>其中第L+1层的输出为$h^{l+1}=f(\tilde{D}^{-0.5}\tilde{A}\tilde{D}^{-0.5}(h^lW^l+b))$，其中$h^0$为输入特征，也即X，$\tilde{A}=A+I$是带有自连接的邻接矩阵，$\tilde{D}是\tilde{A}的度矩阵$。GCN也可以看作对Biterm不断进行Laplacian smoothing</p>
+</li>
+<li><p>GraphBTM采样n个文档作为mini-corpus，并使用固定长度的窗口抽取Biterms，其平衡了LDA和BTM，</p>
+</li>
+</ul>
+<p>语料的似然为：</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/GBTM-siran.png" style="zoom:50%;" />
+
+<p>类似LDA，对于$\alpha \ \theta$分别引入两个变分参数$\gamma\ \phi$，优化目标为最大化变分下界$L(\gamma,\phi)=R-D_{KL}$</p>
+<p>使用Inference网络计算变分参数，$(\mu_b,\sum_b)=f(b)$，于是可以通过logistic normal 将其近似为Dirichlet分布，$q_{\gamma}(\theta)=\mathcal{LN}(\theta|\mu_b,diag(\sum_b)$</p>
+<h3 id="4-NVCTM"><a href="#4-NVCTM" class="headerlink" title="4. NVCTM"></a>4. NVCTM</h3><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1703.01488.pdf">Neural Variational Correlated Topic Modeling</a></p>
+<p>传统NVTM的约束是将topic建模为协方差矩阵为对角阵的高斯分布，其相互独立，与实际情况不符</p>
+<h4 id="Flow-based-Methods-for-VAEs"><a href="#Flow-based-Methods-for-VAEs" class="headerlink" title="Flow-based Methods for VAEs"></a>Flow-based Methods for VAEs</h4><p>优化推断网络中隐变量分布的学习 </p>
+<ul>
+<li><p>Householder flow</p>
+<p>打破隐变量的独立性假设，使用迭代的可逆的线性变换将一个各向同性高斯分布映射为非各向同性</p>
+<p>通过正交阵可以将isotropic Gaussian 映射为full covariance，Householder flow 使用k个Householder transformation的乘积表示正交阵。</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/householder-matrix.png" style="zoom:67%;" />
+
+<p>其中$h^0$是初始的isotropic Gaussian样本，$\pi$是MLP即Inference网络的输出，经过迭代得到non-isotropic Gaussian 的样本</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/householder-trans.png" style="zoom:67%;" />
+
+<p>约束：Householder flow只能转换单个隐变量topic vector，计算重构误差是不够的</p>
+</li>
+<li><p>Centralized Transformation Flow</p>
+<p>利用高斯分布的线性性，可以通过线性变换得到non-isotropic Gaussian样本：</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/CTF.png" style="zoom:67%;" />
+
+<p>其中$U=\prod_iH_i$，其中$H$的输入是MLP的输出和isotropic Gaussian的均值</p>
+<p>在CTF中，通过定义转换矩阵，可以将多个isotropic Gaussian 样本转换为non-isotropic的样本。</p>
+<p>模型如下：</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/CTF-model.png" style="zoom:67%;" />
+
+<p>NVCTM (Neural Variational Correlated Topic Model) 的目标函数是：</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/NVCTM-obj.png" style="zoom:67%;" />
+
+<p>其中重构误差通过隐变量topic分布中随机采样计算出</p>
+<p>对于KL距离，利用高斯分布的线性性：$h_0 \sim N(\mu, \sum) , \hat{h}=U \cdot h, \hat{h} \sim N(U\mu,U\sum U^T)$</p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/NVCTM-kl.png"></p>
+<p>于是得到 Transformation Flow Lower Bound(TFLB)：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/NVCTM-tflb.png"></p>
+<p>作者使用point-wise mutual information来衡量topic之间的相关程度，证明比LDA、NVDM、GSM等模型更好的学习topic之间关系</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>NVI使用神经网络灵活的建模能力直接对隐变量的后验分布进行推断，通过Inference网络得到Varitional Parameters，不用像传统方法对变分参数进行严格数学推导，模型的微小改变就需要重新推导，不利于对数据的不同分布假设，并且可以避免因为数据规模增加带来Gibbs采样效率的下降。NVI使用Black-box的Inference网络带来了更加灵活的建模方式，如MLP、CNN、RNN等。</p>
+<p>总之，定义好Inference网络结构、隐变量的先验分布、ELBO目标函数即可进行隐变量学习，提供了更加一般性的方法。</p>
+</li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2019/07/21/Neural-Variational-Inference/" title="Neural Variational Inference" target="_blank" rel="external">http://example.com/2019/07/21/Neural-Variational-Inference/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xmzzyo" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/touxiang.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xmzzyo" target="_blank"><span class="text-dark">zzyo</span><small class="ml-1x"></small></a></h3>
+        <div>技术活，当赏~</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/03/30/Domain-Adaptation/" title="Domain Adaptation"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2019/01/30/Pre-trained-RecSys/" title="Pre-trained RecSys"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2020 xmz
+        
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+  <script>
+  //利用 FancyBox 实现点击图片放大
+  $(document).ready(function() {
+    $('article img').not('[hidden]').not('.panel-body img').each(function() {
+      var $image = $(this);
+      var imageCaption = $image.attr('alt');
+      var $imageWrapLink = $image.parent('a');
+      if ($imageWrapLink.length < 1) {
+        var src = this.getAttribute('src');
+        var idx = src.lastIndexOf('?');
+        if (idx != -1) {
+          src = src.substring(0, idx);
+        }
+        $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+      }
+      $imageWrapLink.attr('data-fancybox', 'images');
+      if (imageCaption) {
+        $imageWrapLink.attr('data-caption', imageCaption);
+      }
+    });
+    $().fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+    });
+  });
+  </script>
+
+
+
+
+    <script defer>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?5b8968d29b062c2b158f75733d315d20";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+</body>
+</html>

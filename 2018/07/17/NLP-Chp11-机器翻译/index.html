@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>NLP-Chp11-机器翻译 | 洛阳城头看落阳</title>
+  <meta name="description" content="1. 基本翻译方法 直接转换法  基于规则的翻译方法  基于中间语言的翻译方法  基于语料库的翻译方法  基于事例的翻译方法  统计翻译方法  神经网络机器翻译     直接转换法 从源语言句子的表层出发，将单词、短语或句子直接置换成目标语言译文，必要时进行简单的词序调整。对原文句子的分析仅满足于特定译文生成的需要。  基于规则的翻译方法(Rule-based) (a) 对源语言句子进行词法分析(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NLP-Chp11-机器翻译">
+<meta property="og:url" content="http://example.com/2018/07/17/NLP-Chp11-%E6%9C%BA%E5%99%A8%E7%BF%BB%E8%AF%91/index.html">
+<meta property="og:site_name" content="洛阳城头看落阳">
+<meta property="og:description" content="1. 基本翻译方法 直接转换法  基于规则的翻译方法  基于中间语言的翻译方法  基于语料库的翻译方法  基于事例的翻译方法  统计翻译方法  神经网络机器翻译     直接转换法 从源语言句子的表层出发，将单词、短语或句子直接置换成目标语言译文，必要时进行简单的词序调整。对原文句子的分析仅满足于特定译文生成的需要。  基于规则的翻译方法(Rule-based) (a) 对源语言句子进行词法分析(">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/80205418.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/43330587.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/95285187.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/8300528.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/72901962.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/9595668.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/5630865.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/23478626.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/67961581.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/95298483.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/47095235.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/79402452.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/86658006.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/24757218.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/6613269.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/69829539.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/81044825.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/23216424.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/31748662.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/69014601.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/50970794.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/25576751.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/51739330.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/9235186.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/42746658.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/60110244.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/98203597.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/98112994.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/30591106.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/95118176.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/64014268.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/15592145.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/40859004.jpg">
+<meta property="og:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/99846638.jpg">
+<meta property="article:published_time" content="2018-07-17T01:19:35.000Z">
+<meta property="article:modified_time" content="2020-09-18T07:11:31.594Z">
+<meta property="article:author" content="xmz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2018/07/17/asset/NLP-Chp11-机器翻译/80205418.jpg">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2018/07/17/NLP-Chp11-%E6%9C%BA%E5%99%A8%E7%BF%BB%E8%AF%91/index.html">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    <link href="https://cdn.bootcss.com/KaTeX/0.8.3/katex.min.css" rel="stylesheet">
+  
+  
+  
+    <link href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css" rel="stylesheet">
+  
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xmzzyo" target="_blank">
+          <img class="img-circle img-rotate" src="/images/touxiang.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">zzyo</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithms/">Algorithms</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DL/">DL</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DL/NLP/">NLP</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/IELTS/">IELTS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NLP/">NLP</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RL/">RL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RecSys/">RecSys</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SE/">SE</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90/">程序分析</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cross-domain/" rel="tag">Cross-domain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" rel="tag">强化学习</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="tag">推荐系统</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/07/01/Time-Series-Analysis/" class="title">Time Series Analysis</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-07-01T07:19:35.000Z" itemprop="datePublished">2020-07-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/06/10/Life-Time-Value/" class="title">Life-Time Value</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-06-10T12:29:41.000Z" itemprop="datePublished">2020-06-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RL/">RL</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/19/Note-Deep-Reinforce-Learning/" class="title">Note Deep Reinforce Learning</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-19T11:34:53.000Z" itemprop="datePublished">2020-04-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RecSys/">RecSys</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/15/Deep-Reinforcement-Learning-for-Recommender-Systems/" class="title">Deep Reinforcement Learning for Recommender Systems</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-15T08:36:13.000Z" itemprop="datePublished">2020-04-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RecSys/">RecSys</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/12/Cross-domain-Recommendation/" class="title">Cross-domain Recommendation</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-12T10:15:12.000Z" itemprop="datePublished">2020-04-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/crypto-js@4.0.0/crypto-js.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-NLP-Chp11-机器翻译" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      NLP-Chp11-机器翻译
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2018/07/17/NLP-Chp11-%E6%9C%BA%E5%99%A8%E7%BF%BB%E8%AF%91/" class="article-date">
+	  <time datetime="2018-07-17T01:19:35.000Z" itemprop="datePublished">2018-07-17</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/NLP/">NLP</a>
+  </span>
+
+        
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 2.6k(words)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 9(minutes)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h3 id="1-基本翻译方法"><a href="#1-基本翻译方法" class="headerlink" title="1. 基本翻译方法"></a>1. 基本翻译方法</h3><ol>
+<li>直接转换法 </li>
+<li>基于规则的翻译方法 </li>
+<li>基于中间语言的翻译方法 </li>
+<li>基于语料库的翻译方法 <ul>
+<li>基于事例的翻译方法 </li>
+<li>统计翻译方法 </li>
+<li>神经网络机器翻译 </li>
+</ul>
+</li>
+</ol>
+<h4 id="直接转换法"><a href="#直接转换法" class="headerlink" title="直接转换法"></a><strong>直接转换法</strong></h4><blockquote>
+<p>从源语言句子的表层出发，将单词、短语或句子直接置换成目标语言译文，必要时进行简单的词序调整。对原文句子的分析仅满足于特定译文生成的需要。</p>
+</blockquote>
+<h4 id="基于规则的翻译方法-Rule-based"><a href="#基于规则的翻译方法-Rule-based" class="headerlink" title="基于规则的翻译方法(Rule-based)"></a><strong>基于规则的翻译方法(Rule-based)</strong></h4><blockquote>
+<p>(a) 对源语言句子进行词法分析<br>(b) 对源语言句子进行句法/语义分析<br>(c) 源语言句子结构到译文结构的转换<br>(d) 译文句法结构生成<br>(e) 源语言词汇到译文词汇的转换<br>(f ) 译文词法选择与生成   </p>
+</blockquote>
+<h4 id="基于中间语言的翻译方法-Interlingua-based"><a href="#基于中间语言的翻译方法-Interlingua-based" class="headerlink" title="基于中间语言的翻译方法(Interlingua-based)"></a><strong>基于中间语言的翻译方法(Interlingua-based)</strong></h4><blockquote>
+<p>输入语句-&gt;中间语言-&gt;翻译结果</p>
+</blockquote>
+<h3 id="2-统计机器翻译"><a href="#2-统计机器翻译" class="headerlink" title="2. 统计机器翻译"></a>2. 统计机器翻译</h3><h4 id="噪声信道模型"><a href="#噪声信道模型" class="headerlink" title="噪声信道模型"></a>噪声信道模型</h4><blockquote>
+<p>一种语言T 由于经过一个噪声信道而发生变形，从而在信道的另一端呈现为另一种语言 S (信道意义上的输出，翻译意义上的源语言)。翻译问题实际上就是如何根据观察到的 S，恢复最为可能的T 问题。</p>
+</blockquote>
+<p>统计翻译中的三个关键问题： </p>
+<ol>
+<li><p>估计语言模型概率 p(T)； </p>
+<blockquote>
+<p>n-gram    </p>
+</blockquote>
+</li>
+<li><p>估计翻译概率 p(S|T)； </p>
+<blockquote>
+<p>对位模型(alignment model)</p>
+<p>源语言句子 $S=s_1s_2\dots s_m$有m个单词 ;目标语言句子$T=t_1t_2\dots t_l$有l个单词</p>
+<p>对位模型 A 视为隐含变量，则：$P(S|T)=\sum_AP(S,A|T)$,每一种对位序列表示成：$A=a_1a_2\dots a_m$</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/80205418.jpg" style="zoom:50%;" />
+</blockquote>
+</li>
+<li><p>快速有效地搜索T  使得 p(T)×p(S | T) 最大。  </p>
+</li>
+</ol>
+<h4 id="IBM-翻译模型1"><a href="#IBM-翻译模型1" class="headerlink" title="IBM 翻译模型1"></a><strong>IBM 翻译模型1</strong></h4><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/43330587.jpg" style="zoom:50%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/95285187.jpg" style="zoom:50%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/8300528.jpg" style="zoom:50%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/72901962.jpg" style="zoom:50%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/9595668.jpg" style="zoom:50%;" />
+
+<p>根据IBM翻译模型1，由英语句子e 生成法语句子f 的实现过程:<br>(1) 根据概率分布为法语句子f 选择一个长度m；<br>(2) 对于每一个j = 1, 2, …, m，根据均匀分布原则从 0, 1, …, l 中选择一个值给$a_j$；<br>(3) 对于每一个 j = 1, 2, …, m，根据概率$𝒑 (𝒇<em>𝒋|𝒆</em>{𝒂_𝒋})$ 选择一个法语单词$f_j$。</p>
+ <img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/5630865.jpg" style="zoom:50%;" />
+
+<h4 id="IBM-翻译模型2"><a href="#IBM-翻译模型2" class="headerlink" title="IBM 翻译模型2"></a><strong>IBM 翻译模型2</strong></h4><p>在IBM 模型2中，除了假定概率 依赖于位置 j、对位关系$a_j$ 和源语言句子长度m以及目标语言句子长度l 以外，另外两个假设与IBM模型1中的假设一样。<br><strong>引入了对位概率(alignment probabilities)的概念：</strong> </p>
+<p>$a(a_j|j,m,l)=P(a_j|a_i^{j-1},s_1^{j-1},m,l)$</p>
+<p>对于每一个三元组(j, m, l)，对位概率满足如下约束条件： </p>
+<p>$\sum_{i=0}^la(i|j,m,l)=1$</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/23478626.jpg" style="zoom:50%;" />
+
+<p>根据 IBM模型2，由英语句子e 生成法语句子f 的实现过程：<br>    (1)根据概率分布为法语句子f 选择一个长度m；<br>    (2)对于每一个 j = 1, 2, …, m，根据概率分布 $a(a_j | j, l, m)$从0, 1, …, l中选择一个值给$a_j$；<br>    (3)对于每一个 j = 1, 2, …, m，根据概率选择一个法语单词$f_j$。</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/67961581.jpg" style="zoom:50%;" />
+
+<h4 id="IBM-翻译模型3"><a href="#IBM-翻译模型3" class="headerlink" title="IBM 翻译模型3"></a><strong>IBM 翻译模型3</strong></h4><blockquote>
+<p>定义：在随机选择对位关系的情况下，与目标语言句子中的单词 t 对应的源语言句子中的单词数目是一个随机变量，不妨记做$\phi_t$，我们称该变量为单词t 的繁衍能力或产出率(fertility)。一个具体的取值记做：$\phi_t$实际上，所谓的繁衍能力就是目标语言单词与源语言单词之间一对多的关系。 </p>
+</blockquote>
+<blockquote>
+<p>定义：假设给定一个目标语言句子T，T中的每一个单词t 在源语言句子中可能有若干个词与之对应，源语言句子中所有与t 对位的单词列表我们称之为t的一个<strong>片断(tablet)**，这个片断可能为空。一个目标语言句子T 的所有片断的集合是一个随机变量，我们称之为T的</strong>片断集(tableau)<strong>，记做符号R。T 的第i 个单词的片段也是一个</strong>随机变量**，不妨记做$R_i$，那么，T 的第i个单词的片断中第k个源语言单词也是一个随机变量，记做$R_{ik}$。</p>
+</blockquote>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/95298483.jpg" style="zoom:50%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/47095235.jpg" style="zoom:50%;" />
+
+<p>根据 IBM模型3, 一个英语句子e 翻译成法语句子f  的工作过程如下：<br>(1) 对于英语句子中的每一个单词e，选择一个产出率$\phi$，其概率为 $n(\phi|e)$；<br>(2) 对于所有单词的产出率求和，得到 m-prime；<br>(3) 按照下面的方式构造一个新的英语单词串：删除产出率为0的单词，复制产出率为1的单词，复制两遍产出率为2的单词，依此类推；<br>(4) 在这m-prime个单词的每一个后面，决定是否插入一个空单词NULL，插入的概率为$p_1$，不插入的概率为$p_0$；<br>(5) 设$\phi_0$为插入空单词 NULL 的个数；<br>(6) 设m为目前总单词的个数：$m-prime +\phi_0$；<br>(7) 根据概率表 p(f|e) 将每一个单词e替换为法语单词f ；<br>(8)  对不是由空单词 NULL 产生的每一个法语单词，根据概率表 d(j |i, l, m) 赋予一个位置。这里j 是法语单词在法语句子中的位置，i是产生当前这个法语单词的英语单词在其句子中的位置，l是英语句子的长度，m 是法语句子的长度；<br>(9) 如果任何一个法语句子的位置被多重登录(含一个以上的单词)，则失败返回；<br>(10) 给空单词NULL产生的法语单词在句子中赋予一个位置，这些位置必须是没有被占领的空位置。任何一个赋值都被认为是等概率的，概率值为$1/\phi_0$；<br>(11) 读出法语单词串，其概率为上述每一步概率的乘积，按概率大小输出结果。</p>
+<p><strong>模型 4:</strong>  考虑片断的中心词的概率和其他单词的位置概率。<br><strong>模型 5:</strong>  源语言句子单词间的相对位置。</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/79402452.jpg" style="zoom:50%;" />
+
+<h3 id="3-基于短语的翻译模型"><a href="#3-基于短语的翻译模型" class="headerlink" title="3. 基于短语的翻译模型"></a>3. 基于短语的翻译模型</h3><h4 id="基于最大熵的方法-判别式"><a href="#基于最大熵的方法-判别式" class="headerlink" title="基于最大熵的方法 (判别式)"></a>基于最大熵的方法 (判别式)</h4><blockquote>
+<p><strong>任务：</strong> </p>
+<p>对于一个随机事件，假设已经有了一组样例，我们希望建立一个统计模型来模拟这个随机事件的分布 </p>
+<p><strong>目标：</strong> </p>
+<p>对于一组特征，使得统计模型在这一组特征上的模型分布与样例中的经验分布完全一致，同时不对未知事件作任何假设，<strong>即保证这个模型尽可能的“均匀”(也就是要求模型的熵值达到最大)</strong> </p>
+</blockquote>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/86658006.jpg" style="zoom:50%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/24757218.jpg" style="zoom:50%;" />
+
+<blockquote>
+<p>翻译基本单元由词转向短语 </p>
+<ul>
+<li><p>基于词的翻译模型的问题： </p>
+<p>很难处理词义消岐问题<br>很难处理一对多、多对一和多对多的翻译问题 </p>
+</li>
+</ul>
+<p>在基于短语的模型中，直接将繁衍率信息、上下文信息以及局部对位调序信息记录在翻译规则中。</p>
+</blockquote>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/6613269.jpg" style="zoom:50%;" />
+
+<p><strong>短语划分模型</strong> </p>
+<p>目标：将一个词序列如何划分为短语序列<br>方法：一般假设每一种短语划分方式都是等概率的 </p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/69829539.jpg" style="zoom:50%;" />
+
+<p><strong>短语调序模型：</strong><br>两种常用方法： </p>
+<ol>
+<li>距离跳转模型 </li>
+<li>分类模型 </li>
+</ol>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/81044825.jpg" style="zoom:50%;" />
+
+<h3 id="4-基于短语的翻译模型的解码算法"><a href="#4-基于短语的翻译模型的解码算法" class="headerlink" title="4. 基于短语的翻译模型的解码算法"></a>4. 基于短语的翻译模型的解码算法</h3><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/23216424.jpg" style="zoom:50%;" />
+
+<h3 id="5-基于短语模型的SMT系统实现"><a href="#5-基于短语模型的SMT系统实现" class="headerlink" title="5. 基于短语模型的SMT系统实现"></a>5. 基于短语模型的SMT系统实现</h3><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/31748662.jpg" style="zoom:50%;" />
+
+<h3 id="6-基于层次化短语的翻译模型"><a href="#6-基于层次化短语的翻译模型" class="headerlink" title="6. 基于层次化短语的翻译模型"></a>6. 基于层次化短语的翻译模型</h3><blockquote>
+<p>基于层次化短语的翻译模型首先利用层次化短语产生句子的局部翻译，然后，像常规的基于短语的模型一样，将这些局部的翻译顺序地连接起来，从而形成整个句子的翻译。</p>
+</blockquote>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/69014601.jpg" style="zoom:50%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/50970794.jpg" style="zoom:50%;" />
+
+<h3 id="7-树翻译模型"><a href="#7-树翻译模型" class="headerlink" title="7. 树翻译模型"></a>7. 树翻译模型</h3><ol>
+<li><p>树到串的翻译模型 </p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/25576751.jpg" style="zoom:50%;" />
+</li>
+<li><p>树到树的翻译模型 </p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/51739330.jpg" style="zoom:50%;" />
+</li>
+<li><p>串到树的翻译模型</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/9235186.jpg" style="zoom:50%;" />
+
+</li>
+</ol>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/42746658.jpg" style="zoom:50%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/60110244.jpg" style="zoom:50%;" />
+
+<h3 id="8-系统融合"><a href="#8-系统融合" class="headerlink" title="8. 系统融合"></a>8. 系统融合</h3><p><strong>系统融合方法：</strong> </p>
+<ol>
+<li>句子级系统融合 </li>
+<li>短语级系统融合 </li>
+<li>词语级系统融合</li>
+</ol>
+<h3 id="9-译文评估方法"><a href="#9-译文评估方法" class="headerlink" title="9. 译文评估方法"></a>9. 译文评估方法</h3><p><strong>常用的评测指标:</strong></p>
+<p>主观评测</p>
+<p>客观评测<br>(1) 句子错误率：译文与参考答案不完全相同的句子为错误句子。错误句子占全部译文的比率。<br>(2) 单词错误率(Multiple Word Error Rate on Multiple Reference, 记作 mWER)：分别计算译文与每个参考译文的编辑距离，以最短的为评分依据，进行归一化处理<br>(3)与位置无关的单词错误率 (Position independent mWER, 记作mPER )：不考虑单词在句子中的顺序<br>(4) METEOR 评测方法  对候选译文与参考译文进行词对齐，计算词汇完全匹配、词干匹配、同义词匹配等各种情况的准确率(P)、召回率(R)和F平均值<br>(5) BLEU评价方法 [Papineni, 2002] －BiLingual Evaluation Understudy, IBM </p>
+<ul>
+<li><p>基本思想： </p>
+<p>​    将机器翻译产生的候选译文与人翻译的多个参考译文相比较，越接近，候选译文的正确率越高。 </p>
+</li>
+<li><p>实现方法： </p>
+<p>​    统计同时出现在系统译文和参考译文中的n 元词的个数，最后把匹配到的n元词的数目除以系统译文的n元词数目，得到评测结果。 </p>
+</li>
+</ul>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/98203597.jpg" style="zoom:50%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/98112994.jpg" style="zoom:50%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/30591106.jpg" style="zoom:50%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/95118176.jpg" style="zoom:50%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/64014268.jpg" style="zoom:50%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/15592145.jpg" style="zoom:50%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/40859004.jpg" style="zoom:50%;" />
+
+<p>(6) NIST 评测方法 National Institute of Standards and Technology<br><strong>基本思想：</strong>BLEU评分公式中采用的n元语法同现概率的几何平均方法使评分值对于各种n元语法同现的比例具有相同的敏感性，但实际上，这种做法存在着潜在的矛盾，因为n值较大的统计单元出现的概率较低。因此，NIST的研究人员提出了另外一种处理方法，<strong>就是用n-gram同现概率的算术平均值取代几何平均值。另外，如果一个n元词在参考译文中出现的次数越少，表明它所包含的信息量越大，那么，它对于该n元词就赋予更高的权重。</strong> </p>
+<h3 id="10-神经机器翻译"><a href="#10-神经机器翻译" class="headerlink" title="10. 神经机器翻译"></a>10. 神经机器翻译</h3><h4 id="神经网络语言模型"><a href="#神经网络语言模型" class="headerlink" title="神经网络语言模型"></a>神经网络语言模型</h4><p><strong>基于计数的N-元语言模型</strong></p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/NLP-Chp11-机器翻译/99846638.jpg" style="zoom:50%;" />
+
+<blockquote>
+<p>问题①：数据稀疏 N-元组“很 无聊”未出现过，则回退 </p>
+<p>问题②：忽略语义相似性 “无聊”与“枯燥”虽语义相似，但无法共享信息</p>
+</blockquote>
+<p><strong>基于分布式表示的N-元语言模型</strong></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2018/07/17/NLP-Chp11-%E6%9C%BA%E5%99%A8%E7%BF%BB%E8%AF%91/" title="NLP-Chp11-机器翻译" target="_blank" rel="external">http://example.com/2018/07/17/NLP-Chp11-%E6%9C%BA%E5%99%A8%E7%BF%BB%E8%AF%91/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xmzzyo" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/touxiang.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xmzzyo" target="_blank"><span class="text-dark">zzyo</span><small class="ml-1x"></small></a></h3>
+        <div>技术活，当赏~</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2018/07/18/NLP-Chp12-%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%E3%80%81%E8%81%9A%E7%B1%BB%E5%92%8C%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90/" title="NLP-Chp12-文本分类、聚类和情感分析"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2018/07/14/NLP-Chp9-%E5%8F%A5%E6%B3%95%E5%88%86%E6%9E%90/" title="NLP-Chp9-句法分析"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2020 xmz
+        
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+  <script>
+  //利用 FancyBox 实现点击图片放大
+  $(document).ready(function() {
+    $('article img').not('[hidden]').not('.panel-body img').each(function() {
+      var $image = $(this);
+      var imageCaption = $image.attr('alt');
+      var $imageWrapLink = $image.parent('a');
+      if ($imageWrapLink.length < 1) {
+        var src = this.getAttribute('src');
+        var idx = src.lastIndexOf('?');
+        if (idx != -1) {
+          src = src.substring(0, idx);
+        }
+        $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+      }
+      $imageWrapLink.attr('data-fancybox', 'images');
+      if (imageCaption) {
+        $imageWrapLink.attr('data-caption', imageCaption);
+      }
+    });
+    $().fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+    });
+  });
+  </script>
+
+
+
+
+    <script defer>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?5b8968d29b062c2b158f75733d315d20";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+</body>
+</html>
