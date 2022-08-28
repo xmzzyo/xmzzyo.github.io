@@ -117,7 +117,7 @@
         
         
         <li class="menu-item menu-item-home">
-          <a href="/%20%7C%7C%20fa%20fa-home">
+          <a href="/.">
             
             <i class="icon icon-home-fill"></i>
             
@@ -368,7 +368,7 @@
         <h3 id="MAGNet"><a href="#MAGNet" class="headerlink" title="MAGNet"></a>MAGNet</h3><blockquote>
 <p>Deep Multi-Agent Reinforcement Learning with Relevance Graphs (NIPS2018) </p>
 </blockquote>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Structured-Multi-Agent-RL/image-20220716232443490.png" alt="image-20220716232443490" style="zoom:50%;" />
+<img src="../asset/Structured-Multi-Agent-RL/image-20220716232443490.png" alt="image-20220716232443490" style="zoom:50%;" />
 
 <ol>
 <li><p>Agent 和environment object作为节点建图</p>
@@ -382,18 +382,18 @@
 <p>Mean Field Theory (Stanley, 1971) – the interactions within the population of agents are approximated by that of a single agent played with the average effect from the overall (local) population. </p>
 <p>Virtual Central Agent</p>
 <p>优化central agent近似于优化neighbor agent</p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Structured-Multi-Agent-RL/image-20220716232642877.png" alt="image-20220716232642877" style="zoom:50%;" />
+<img src="../asset/Structured-Multi-Agent-RL/image-20220716232642877.png" alt="image-20220716232642877" style="zoom:50%;" />
 
 <p><strong>but the mean action eliminates the difference among agents and thus incurs the loss of important information that could help cooperation</strong> </p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Structured-Multi-Agent-RL/image-20220716232706686.png" alt="image-20220716232706686" style="zoom:50%;" />
+<img src="../asset/Structured-Multi-Agent-RL/image-20220716232706686.png" alt="image-20220716232706686" style="zoom:50%;" />
 
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Structured-Multi-Agent-RL/image-20220716232713424.png" alt="image-20220716232713424" style="zoom:50%;" />
+<img src="../asset/Structured-Multi-Agent-RL/image-20220716232713424.png" alt="image-20220716232713424" style="zoom:50%;" />
 
 <p>迭代，最后mean action和policy收敛</p>
 <h3 id="RFM"><a href="#RFM" class="headerlink" title="RFM"></a>RFM</h3><blockquote>
 <p>RELATIONAL FORWARD MODELS FOR MULTI-AGENT LEARNING (ICLR2019)</p>
 </blockquote>
-<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Structured-Multi-Agent-RL/image-20220716232748423.png" alt="image-20220716232748423"></p>
+<p><img src="../asset/Structured-Multi-Agent-RL/image-20220716232748423.png" alt="image-20220716232748423"></p>
 <p>The output of a GN is also a graph, with <strong>the same connectivity structure as the input graph</strong> (i.e., same number of vertices and edges, as well as same sender and receiver for each edge), <strong>but updated global, vertex, and edge attributes.</strong></p>
 <h3 id="NeurComm-ICLR2020"><a href="#NeurComm-ICLR2020" class="headerlink" title="NeurComm (ICLR2020)"></a>NeurComm (ICLR2020)</h3><blockquote>
 <p>MULTI-AGENT REINFORCEMENT LEARNING FOR NETWORKED SYSTEM CONTROL </p>
@@ -404,7 +404,7 @@
 <li>learnable communication protocols；DIAL，BICNet</li>
 <li>communication attentions to selectively send messages；ATOC，IC3Net</li>
 </ol>
-<h4 id="Spatio-Temporal-RL"><a href="#Spatio-Temporal-RL" class="headerlink" title="Spatio-Temporal RL"></a>Spatio-Temporal RL</h4><p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Structured-Multi-Agent-RL/image-20220716181525051.png" alt="image-20220716181525051"></p>
+<h4 id="Spatio-Temporal-RL"><a href="#Spatio-Temporal-RL" class="headerlink" title="Spatio-Temporal RL"></a>Spatio-Temporal RL</h4><p><img src="../asset/Structured-Multi-Agent-RL/image-20220716181525051.png" alt="image-20220716181525051"></p>
 <p>The major assumption in Deﬁnition 3.2 is that the <strong>Markovian property</strong> <strong>holds both</strong> <strong>temporally and spatially</strong>, so that the next local state depends on the  neighborhood states and policies only.</p>
 <p>This assumption <strong>is valid in most networked control systems</strong> such as trafﬁc and wireless networks, as well as the power grid, where the impact of each agent is spread over the entire system via controlled ﬂows, or chained local transitions.</p>
 <p>Eq 2 的缩放因子 to <strong>scale down reward signals further away</strong> (which are more difﬁcult to ﬁt using local information （另外，越远的通信代价越高）).</p>
@@ -415,7 +415,7 @@
 <h3 id="DGN"><a href="#DGN" class="headerlink" title="DGN"></a>DGN</h3><blockquote>
 <p>GRAPH CONVOLUTIONAL REINFORCEMENT LEARNING （ICLR2020）</p>
 </blockquote>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Structured-Multi-Agent-RL/image-20220716232828610.png" alt="image-20220716232828610" style="zoom:50%;" />
+<img src="../asset/Structured-Multi-Agent-RL/image-20220716232828610.png" alt="image-20220716232828610" style="zoom:50%;" />
 
 <ol>
 <li><p>图是动态的，agent move, enter, leave the env</p>
@@ -433,7 +433,7 @@
 <ol>
 <li>A higher-order value factorization can be expressed as an undirected <em>coordination graph</em> </li>
 </ol>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Structured-Multi-Agent-RL/image-20220716232929263.png" alt="image-20220716232929263" style="zoom:50%;" />
+<img src="../asset/Structured-Multi-Agent-RL/image-20220716232929263.png" alt="image-20220716232929263" style="zoom:50%;" />
 
 <ol start="2">
 <li><p>Specialized behavior between agents can be represented by conditioning on the agent’s role, or more generally on the agent’s ID (learned embedding of the participating agents’ histories.)</p>
@@ -441,7 +441,7 @@
 <li><p>Low-rank approximation：类似把agent分K组</p>
 </li>
 </ol>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Structured-Multi-Agent-RL/image-20220716232951788.png" alt="image-20220716232951788" style="zoom:50%;" />
+<img src="../asset/Structured-Multi-Agent-RL/image-20220716232951788.png" alt="image-20220716232951788" style="zoom:50%;" />
 
 
 
@@ -457,7 +457,7 @@
 <h3 id="GC"><a href="#GC" class="headerlink" title="GC"></a>GC</h3><blockquote>
 <p>MULTI-AGENT REINFORCEMENT LEARNING WITH GRAPH CLUSTERING</p>
 </blockquote>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Structured-Multi-Agent-RL/image-20220716233037846.png" alt="image-20220716233037846" style="zoom:50%;" />
+<img src="../asset/Structured-Multi-Agent-RL/image-20220716233037846.png" alt="image-20220716233037846" style="zoom:50%;" />
 
 <ol>
 <li><p>KNN计算邻接矩阵</p>
@@ -467,14 +467,14 @@
 <li><p>保证不同cluster之间的距离</p>
 </li>
 </ol>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Structured-Multi-Agent-RL/image-20220716233051971.png" alt="image-20220716233051971" style="zoom:50%;" />
+<img src="../asset/Structured-Multi-Agent-RL/image-20220716233051971.png" alt="image-20220716233051971" style="zoom:50%;" />
 
 
 
 <h3 id="ROMA"><a href="#ROMA" class="headerlink" title="ROMA"></a>ROMA</h3><blockquote>
 <p>ROMA: Multi-Agent Reinforcement Learning with Emergent Roles (ICML2020)</p>
 </blockquote>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Structured-Multi-Agent-RL/image-20220716233114002.png" alt="image-20220716233114002" style="zoom:50%;" />
+<img src="../asset/Structured-Multi-Agent-RL/image-20220716233114002.png" alt="image-20220716233114002" style="zoom:50%;" />
 
 <ol>
 <li><p>agents with similar roles have both similar policies and responsibilities. </p>
@@ -500,14 +500,14 @@
 <ul>
 <li>Such formulation makes sure that dissimilarity d is high only when mutual information I is low, so that the set of learned roles is compact but diverse</li>
 </ul>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Structured-Multi-Agent-RL/image-20220716233226486.png" alt="image-20220716233226486" style="zoom:50%;" />
+<img src="../asset/Structured-Multi-Agent-RL/image-20220716233226486.png" alt="image-20220716233226486" style="zoom:50%;" />
 
 
 
 <h3 id="RODE"><a href="#RODE" class="headerlink" title="RODE"></a>RODE</h3><blockquote>
 <p>RODE: LEARNING ROLES TO DECOMPOSE MULTI-AGENT TASKS (ICLR2021)</p>
 </blockquote>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Structured-Multi-Agent-RL/image-20220716233248345.png" alt="image-20220716233248345" style="zoom:50%;" />
+<img src="../asset/Structured-Multi-Agent-RL/image-20220716233248345.png" alt="image-20220716233248345" style="zoom:50%;" />
 
 <ol>
 <li><p>先k-means聚类action vector (像parameter sharing)</p>
@@ -523,7 +523,7 @@
 <li><p>Role policy TD loss</p>
 </li>
 </ol>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Structured-Multi-Agent-RL/image-20220716233339093.png" alt="image-20220716233339093" style="zoom:50%;" />
+<img src="../asset/Structured-Multi-Agent-RL/image-20220716233339093.png" alt="image-20220716233339093" style="zoom:50%;" />
 
 <h3 id="ROCHICO"><a href="#ROCHICO" class="headerlink" title="ROCHICO"></a>ROCHICO</h3><blockquote>
 <p>Structured Diversification Emergence via Reinforced Organization Control and Hierarchical Consensus Learning (AAMAS2021)</p>

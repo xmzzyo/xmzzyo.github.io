@@ -35,8 +35,8 @@
 <meta property="article:published_time" content="2020-04-15T08:36:13.000Z">
 <meta property="article:modified_time" content="2020-09-18T07:11:31.592Z">
 <meta property="article:author" content="xmz">
-<meta property="article:tag" content="推荐系统">
 <meta property="article:tag" content="强化学习">
+<meta property="article:tag" content="推荐系统">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/2020/04/15/asset/Deep-Reinforcement-Learning-for-Recommender-Systems/image-20200426153516573.png">
   <!-- Canonical links -->
@@ -111,7 +111,7 @@
         
         
         <li class="menu-item menu-item-home">
-          <a href="/%20%7C%7C%20fa%20fa-home">
+          <a href="/.">
             
             <i class="icon icon-home-fill"></i>
             
@@ -418,18 +418,18 @@
 <li>Agent之间发送信息：RNN来encode历史action和observation</li>
 </ul>
 </blockquote>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Deep-Reinforcement-Learning-for-Recommender-Systems/image-20200426153516573.png" alt="image-20200426153516573" style="zoom:67%;" />
+<img src="../asset/Deep-Reinforcement-Learning-for-Recommender-Systems/image-20200426153516573.png" alt="image-20200426153516573" style="zoom:67%;" />
 
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Deep-Reinforcement-Learning-for-Recommender-Systems/image-20200426161259953.png" alt="image-20200426161259953" style="zoom: 50%;" />
+<img src="../asset/Deep-Reinforcement-Learning-for-Recommender-Systems/image-20200426161259953.png" alt="image-20200426161259953" style="zoom: 50%;" />
 
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Deep-Reinforcement-Learning-for-Recommender-Systems/image-20200426161438103.png" alt="image-20200426161438103" style="zoom:50%;" />
+<img src="../asset/Deep-Reinforcement-Learning-for-Recommender-Systems/image-20200426161438103.png" alt="image-20200426161438103" style="zoom:50%;" />
 
 <p>关键组件：</p>
 <ul>
 <li>共享Critic（本文场景中，用户在时刻t只能在一个场景中，因此<strong>同一时刻只有一个actor会用到critic</strong>）</li>
-<li>私有的actor；<strong>确定性策略</strong>，<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Deep-Reinforcement-Learning-for-Recommender-Systems/image-20200426153917497.png" alt="image-20200426153917497" style="zoom:67%;" />，<strong>接收partially observable state，即local observation</strong>（包括customer属性（年龄、性别、购买力）item属性（价格，转换率，购买量）query类型（main还是in-shop））</li>
-<li>通信组件；<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Deep-Reinforcement-Learning-for-Recommender-Systems/image-20200426153642952.png" alt="image-20200426153642952" style="zoom: 67%;" /></li>
-<li>全局environment；<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Deep-Reinforcement-Learning-for-Recommender-Systems/image-20200426153746997.png" alt="image-20200426153746997" style="zoom:80%;" />，即淘宝平台，<strong>当actor发出动作时改变状态，并向actor提供reward</strong></li>
+<li>私有的actor；<strong>确定性策略</strong>，<img src="../asset/Deep-Reinforcement-Learning-for-Recommender-Systems/image-20200426153917497.png" alt="image-20200426153917497" style="zoom:67%;" />，<strong>接收partially observable state，即local observation</strong>（包括customer属性（年龄、性别、购买力）item属性（价格，转换率，购买量）query类型（main还是in-shop））</li>
+<li>通信组件；<img src="../asset/Deep-Reinforcement-Learning-for-Recommender-Systems/image-20200426153642952.png" alt="image-20200426153642952" style="zoom: 67%;" /></li>
+<li>全局environment；<img src="../asset/Deep-Reinforcement-Learning-for-Recommender-Systems/image-20200426153746997.png" alt="image-20200426153746997" style="zoom:80%;" />，即淘宝平台，<strong>当actor发出动作时改变状态，并向actor提供reward</strong></li>
 <li><strong>Reward：</strong><ul>
 <li>当有购买行为时，reward=购买的item价格；</li>
 <li>当有点击行为，reward=1；</li>
@@ -438,7 +438,7 @@
 </ul>
 </li>
 </ul>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Deep-Reinforcement-Learning-for-Recommender-Systems/image-20200426154343698.png" alt="image-20200426154343698" style="zoom:67%;" />
+<img src="../asset/Deep-Reinforcement-Learning-for-Recommender-Systems/image-20200426154343698.png" alt="image-20200426154343698" style="zoom:67%;" />
 
 
       

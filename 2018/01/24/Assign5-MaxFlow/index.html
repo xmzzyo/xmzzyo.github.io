@@ -112,7 +112,7 @@
         
         
         <li class="menu-item menu-item-home">
-          <a href="/%20%7C%7C%20fa%20fa-home">
+          <a href="/.">
             
             <i class="icon icon-home-fill"></i>
             
@@ -357,33 +357,33 @@
     <div class="article-entry marked-body" itemprop="articleBody">
       
         <h3 id="1-Load-balance"><a href="#1-Load-balance" class="headerlink" title="1 Load balance"></a>1 Load balance</h3><h4 id="1-1-Basic-idea-of-your-algorithm"><a href="#1-1-Basic-idea-of-your-algorithm" class="headerlink" title="1.1 Basic idea of your algorithm"></a>1.1 Basic idea of your algorithm</h4><p>​    假设有n个任务，m个计算机。我们构造网络如下：设置一个源点与各个任务相连，每条边的容量是1，任务与其对应的计算机节点相连，容量是1，节点汇入汇点，初始容量为$load=m$。我们对这个网络求最大流，如果$maxflow==n$，则说明这个任务分配是合法的。然后对$load$减半，求最大流判断是否存在合法任务分配，若存在则继续减半寻找更小的$maxload$，若不存在，则在$\frac{load}{2} \sim load$中找，这样通过二分寻找最小的$maxload$。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Assign5-MaxFlow/20190114111417.png"></p>
+<p><img src="../asset/Assign5-MaxFlow/20190114111417.png"></p>
 <p>伪代码：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Assign5-MaxFlow/20190114111439.png"></p>
+<p><img src="../asset/Assign5-MaxFlow/20190114111439.png"></p>
 <h4 id="1-2-Prove-the-correctness-of-your-algorithm"><a href="#1-2-Prove-the-correctness-of-your-algorithm" class="headerlink" title="1.2 Prove the correctness of your algorithm"></a>1.2 Prove the correctness of your algorithm</h4><p>当最大流等于任务总数时，此网络表示一个合法分配，通过二分法可以不断缩小范围寻找最小的$maxload$。因此本算法正确。</p>
 <h4 id="1-3-Analyse-the-complexity-of-your-algorithm"><a href="#1-3-Analyse-the-complexity-of-your-algorithm" class="headerlink" title="1.3 Analyse the complexity of your algorithm"></a>1.3 Analyse the complexity of your algorithm</h4><p>Dinic算法时间复杂度为$(N^2M)$，N是结点数，M是边数。N=m+n+2，M=m+n+2*n</p>
 <h3 id="2-Matrix"><a href="#2-Matrix" class="headerlink" title="2 Matrix"></a>2 Matrix</h3><h4 id="2-1-Basic-idea-of-your-algorithm"><a href="#2-1-Basic-idea-of-your-algorithm" class="headerlink" title="2.1 Basic idea of your algorithm"></a>2.1 Basic idea of your algorithm</h4><p>​    我们设$r_1,r_2…r_n$为行节点，$c_1,c_2…c_m$为列节点。构造网络为源节点与每个行节点相连，边的容量为对应行节点的行之和，将每个列节点与汇点相连，边的容量为对应列节点的列之和，行节点与所有列节点相连，容量为1。</p>
 <p>​     求最大流，若网络中行节点i与列节点j之间有流通过，即$flow=1$，则$matrix[i][j]=1$。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Assign5-MaxFlow/20190114111447.png"></p>
+<p><img src="../asset/Assign5-MaxFlow/20190114111447.png"></p>
 <p>伪代码：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Assign5-MaxFlow/20190114111457.png"></p>
+<p><img src="../asset/Assign5-MaxFlow/20190114111457.png"></p>
 <h4 id="2-2-Prove-the-correctness-of-your-algorithm"><a href="#2-2-Prove-the-correctness-of-your-algorithm" class="headerlink" title="2.2 Prove the correctness of your algorithm"></a>2.2 Prove the correctness of your algorithm</h4><p>矩阵上每个元素最大为1，因此构造列节点和行节点之间边的容量为1，求解最大流，即最大流等于所有元素之和，满足行之和、列之和的条件。因此算法正确。</p>
 <h4 id="2-3-Analyse-the-complexity-of-your-algorithm"><a href="#2-3-Analyse-the-complexity-of-your-algorithm" class="headerlink" title="2.3 Analyse the complexity of your algorithm"></a>2.3 Analyse the complexity of your algorithm</h4><p>结点数N为$n + m +2$，边数M为$n \times m$，时间复杂度为$O(N^2M)$。</p>
 <h3 id="3-Unique-Cut"><a href="#3-Unique-Cut" class="headerlink" title="3 Unique Cut"></a>3 Unique Cut</h3><h4 id="3-1-Basic-idea-of-your-algorithm"><a href="#3-1-Basic-idea-of-your-algorithm" class="headerlink" title="3.1 Basic idea of your algorithm"></a>3.1 Basic idea of your algorithm</h4><p>我们首先对网络求最大流，在剩余图中通过DFS分别寻找源s所能到达的节点集合S，和能到达汇点t的集合T，若全集减去S即为T，则说明该网络有唯一划分。</p>
 <p>伪代码：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Assign5-MaxFlow/20190114111507.png"></p>
+<p><img src="../asset/Assign5-MaxFlow/20190114111507.png"></p>
 <h4 id="3-2-Prove-the-correctness-of-your-algorithm"><a href="#3-2-Prove-the-correctness-of-your-algorithm" class="headerlink" title="3.2 Prove the correctness of your algorithm"></a>3.2 Prove the correctness of your algorithm</h4><blockquote>
 <p>判断最小割的唯一性，由图的割的性质可以知道，割可以将图分为两部分，如果将割边都隔断，两部分依然为连通图。而对于一个图，最大流对应这最小割，最小割中的边都是满流的，也就是在剩余网络中是不连通的，我们使用求解最大流之后的剩余网络，如果去掉割边之后两部分子图分别连通，则割唯一，否则不唯一。 </p>
 </blockquote>
 <p>最小割为找到的S和T之间的边。假设有节点v，若s到v的边不满流，v到t的边不满流，则v既可以划分给S，也可以划分给T，则最小割不是唯一的。若v既不属于S，也不属于T，则S、T不能到达v，即S、T到v的边都是满流的，我们沿着$S\sim v$划分或者$v \sim T$划分都可以，则最小割不是唯一的。</p>
 <h4 id="3-3-Analyse-the-complexity-of-your-algorithm"><a href="#3-3-Analyse-the-complexity-of-your-algorithm" class="headerlink" title="3.3 Analyse the complexity of your algorithm"></a>3.3 Analyse the complexity of your algorithm</h4><p>求最大流时间复杂度为$O(M^2N)$，DFS是$O(M+N)$ 。</p>
-<h3 id="4-Problem-Reduction"><a href="#4-Problem-Reduction" class="headerlink" title="4 Problem Reduction"></a>4 Problem Reduction</h3><p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Assign5-MaxFlow/20190114111521.png"></p>
+<h3 id="4-Problem-Reduction"><a href="#4-Problem-Reduction" class="headerlink" title="4 Problem Reduction"></a>4 Problem Reduction</h3><p><img src="../asset/Assign5-MaxFlow/20190114111521.png"></p>
 <p>从左上角到右下角，然后从右下角再到左上角的最小花费等价于从左上角到右下角走两次的最小花费。因<br>此，相当于流为2的最小费用流 。</p>
 <blockquote>
 <p>时间复杂度$O(VE)$</p>
 </blockquote>
 <p>时间复杂度为$O(MNC)$ ，C=1，因此为$O(MN)$ 。</p>
-<h3 id="5-Network-Cost"><a href="#5-Network-Cost" class="headerlink" title="5 Network Cost"></a>5 Network Cost</h3><p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Assign5-MaxFlow/20190114111534.png"></p>
+<h3 id="5-Network-Cost"><a href="#5-Network-Cost" class="headerlink" title="5 Network Cost"></a>5 Network Cost</h3><p><img src="../asset/Assign5-MaxFlow/20190114111534.png"></p>
 <p>capacity是n，就可以转换成n个等差序列和，每条边容量为1。</p>
 <p>若flow=1，走1a;</p>
 <p>若flow=2，走1a+3a;</p>
@@ -395,12 +395,12 @@
 <p>时间复杂度$O(fVE)，E=\sum w_i$ 。</p>
 </blockquote>
 <p>边数从M-&gt;fM，f是流的大小，时间复杂度为$O(fMN)$ 。</p>
-<h3 id="6-Maximum-Cohesiveness"><a href="#6-Maximum-Cohesiveness" class="headerlink" title="6 Maximum Cohesiveness"></a>6 Maximum Cohesiveness</h3><p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Assign5-MaxFlow/20190114111546.png"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Assign5-MaxFlow/20190114111557.png"></p>
+<h3 id="6-Maximum-Cohesiveness"><a href="#6-Maximum-Cohesiveness" class="headerlink" title="6 Maximum Cohesiveness"></a>6 Maximum Cohesiveness</h3><p><img src="../asset/Assign5-MaxFlow/20190114111546.png"></p>
+<p><img src="../asset/Assign5-MaxFlow/20190114111557.png"></p>
 <blockquote>
 <p><strong><em>证明在  E:\研一课件\算法\《网络流作业第六题的粗劣证明》</em></strong></p>
 </blockquote>
-<h3 id="7-Maximum-flow"><a href="#7-Maximum-flow" class="headerlink" title="7 Maximum flow"></a>7 Maximum flow</h3><p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Assign5-MaxFlow/20190114111607.png"></p>
+<h3 id="7-Maximum-flow"><a href="#7-Maximum-flow" class="headerlink" title="7 Maximum flow"></a>7 Maximum flow</h3><p><img src="../asset/Assign5-MaxFlow/20190114111607.png"></p>
 <p>对于割$Cut={A,B}$ ，$u \in A,v \in B,e=(u,v)，l_e=1$ ，否则$l_e=0$ 。对偶问题是最小割问题。 </p>
 
       

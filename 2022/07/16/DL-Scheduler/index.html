@@ -111,7 +111,7 @@
         
         
         <li class="menu-item menu-item-home">
-          <a href="/%20%7C%7C%20fa%20fa-home">
+          <a href="/.">
             
             <i class="icon icon-home-fill"></i>
             
@@ -400,7 +400,7 @@
 <li>a sampling-based technique to compute the gradients of a Bayesian model without performing full probabilistic inference.</li>
 </ol>
 <h4 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h4><p>The model integrates <strong>real-time performance measurements</strong>, prior knowledge about workloads, and <strong>system architecture</strong> to (i) dynamically <strong>infer system state</strong> (i.e., resource utilization), and (ii) automatically <strong>schedule tasks</strong> on a heterogeneous processing fabric.</p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/DL-Scheduler/image-20220718160811763.png" alt="image-20220718160811763" style="zoom:50%;" />
+<img src="../asset/DL-Scheduler/image-20220718160811763.png" alt="image-20220718160811763" style="zoom:50%;" />
 
 <p>上图$\hat{b}_t$是估计的资源利用率。因为计算机不同层次的抽象，获得的系统指标不能准确表明系统真实状态，不能直接measure到的指标成为hidden资源</p>
 <p><strong>Performance Counters.</strong> PCs are generally relied upon to conduct low-level performance analysis or tuning of performance bottlenecks in applications.</p>
@@ -415,7 +415,7 @@
 </li>
 <li>encode our knowledge about system architecture in terms of invariants or statistical relationships between the measurements.</li>
 </ul>
-<p>​        <img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/DL-Scheduler/image-20220718165624794.png" alt="image-20220718165624794" style="zoom:50%;" /></p>
+<p>​        <img src="../asset/DL-Scheduler/image-20220718165624794.png" alt="image-20220718165624794" style="zoom:50%;" /></p>
 <p>把体系结构建模成贝叶斯网络（根据处理器手册和Linux kernel source code as part of the <strong>perf</strong> package构建）</p>
 <p>We <strong>do not</strong> explicitly model GPU performance counters as low-level scheduling decisions (e.g., warp-level scheduling) in GPUs are <strong>obfuscated by the NVIDIA runtime/driver.</strong></p>
 <hr>
@@ -433,7 +433,7 @@
 <li>worker和PS的数量</li>
 <li>training epoch的数量</li>
 </ol>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/DL-Scheduler/image-20220721222331069.png" alt="image-20220721222331069" style="zoom:50%;" />
+<img src="../asset/DL-Scheduler/image-20220721222331069.png" alt="image-20220721222331069" style="zoom:50%;" />
 
 <p><strong>RL的状态表示：</strong></p>
 <ol>
@@ -461,7 +461,7 @@
 <hr>
 <h3 id="分布式机器学习集群的资源调度机制研究-（Thesis-2020）"><a href="#分布式机器学习集群的资源调度机制研究-（Thesis-2020）" class="headerlink" title="分布式机器学习集群的资源调度机制研究 （Thesis 2020）"></a>分布式机器学习集群的资源调度机制研究 （Thesis 2020）</h3><h4 id="Intro-2"><a href="#Intro-2" class="headerlink" title="Intro"></a>Intro</h4><p>现有的相关研究大多基于研究者对特定的机器学习框架 和工作负载的理解对资源-任务完成时间建立白盒模型，再通过启发式算法求解。 白盒模型的准确性会极大的影响资源调度的性能且不具备通用性。</p>
 <p>本文对 4 种不同的概率代理模型和采集函数组合的贝叶斯优化子算法，并且概率代理模型为高斯过程，采集函数为 EI（Expected Improvement） 的贝叶斯优化子算法在所有场景中都表现最好</p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/DL-Scheduler/image-20220723161422998.png" alt="image-20220723161422998" style="zoom:50%;" />
+<img src="../asset/DL-Scheduler/image-20220723161422998.png" alt="image-20220723161422998" style="zoom:50%;" />
 
 <p><strong>资源调度分类：</strong>静态和动态调度；抢占式和非抢占式调度</p>
 <p><strong>挑战：</strong></p>
@@ -473,15 +473,15 @@
 </ol>
 <p><strong>收敛曲线近似：</strong>（k是迭代次数）</p>
 <p>一阶优化（GD）：</p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/DL-Scheduler/image-20220723161915012.png" alt="image-20220723161915012" style="zoom:50%;" />
+<img src="../asset/DL-Scheduler/image-20220723161915012.png" alt="image-20220723161915012" style="zoom:50%;" />
 
 <p>二阶优化（牛顿法，BFGS）</p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/DL-Scheduler/image-20220723162006488.png" alt="image-20220723162006488" style="zoom:50%;" />
+<img src="../asset/DL-Scheduler/image-20220723162006488.png" alt="image-20220723162006488" style="zoom:50%;" />
 
 <h4 id="Model-2"><a href="#Model-2" class="headerlink" title="Model"></a>Model</h4><p>贝叶斯优化见原论文第三章，写的非常好</p>
 <p>Metis 算法以一种固定时间分片的方式工作，每个时间槽是一个调度间隔（如 30 分钟）。</p>
 <p>Agent 根据状态选择采用动作。在采取动作后，神经网络的输入状态也随之变。对于新的输入状态，神经网络又产生新的动作，直到集群中没有未分配 的节点可以分配或者 Agent 产生的动作为 ∅ 。</p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/DL-Scheduler/image-20220723165507601.png" alt="image-20220723165507601" style="zoom:50%;" />
+<img src="../asset/DL-Scheduler/image-20220723165507601.png" alt="image-20220723165507601" style="zoom:50%;" />
 
 <p>不同于标准的强化学习每次执行动作都能立即收到奖赏，在一个时间槽内本 文的神经网络会多次决策，产生多个动作，但是直到这个时间槽结束才能知道这 些动作的奖赏。</p>
 <p>本章的调度目标是最大化集群中机器学习模型的整体性能。但是需要等到模 型训练完成才能知道模型的最终性能，而这可能需要几百甚至几千个时间槽。对 于在线强化学习来说，奖赏的显著反馈延迟是不可接受的，因为延迟的奖赏对于 改善早期决策的指导作用很小。</p>

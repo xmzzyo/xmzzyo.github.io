@@ -161,7 +161,7 @@
         
         
         <li class="menu-item menu-item-home">
-          <a href="/%20%7C%7C%20fa%20fa-home">
+          <a href="/.">
             
             <i class="icon icon-home-fill"></i>
             
@@ -426,7 +426,7 @@
 <li><a target="_blank" rel="noopener" href="http://speech.ee.ntu.edu.tw/~tlkagk/courses_ML20.html">http://speech.ee.ntu.edu.tw/~tlkagk/courses_ML20.html</a> 台湾大学李宏毅老师</li>
 </ul>
 </blockquote>
-<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/88055126.jpg" style="zoom:50%;" />
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><img src="../asset/Review-Deep-Learning/88055126.jpg" style="zoom:50%;" />
 
 <h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><blockquote>
 <p>强化学习（Reinforcement Learning，RL），是指一类从<strong>（与环境）交互中不断学习</strong>的问题以及解决这类问题的方法. 强化学习问题可以描述为一个智能体从与环境的交互中不断学习以完成特定目标（比如取得最大奖励值）. 和深度学习类似，强化学习中的关键问题也是贡献度分配问题，每一个动作并不能直接得到监督信息，需要通过整个模型的最终监督信息（奖励）得到，并且有一定的<strong>延时</strong>性.</p>
@@ -436,7 +436,7 @@
 <li>多臂老虎机（Multi-Armed Bandit Problem）</li>
 <li>悬崖行走</li>
 </ul>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420110155864.png" alt="image-20200420110155864" style="zoom:50%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420110155864.png" alt="image-20200420110155864" style="zoom:50%;" />
 
 <p><strong>两个对象：</strong></p>
 <ol>
@@ -466,10 +466,10 @@
 <p>$\tau = s_0, a_0, s_1, \gamma_1, a_1, ⋯ , s_{T−1}, a_{T−1}, s_T , \gamma_T$</p>
 <p>其概率为：</p>
 <p>$p(\tau) = p(s_0)\prod_{t=0}^{T-1}\pi (a_t|s_t)p(s_{t+1}|s_t, a_t).$</p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard-1586684724410.png" alt="img" style="zoom: 50%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/clipboard-1586684724410.png" alt="img" style="zoom: 50%;" />
 
 <hr>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420112406554.png" alt="image-20200420112406554" style="zoom:50%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420112406554.png" alt="image-20200420112406554" style="zoom:50%;" />
 
 <h3 id="目标函数"><a href="#目标函数" class="headerlink" title="目标函数"></a>目标函数</h3><p>轨迹$\tau$ 一个回合（Episode）或试验（Trial）所收到的累积奖励：</p>
 <p>$G(\tau) =\sum_{t=0}^{T-1}\gamma(s_t, a_t, s_{t+1})$</p>
@@ -478,20 +478,20 @@
 <p><strong>$\gamma \in [0, 1]$ 是折扣率</strong>. 当$\gamma$ 接近于0 时，智能体<strong>更在意短期回报</strong>；而当$\gamma$ 接近于1 时，<strong>长期回报变得更重要</strong>.</p>
 <p><strong>最大化期望回报</strong>（Expected Return）:</p>
 <p>$J(\theta) = \mathbb{E}\tau∼p_\theta(\tau)[G(\tau)] = \mathbb{E}\tau∼p_\theta(\tau)[\sum_{t=0}^{T-1}\gamma^t\gamma_{t+1}]$</p>
-<h3 id="值函数（状态值函数和状态-动作值函数）"><a href="#值函数（状态值函数和状态-动作值函数）" class="headerlink" title="值函数（状态值函数和状态-动作值函数）"></a>值函数（状态值函数和状态-动作值函数）</h3><h4 id="状态值函数（V函数）"><a href="#状态值函数（V函数）" class="headerlink" title="状态值函数（V函数）"></a>状态值函数（V函数）</h4><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420115023853.png" alt="image-20200420115023853" style="zoom:67%;" />
+<h3 id="值函数（状态值函数和状态-动作值函数）"><a href="#值函数（状态值函数和状态-动作值函数）" class="headerlink" title="值函数（状态值函数和状态-动作值函数）"></a>值函数（状态值函数和状态-动作值函数）</h3><h4 id="状态值函数（V函数）"><a href="#状态值函数（V函数）" class="headerlink" title="状态值函数（V函数）"></a>状态值函数（V函数）</h4><img src="../asset/Note-Deep-Reinforce-Learning/image-20200420115023853.png" alt="image-20200420115023853" style="zoom:67%;" />
 
 <p>$V^\pi(s)$ 称为状态值函数（State Value Function），表示<strong>从状态s 开始（到结束）</strong>，执行策略$\pi$ 得到的期望总回报</p>
 <p>$V^\pi(s) = \mathbb{E}\tau∼p(\tau)[\sum_{t=0}^{T-1}\gamma^t\gamma_{t+1}|\tau_{s_0} = s]$</p>
 <p><strong>贝尔曼方程（Bellman Equation）</strong>（动态规划），表示当前状态的值函数可以通过下个状态的值函数来计算.</p>
 <p><strong>递推公式：</strong></p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420115742034.png" alt="image-20200420115742034" style="zoom:67%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420115742034.png" alt="image-20200420115742034" style="zoom:67%;" />
 
 <p>如果给定策略$\pi(a|s)$，状态转移概率$p(s’|s, a)$ 和奖励$\gamma(s, a, s’)$，我们就可以通过迭代的方式来计算$V^\pi(s)$. 由于存在折扣率，迭代一定步数后，每个状态的值函数就会固定不变.</p>
 <h4 id="状态-动作值函数（Q-函数）"><a href="#状态-动作值函数（Q-函数）" class="headerlink" title="状态-动作值函数（Q 函数）"></a>状态-动作值函数（Q 函数）</h4><p>$Q^\pi(s, a) = \mathbb{E}s′∼p(s′|s,a) [\gamma(s, a, s′) + \gamma V^\pi(s′)]$</p>
 <p>状态值函数$V^\pi(s)$ 是Q 函数$Q^\pi(s, a)$ <strong>关于动作a 的期望</strong>， </p>
 <p>$V^\pi(s) = \mathbb{E}a∼\pi(a|s)[Q^\pi(s, a)]$</p>
 <p>Q函数的贝尔曼方程：</p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420120648270.png" alt="image-20200420120648270" style="zoom:67%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420120648270.png" alt="image-20200420120648270" style="zoom:67%;" />
 
 <p>值函数的作用→优化：</p>
 <blockquote>
@@ -511,7 +511,7 @@
 <h3 id="蒙特卡罗方法-MC"><a href="#蒙特卡罗方法-MC" class="headerlink" title="蒙特卡罗方法(MC)"></a>蒙特卡罗方法(MC)</h3><blockquote>
 <p>基于采样的学习算法也称为模型无关的强化学习（Model-Free Reinforcement Learning）算法.</p>
 </blockquote>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard-1586684887546.png" alt="img" style="zoom: 33%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/clipboard-1586684887546.png" alt="img" style="zoom: 33%;" />
 
 <h4 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h4><p>Q 函数$Q^\pi(s, a)$ 为初始状态为s，并执行动作a 后所能得到的期望总回报，可以写为:</p>
 <p>$Q^\pi(s, a) = \mathbb{E}\tau∼p(\tau)[G(\tau_{s_0}=s,a_0=a)]$</p>
@@ -523,32 +523,32 @@
 <h4 id="Exploitation-and-Exploration"><a href="#Exploitation-and-Exploration" class="headerlink" title="Exploitation and Exploration"></a>Exploitation and Exploration</h4><ol>
 <li><strong>$\epsilon$-贪心法（$\epsilon$-greedy Method）：</strong></li>
 </ol>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420152525225.png" alt="image-20200420152525225" style="zoom:50%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420152525225.png" alt="image-20200420152525225" style="zoom:50%;" />
 
 <p>每次选择动作$\pi(s)$ 的概率为$1 − \epsilon + \frac{\epsilon}{|\mathcal{A}|}$，其他动作的概率为 $\frac{\epsilon}{|\mathcal{A}|}$.</p>
 <ol start="2">
 <li><p><strong>Boltzmann 探索：</strong></p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420201058499.png" alt="image-20200420201058499" style="zoom:50%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420201058499.png" alt="image-20200420201058499" style="zoom:50%;" />
 
 </li>
 </ol>
-<h4 id="同策略（on-policy）和异策略（off-policy）"><a href="#同策略（on-policy）和异策略（off-policy）" class="headerlink" title="同策略（on-policy）和异策略（off-policy）"></a>同策略（on-policy）和异策略（off-policy）</h4><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard-1586684834162.png" alt="img" style="zoom:50%;" />
+<h4 id="同策略（on-policy）和异策略（off-policy）"><a href="#同策略（on-policy）和异策略（off-policy）" class="headerlink" title="同策略（on-policy）和异策略（off-policy）"></a>同策略（on-policy）和异策略（off-policy）</h4><img src="../asset/Note-Deep-Reinforce-Learning/clipboard-1586684834162.png" alt="img" style="zoom:50%;" />
 
 <p><strong>同策略：</strong></p>
 <p> 在蒙特卡罗方法中，如果<strong>采样策略</strong>是$\pi^\epsilon(s)$，即$\epsilon-Greedy$，不断<strong>改进策略也是</strong>$\pi^\epsilon(s)$ <strong>而不是目标策略</strong>$\pi(s)$. 这种<strong>采样与改进策略相同</strong>（即都是$\pi^\epsilon(s)$）的强化学习方法叫做同策略（On-Policy）方法.</p>
 <p><strong>异策略:</strong></p>
 <p> 如果<strong>采样策略</strong>是$\pi^\epsilon(s)$，而<strong>优化目标</strong>是策略$\pi$，可以<strong>通过重要性采样</strong>，<strong>引入重要性权重</strong>来实现对目标策略$\pi$ 的优化这种<strong>采样与改进分别使用不同策略</strong>的强化学习方法叫做异策略（Off-Policy）方法.</p>
-<h3 id="时序差分学习方法-TD"><a href="#时序差分学习方法-TD" class="headerlink" title="时序差分学习方法(TD)"></a>时序差分学习方法(TD)</h3><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard-1586684896040.png" alt="img" style="zoom: 33%;" />
+<h3 id="时序差分学习方法-TD"><a href="#时序差分学习方法-TD" class="headerlink" title="时序差分学习方法(TD)"></a>时序差分学习方法(TD)</h3><img src="../asset/Note-Deep-Reinforce-Learning/clipboard-1586684896040.png" alt="img" style="zoom: 33%;" />
 
 <p>蒙特卡罗方法一般<strong>需要拿到完整的轨迹</strong>，才能对策略进行评估并更新模型，因此效率也比较低.</p>
 <p>时序差分学习（Temporal-Difference Learning）方法是蒙特卡罗方法的一种改进，通过<strong>引入动态规划算法</strong>来提高学习效率. 时序差分学习方法是模拟一段轨迹，每行动一步(或者几步)，就利用贝尔曼方程来评估行动前状态的价值. 当时序差分学习方法中每次更新的动作数为最大步数时，就<strong>等价于蒙特卡罗方法</strong>.</p>
 <p>将蒙特卡罗方法中Q 函数$\hat{Q}^\pi(s,a) $的估计改为增量计算的方式，假设第N 次试验后值函数$\hat{Q}^\pi_N (s, a)$ 的平均为:</p>
 <p>$\hat{Q}^\pi_N (s, a) =\frac{1}{N}\sum_{n=1}^NG(\tau^{(n)}_{s_0=s,a_0=a})$</p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420162512079.png" alt="image-20200420162512079" style="zoom:67%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420162512079.png" alt="image-20200420162512079" style="zoom:67%;" />
 
 <p>.<br>值函数$\hat{Q}^\pi(s, a)$ 在<strong>第N 试验后的平均</strong>等于<strong>第N − 1 试验后的平均加上一个增量</strong>. 更一般性地，我们将权重系数$\frac{1}{N}$改为一个比较小的正数$\alpha$.</p>
 <p><strong>Q函数更新：</strong></p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420162942259.png" alt="image-20200420162942259" style="zoom:67%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420162942259.png" alt="image-20200420162942259" style="zoom:67%;" />
 
 <blockquote>
 <p>时序差分学习是强化学习的主要学习方法，其关键步骤就是在每次迭代中优化Q 函数来减少现实$\gamma + \gamma Q(s’, a’)$ 和预期Q(s, a) 的差距.</p>
@@ -557,35 +557,35 @@
 <li>蒙特卡罗方法<strong>需要一条完整的路径</strong>才能知道其总回报，也<strong>不依赖马尔可夫性质</strong>，<strong>较大方差</strong>；</li>
 <li>而时序差分学习方法只需要一步，其总回报<strong>需要通过马尔可夫性质来进行近似估计</strong>，<strong>小方差，不精确</strong>.</li>
 </ol>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard-1586684942302.png" alt="img" style="zoom: 33%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/clipboard-1586684942302.png" alt="img" style="zoom: 33%;" />
 </blockquote>
 <h4 id="SARSA-On-Policy-算法（State-Action-Reward-State-Action）"><a href="#SARSA-On-Policy-算法（State-Action-Reward-State-Action）" class="headerlink" title="SARSA (On-Policy)算法（State Action Reward State Action）"></a>SARSA (On-Policy)算法（State Action Reward State Action）</h4><p>由于Bellman方程：</p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420164342490.png" alt="image-20200420164342490" style="zoom:50%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420164342490.png" alt="image-20200420164342490" style="zoom:50%;" />
 
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420164535412.png" alt="image-20200420164535412" style="zoom:67%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420164535412.png" alt="image-20200420164535412" style="zoom:67%;" />
 
 <p>更新$\hat{Q}^\pi(s, a)$ 只需要知道当前状态s 和动作a、奖励$\gamma(s, a, s’)$、下一步的状态s’ 和动作a’.</p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420173329436.png" alt="image-20200420173329436" style="zoom:60%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420173329436.png" alt="image-20200420173329436" style="zoom:60%;" />
 
 <p>其采样和优化的策略都是$\pi^\epsilon$，<strong>即$\epsilon-Greedy$方法</strong>，所以为<strong>On-Policy算法</strong>.</p>
-<h4 id="Q-Learning"><a href="#Q-Learning" class="headerlink" title="Q-Learning"></a>Q-Learning</h4><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420172149723.png" alt="image-20200420172149723" style="zoom: 80%;" />
+<h4 id="Q-Learning"><a href="#Q-Learning" class="headerlink" title="Q-Learning"></a>Q-Learning</h4><img src="../asset/Note-Deep-Reinforce-Learning/image-20200420172149723.png" alt="image-20200420172149723" style="zoom: 80%;" />
 
 <p>相当于让Q(s, a) 直接去估计最优状态值函数$Q^*(s, a)$.</p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard-1586684951476.png" alt="img" style="zoom: 50%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/clipboard-1586684951476.png" alt="img" style="zoom: 50%;" />
 
 <blockquote>
 <p>与SARSA 算法不同，Q 学习算法<strong>不通过$\pi^\epsilon$，即$\epsilon-Greedy$来选下一步的动作</strong>a′，而是<strong>直接贪婪选最优的Q</strong> 函数，因此更新后的Q 函数是关于策略$\pi$ 的，而不是策略$\pi^\epsilon$ 的.</p>
 </blockquote>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420173358958.png" alt="image-20200420173358958" style="zoom:60%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420173358958.png" alt="image-20200420173358958" style="zoom:60%;" />
 
 <h3 id="深度Q网络"><a href="#深度Q网络" class="headerlink" title="深度Q网络"></a>深度Q网络</h3><p>为了在连续的状态和动作空间中计算值函数$Q^\pi(s, a)$，我们可以用一个函数$Q_\phi(s, a)$ 来表示近似计算，称为值函数近似（Value Function Approximation）.</p>
 <p>函数$Q_\phi(s, a)$通常是一个参数为$\phi$的函数，比如神经网络，输出为一个实数，称为Q 网络（Q-network）.</p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420173950783.png" alt="image-20200420173950783" style="zoom: 60%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420173950783.png" alt="image-20200420173950783" style="zoom: 60%;" />
 
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard-1586684961521.png" alt="img" style="zoom:40%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/clipboard-1586684961521.png" alt="img" style="zoom:40%;" />
 
 <p>目标函数：</p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420174244197.png" alt="image-20200420174244197" style="zoom:50%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420174244197.png" alt="image-20200420174244197" style="zoom:50%;" />
 
 <p>这个目标函数存在<strong>两个问题：</strong></p>
 <ol>
@@ -597,37 +597,37 @@
 <li>目标网络冻结（Freezing Target Networks），即在一个时间段内固定目标中的参数，来稳定学习目标</li>
 <li>经验回放（Experience Replay），即构建一个经验池（Replay Buffer）来去除数据相关性. 经验池是由智能体最近的经历组成的数据集.</li>
 </ol>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420174609380.png" alt="image-20200420174609380" style="zoom:60%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420174609380.png" alt="image-20200420174609380" style="zoom:60%;" />
 
-<h3 id="深度Q-Learning改进"><a href="#深度Q-Learning改进" class="headerlink" title="深度Q Learning改进"></a>深度Q Learning改进</h3><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard-1586685001097.png" alt="img" style="zoom: 33%;" />
+<h3 id="深度Q-Learning改进"><a href="#深度Q-Learning改进" class="headerlink" title="深度Q Learning改进"></a>深度Q Learning改进</h3><img src="../asset/Note-Deep-Reinforce-Learning/clipboard-1586685001097.png" alt="img" style="zoom: 33%;" />
 
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/../asset/Note-Deep-Reinforce-Learning/clipboard-1586685013831.png" alt="img" style="zoom: 33%;" />
-
-<hr>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard-1586685061254.png" alt="img" style="zoom: 33%;" />
+<img src="../asset/../asset/Note-Deep-Reinforce-Learning/clipboard-1586685013831.png" alt="img" style="zoom: 33%;" />
 
 <hr>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard-1586685084450.png" alt="img" style="zoom: 33%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/clipboard-1586685061254.png" alt="img" style="zoom: 33%;" />
 
 <hr>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard-1586685095275.png" alt="img" style="zoom: 33%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/clipboard-1586685084450.png" alt="img" style="zoom: 33%;" />
 
 <hr>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard-1586685109834.png" alt="img" style="zoom: 33%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/clipboard-1586685095275.png" alt="img" style="zoom: 33%;" />
 
 <hr>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard-1586685122258.png" alt="img" style="zoom: 33%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/clipboard-1586685109834.png" alt="img" style="zoom: 33%;" />
 
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard-1586685134188.png" alt="img" style="zoom: 33%;" />
+<hr>
+<img src="../asset/Note-Deep-Reinforce-Learning/clipboard-1586685122258.png" alt="img" style="zoom: 33%;" />
+
+<img src="../asset/Note-Deep-Reinforce-Learning/clipboard-1586685134188.png" alt="img" style="zoom: 33%;" />
 
 <hr>
 <p><strong>Q Learning连续Action Space</strong></p>
 <ol>
-<li><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard-1586685157214.png" alt="img" style="zoom: 33%;" /></li>
+<li><img src="../asset/Note-Deep-Reinforce-Learning/clipboard-1586685157214.png" alt="img" style="zoom: 33%;" /></li>
 <li><strong>Actor-Critic</strong></li>
 </ol>
 <h2 id="基于策略函数的学习方法（Policy-Actor）"><a href="#基于策略函数的学习方法（Policy-Actor）" class="headerlink" title="基于策略函数的学习方法（Policy/Actor）"></a>基于策略函数的学习方法（Policy/Actor）</h2><p>强化学习的目标是学习到一个策略$\pi_\theta(a|s)$ 来最大化期望回报. </p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard.png" alt="img" style="zoom:50%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/clipboard.png" alt="img" style="zoom:50%;" />
 
 <p>一种直接的方法是在策略空间直接搜索来得到最佳策略，称为<strong>策略搜索（Policy Search）</strong>.</p>
 <p> 策略搜索本质是一个优化问题，可以<strong>分为基于梯度的优化和无梯度优化.</strong> </p>
@@ -635,43 +635,43 @@
 <blockquote>
 <p>Value-based和policy-based都是为了的到policy，Value-based是通过最大化value函数来得到最优policy，value函数是副产物，policy-based方法是直接优化policy</p>
 </blockquote>
-<h3 id="策略梯度（Policy-Gradient）"><a href="#策略梯度（Policy-Gradient）" class="headerlink" title="策略梯度（Policy Gradient）"></a>策略梯度（Policy Gradient）</h3><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard-1586684791719.png" alt="img" style="zoom:50%;" />
+<h3 id="策略梯度（Policy-Gradient）"><a href="#策略梯度（Policy-Gradient）" class="headerlink" title="策略梯度（Policy Gradient）"></a>策略梯度（Policy Gradient）</h3><img src="../asset/Note-Deep-Reinforce-Learning/clipboard-1586684791719.png" alt="img" style="zoom:50%;" />
 
 <p>具体推导——梯度上升<strong>最大化目标函数：</strong></p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420194959326.png" alt="image-20200420194959326" style="zoom:60%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420194959326.png" alt="image-20200420194959326" style="zoom:60%;" />
 
 <hr>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420195216442.png" alt="image-20200420195216442" style="zoom:67%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420195216442.png" alt="image-20200420195216442" style="zoom:67%;" />
 
 <hr>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420195330797.png" alt="image-20200420195330797" style="zoom:50%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420195330797.png" alt="image-20200420195330797" style="zoom:50%;" />
 
 <hr>
 <h3 id="Reinforce-算法"><a href="#Reinforce-算法" class="headerlink" title="Reinforce 算法"></a>Reinforce 算法</h3><p>结合随机梯度上升算法，可以<strong>每次采集一条轨迹，计算每个时刻的梯度并更新参数</strong>，这称为REINFORCE 算法</p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420200630472.png" alt="image-20200420200630472" style="zoom:50%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420200630472.png" alt="image-20200420200630472" style="zoom:50%;" />
 
 <h4 id="带基准线的-REINFORCE-算法："><a href="#带基准线的-REINFORCE-算法：" class="headerlink" title="带基准线的 REINFORCE 算法："></a>带基准线的 REINFORCE 算法：</h4><p>REINFORCE 算法的一个主要缺点是<strong>不同路径之间的方差很大，导致训练不稳定</strong>，这是在高维空间中使用蒙特卡罗方法的通病. </p>
 <p>当Reward一直为正数时，可能会因采样出现问题。假设有三个action，a，b，c采取的结果得到的reward都是正的，这个正有大有小，假设a和c的Reward比较大，b的Reward比较小，经过update之后，还是会让b出现的几率变小，a、c出现的几率变大。但是sampling时，有可能只sample b和c，这样b、c几率都会增加，a没有sample到，即使其Reward较大，其采样到的概率就自动减少。</p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420202124429.png" alt="image-20200420202124429" style="zoom:33%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420202124429.png" alt="image-20200420202124429" style="zoom:33%;" />
 
 <p><strong>固定的Baseline：</strong></p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard-1586684803598.png" alt="img" style="zoom:50%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/clipboard-1586684803598.png" alt="img" style="zoom:50%;" />
 
 <p><strong>可学习的Baseline：</strong></p>
 <p>为了减小策略梯度的方差，我们引入一个和动作$a_t$无关的基准函数$𝑏(s_t)$，</p>
-<p>因为$b (s_t)$和$a_t$无关，<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420202500491.png" alt="image-20200420202500491" style="zoom:63%;" /></p>
+<p>因为$b (s_t)$和$a_t$无关，<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420202500491.png" alt="image-20200420202500491" style="zoom:63%;" /></p>
 <p>为了有效减小方差，$b(s_t)$ 和$G(\tau_t∶T )$ 越相关越好，一个很自然的选择是令$b(s_t)$为值函数$V^{\pi_\theta} (s_t)$. 但是由于值函数未知，我们可以用一个可学习的函数$V_\phi(s_t)$ 来近似值函数，目标函数为</p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420205726765.png" alt="image-20200420205726765" style="zoom:67%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420205726765.png" alt="image-20200420205726765" style="zoom:67%;" />
 
 <p>采用随机梯度下降法，参数$\phi$的梯度为</p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420205813886.png" alt="image-20200420205813886" style="zoom:67%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420205813886.png" alt="image-20200420205813886" style="zoom:67%;" />
 
 <p>策略函数参数$\theta$的梯度为</p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420205840875.png" alt="image-20200420205840875" style="zoom:67%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420205840875.png" alt="image-20200420205840875" style="zoom:67%;" />
 
-<h3 id="Proximal-Policy-Optimization-PPO-——-On-Policy-amp-Off-Policy"><a href="#Proximal-Policy-Optimization-PPO-——-On-Policy-amp-Off-Policy" class="headerlink" title="Proximal Policy Optimization (PPO)——(On-Policy&amp;Off-Policy)"></a>Proximal Policy Optimization (PPO)——(On-Policy&amp;Off-Policy)</h3><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard-1586684843415.png" alt="img" style="zoom:50%;" />
+<h3 id="Proximal-Policy-Optimization-PPO-——-On-Policy-amp-Off-Policy"><a href="#Proximal-Policy-Optimization-PPO-——-On-Policy-amp-Off-Policy" class="headerlink" title="Proximal Policy Optimization (PPO)——(On-Policy&amp;Off-Policy)"></a>Proximal Policy Optimization (PPO)——(On-Policy&amp;Off-Policy)</h3><img src="../asset/Note-Deep-Reinforce-Learning/clipboard-1586684843415.png" alt="img" style="zoom:50%;" />
 
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard-1586684851838.png" alt="img" style="zoom:50%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/clipboard-1586684851838.png" alt="img" style="zoom:50%;" />
 
 <h2 id="Actor-Critic算法"><a href="#Actor-Critic算法" class="headerlink" title="Actor-Critic算法"></a>Actor-Critic算法</h2><blockquote>
 <p>演员-评论员算法（Actor-Critic Algorithm）是一种<strong>结合策略梯度和时序差分</strong>学习的强化学习方法. </p>
@@ -681,16 +681,16 @@
 </ul>
 <p>借助于值函数，Actor-Critic算法<strong>可以单步更新参数</strong>，不需要等到回合结束才进行更新.</p>
 </blockquote>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard-1586685188338.png" alt="img" style="zoom:40%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/clipboard-1586685188338.png" alt="img" style="zoom:40%;" />
 
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard-1586685208061.png" alt="img" style="zoom:40%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/clipboard-1586685208061.png" alt="img" style="zoom:40%;" />
 
 <p>在每步更新中，分别进行策略函数$\pi_\theta(a|s)$ 和值函数$V_\phi(s)$的学习. </p>
 <p>一方面，更新参数$\phi$使得值函数$V_\phi(s_t)$ 接近于估计的真实回报$\hat{G}(\tau_t∶T )$，即</p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420204935570.png" alt="image-20200420204935570" style="zoom:67%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420204935570.png" alt="image-20200420204935570" style="zoom:67%;" />
 
 <p>另一方面，将值函数$V_\phi(s_t)$作为基线函数来更新参数$\theta$，<strong>减少策略梯度的方差</strong>，即</p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420205029432.png" alt="image-20200420205029432" style="zoom: 67%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420205029432.png" alt="image-20200420205029432" style="zoom: 67%;" />
 
 <p>在每步更新中，演员根据当前的环境状态s 和策略$\pi_\theta(a|s)$ 去执行动作a，环境状态变为s’，并得到即时奖励$\gamma$.</p>
 <ul>
@@ -700,19 +700,19 @@
 </li>
 </ul>
 <p>开始训练时，Actor随机表演，Critic随机打分. 通过不断的学习，Critic的评分越来越准，Actor的动作越来越好.</p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420210331909.png" alt="image-20200420210331909" style="zoom: 50%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420210331909.png" alt="image-20200420210331909" style="zoom: 50%;" />
 
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/image-20200420212938961.png" alt="image-20200420212938961" style="zoom: 33%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/image-20200420212938961.png" alt="image-20200420212938961" style="zoom: 33%;" />
 
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
 <p>一般而言，基于值函数的方法在策略更新时可能会导致值函数的改变比较大，<strong>对收敛性有一定影响</strong>;而基于策略函数的方法在策略更新时更加更平稳些，但因为策略函数的解空间比较大，<strong>难以进行充分的采样</strong>，导致<strong>方差较大</strong>，并<strong>容易收敛到局部最优解</strong>. Actor-Critic算法通过融合两种方法，取长补短，有着更好的收敛性.</p>
 </blockquote>
-<h3 id="Model-based-learning"><a href="#Model-based-learning" class="headerlink" title="Model-based learning"></a>Model-based learning</h3><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/16408984.jpg" style="zoom:50%;" />
+<h3 id="Model-based-learning"><a href="#Model-based-learning" class="headerlink" title="Model-based learning"></a>Model-based learning</h3><img src="../asset/Review-Deep-Learning/16408984.jpg" style="zoom:50%;" />
 
 <p><strong>Model-Based优缺点：</strong></p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/19484532.jpg" style="zoom: 33%;" />
+<img src="../asset/Review-Deep-Learning/19484532.jpg" style="zoom: 33%;" />
 
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Review-Deep-Learning/43402611.jpg" style="zoom: 25%;" />
+<img src="../asset/Review-Deep-Learning/43402611.jpg" style="zoom: 25%;" />
 
 <h3 id="确定性策略"><a href="#确定性策略" class="headerlink" title="确定性策略"></a>确定性策略</h3><p>将策略梯度的思想推广到确定性的策略上，提出了确定性策略梯度（Deterministic Policy Gradient，DPG）算法.</p>
 <ul>
@@ -722,7 +722,7 @@
 <p>利用DQN 来估计值函数，提出深度确定性策略梯度（Deep Deterministic Policy Gradient，DDPG）算法. DDPG 算法可以适合连续的状态和动作空间. </p>
 <h3 id="分布式Multi-Agent"><a href="#分布式Multi-Agent" class="headerlink" title="分布式Multi-Agent"></a>分布式Multi-Agent</h3><p>因为不同环境中的智能体可以使用不同的探索策略，会导致经验样本之间的相关性较小，所以能够提高学习效率.</p>
 <p><strong>A3C算法（Asynchronous Advantage Actor-Critic）</strong></p>
-<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Note-Deep-Reinforce-Learning/clipboard-1586685233138.png" alt="img" style="zoom:40%;" />
+<img src="../asset/Note-Deep-Reinforce-Learning/clipboard-1586685233138.png" alt="img" style="zoom:40%;" />
 
 <h3 id="部分可观测马尔可夫决策过程（Partially-Observable-Markov-Decision-Processes，POMDP）"><a href="#部分可观测马尔可夫决策过程（Partially-Observable-Markov-Decision-Processes，POMDP）" class="headerlink" title="部分可观测马尔可夫决策过程（Partially Observable Markov Decision Processes，POMDP）"></a>部分可观测马尔可夫决策过程（Partially Observable Markov Decision Processes，POMDP）</h3><p>POMDP 依然具有马尔可夫性质，但是假设智能体无法感知环境的状态s，只能知道部分观测值o和环境信息。</p>
 <h3 id="逆向强化学习（Inverse-Reinforcement-Learning，IRL）"><a href="#逆向强化学习（Inverse-Reinforcement-Learning，IRL）" class="headerlink" title="逆向强化学习（Inverse Reinforcement Learning，IRL）"></a>逆向强化学习（Inverse Reinforcement Learning，IRL）</h3><p>在某些情况下，智能体无法从环境得到奖励，只有一组轨迹示例（Demonstration）.比如在自动驾驶中，我们可以得到司机的一组轨迹数据，但并不知道司机在每个时刻得到的即时奖励. 虽然我们可以用监督学习来解决，称为行为克隆. 但行为克隆只是学习司机的行为，并没有深究司机行为的动机.</p>
