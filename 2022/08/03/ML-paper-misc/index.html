@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>ML paper misc | 洛阳城头看落阳</title>
+  <meta name="description" content="Accurate Uncertainty Estimation and Decomposition in Ensemble Learning (NeurIPS 2019)   aleatoric uncertainty： 来自数据集，如sensor数据采集的误差，不能被减少  epistemic uncertainty：来源于对数据认知的缺失，可以通过增加数据量减少误差    parametric">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ML paper misc">
+<meta property="og:url" content="http://example.com/2022/08/03/ML-paper-misc/index.html">
+<meta property="og:site_name" content="xmzzyo">
+<meta property="og:description" content="Accurate Uncertainty Estimation and Decomposition in Ensemble Learning (NeurIPS 2019)   aleatoric uncertainty： 来自数据集，如sensor数据采集的误差，不能被减少  epistemic uncertainty：来源于对数据认知的缺失，可以通过增加数据量减少误差    parametric">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/2022/08/03/asset/ML-paper-misc/image-20220802174158525.png">
+<meta property="og:image" content="http://example.com/2022/08/03/asset/ML-paper-misc/image-20220803164911473.png">
+<meta property="og:image" content="http://example.com/2022/08/03/asset/ML-paper-misc/image-20220803165108107.png">
+<meta property="og:image" content="http://example.com/2022/08/03/asset/ML-paper-misc/image-20220803165212768.png">
+<meta property="og:image" content="http://example.com/2022/08/03/asset/ML-paper-misc/image-20220803165229005.png">
+<meta property="og:image" content="http://example.com/2022/08/03/asset/ML-paper-misc/image-20220803165413291.png">
+<meta property="og:image" content="http://example.com/2022/08/03/asset/ML-paper-misc/image-20220803165455128.png">
+<meta property="og:image" content="http://example.com/2022/08/03/asset/ML-paper-misc/image-20220807221455783.png">
+<meta property="og:image" content="http://example.com/2022/08/03/asset/ML-paper-misc/image-20220807221620786.png">
+<meta property="og:image" content="http://example.com/2022/08/03/asset/ML-paper-misc/image-20220809172702433.png">
+<meta property="og:image" content="http://example.com/2022/08/03/asset/ML-paper-misc/image-20220809172729591.png">
+<meta property="og:image" content="http://example.com/2022/08/03/asset/ML-paper-misc/image-20220809173752837.png">
+<meta property="article:published_time" content="2022-08-03T08:44:31.000Z">
+<meta property="article:modified_time" content="2022-08-28T08:59:53.224Z">
+<meta property="article:author" content="xmz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/08/03/asset/ML-paper-misc/image-20220802174158525.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2022/08/03/ML-paper-misc/index.html">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    <link href="https://cdn.bootcss.com/KaTeX/0.8.3/katex.min.css" rel="stylesheet">
+  
+  
+  
+    <link href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css" rel="stylesheet">
+  
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xmzzyo" target="_blank">
+          <img class="img-circle img-rotate" src="/images/touxiang.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">xmz</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20%7C%7C%20fa%20fa-home">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithms/">Algorithms</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DL/">DL</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DL/NLP/">NLP</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/IELTS/">IELTS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NLP/">NLP</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RL/">RL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RecSys/">RecSys</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SE/">SE</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/System/">System</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90/">程序分析</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cross-domain/" rel="tag">Cross-domain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RL/" rel="tag">RL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/" rel="tag">System</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" rel="tag">强化学习</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="tag">推荐系统</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/08/03/ML-paper-misc/" class="title">ML paper misc</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-08-03T08:44:31.000Z" itemprop="datePublished">2022-08-03</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/07/25/Awesome-GitHub-Repo/" class="title">Awesome GitHub Repo</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-25T13:55:40.000Z" itemprop="datePublished">2022-07-25</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/07/19/RL-paper-misc/" class="title">RL paper misc</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-19T08:05:37.000Z" itemprop="datePublished">2022-07-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/07/16/Structured-Multi-Agent-RL/" class="title">Structured Multi-Agent RL</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-16T07:42:05.000Z" itemprop="datePublished">2022-07-16</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/System/">System</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/07/16/DL-Scheduler/" class="title">DL Scheduler</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-16T03:38:58.000Z" itemprop="datePublished">2022-07-16</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/crypto-js@4.0.0/crypto-js.js"></script>
+<script>
+    (function() {
+        let pwd = 'xmzzyo@1995';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">Catalogue</h3>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Accurate-Uncertainty-Estimation-and-Decomposition-in-Ensemble-Learning-NeurIPS-2019"><span class="toc-number">1.</span> <span class="toc-text">Accurate Uncertainty Estimation and Decomposition in Ensemble Learning (NeurIPS 2019)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generalizing-uncertainty-decomposition-theory-in-climate-change-impact-assessments-HydrologyX-2019"><span class="toc-number">2.</span> <span class="toc-text">Generalizing uncertainty decomposition theory in climate change impact assessments (HydrologyX 2019)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kernel-Identi%EF%AC%81cation-Through-Transformers-%EF%BC%88NeurIPS-2021%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">Kernel Identiﬁcation Through Transformers （NeurIPS 2021）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Intro"><span class="toc-number">3.1.</span> <span class="toc-text">Intro</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Spatio-Temporal-Variational-Gaussian-Processes-%EF%BC%88NeurIPS-2021%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">Spatio-Temporal Variational Gaussian Processes （NeurIPS 2021）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Intro-1"><span class="toc-number">4.1.</span> <span class="toc-text">Intro</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AF%86%EF%BC%9A"><span class="toc-number">4.1.1.</span> <span class="toc-text">背景知识：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B7%B2%E6%9C%89%E5%B7%A5%E4%BD%9C%E7%BC%BA%E7%82%B9%EF%BC%9A"><span class="toc-number">4.1.2.</span> <span class="toc-text">已有工作缺点：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9C%AC%E6%96%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">4.1.3.</span> <span class="toc-text">本文工作</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Definition-and-Model"><span class="toc-number">4.2.</span> <span class="toc-text">Definition and Model</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#State-Space-Spatio-Temporal-Gaussian-Processes"><span class="toc-number">4.2.1.</span> <span class="toc-text">State Space Spatio-Temporal Gaussian Processes</span></a></li></ol></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-ML-paper-misc" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ML paper misc
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/08/03/ML-paper-misc/" class="article-date">
+	  <time datetime="2022-08-03T08:44:31.000Z" itemprop="datePublished">2022-08-03</time>
+	</a>
+</span>
+        
+        
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 744(words)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 3(minutes)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h3 id="Accurate-Uncertainty-Estimation-and-Decomposition-in-Ensemble-Learning-NeurIPS-2019"><a href="#Accurate-Uncertainty-Estimation-and-Decomposition-in-Ensemble-Learning-NeurIPS-2019" class="headerlink" title="Accurate Uncertainty Estimation and Decomposition in Ensemble Learning (NeurIPS 2019)"></a>Accurate Uncertainty Estimation and Decomposition in Ensemble Learning (NeurIPS 2019)</h3><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220802174158525.png" alt="image-20220802174158525" style="zoom:50%;" />
+
+<ol>
+<li><p>aleatoric uncertainty： 来自数据集，如sensor数据采集的误差，不能被减少</p>
+</li>
+<li><p>epistemic uncertainty：来源于对数据认知的缺失，可以通过增加数据量减少误差</p>
+</li>
+</ol>
+<ul>
+<li>parametric uncertainty：模型参数的不确定性</li>
+<li>structural uncertainty：当前模型是否足够描述数据集</li>
+</ul>
+<h3 id="Generalizing-uncertainty-decomposition-theory-in-climate-change-impact-assessments-HydrologyX-2019"><a href="#Generalizing-uncertainty-decomposition-theory-in-climate-change-impact-assessments-HydrologyX-2019" class="headerlink" title="Generalizing uncertainty decomposition theory in climate change impact assessments (HydrologyX 2019)"></a>Generalizing uncertainty decomposition theory in climate change impact assessments (HydrologyX 2019)</h3><p><strong>不确定性分解方法：</strong></p>
+<ol>
+<li>标准化方法</li>
+</ol>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220803164911473.png" alt="image-20220803164911473" style="zoom:50%;" />
+
+<p>使用“范围”、“方差”作为不确定性度量</p>
+<ol start="2">
+<li><p>Lee2016</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220803165108107.png" alt="image-20220803165108107" style="zoom:50%;" />
+
+<p>标准方法先取平均值，然后应用不确定性度量，而 Lee 的方法先应用不确定性度量，然后取平均值。</p>
+</li>
+<li><p>ANOVA</p>
+<p>假设<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220803165212768.png" alt="image-20220803165212768" style="zoom:50%;" /></p>
+</li>
+</ol>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220803165229005.png" alt="image-20220803165229005" style="zoom:50%;" />
+
+<p>​        x是随机变量，均值为0，方差解释为自然变异或者内部变异</p>
+<p>​        最小化：</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220803165413291.png" alt="image-20220803165413291" style="zoom:50%;" />
+
+<p>​        阶段k的不确定性度量为：</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220803165455128.png" alt="image-20220803165455128" style="zoom:50%;" />
+
+
+
+
+
+<h3 id="Kernel-Identiﬁcation-Through-Transformers-（NeurIPS-2021）"><a href="#Kernel-Identiﬁcation-Through-Transformers-（NeurIPS-2021）" class="headerlink" title="Kernel Identiﬁcation Through Transformers （NeurIPS 2021）"></a>Kernel Identiﬁcation Through Transformers （NeurIPS 2021）</h3><h4 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h4><p>the chosen kernel determines both the <strong>inductive biases and prior</strong> support of functions under the GP prior.</p>
+<p>Kernel选择在高斯过程中非常重要</p>
+<p>使用Transformer来选kernel</p>
+<p>each kernel’s suitability is instead usually determined via a proxy for the model evidence, such as the <strong>Bayesian Information Criterion (BIC)</strong></p>
+<p>In this work, we utilise <strong>eight primitive kernels</strong>: the squared exponential; periodic; white noise; three variants of the Matern kernel ; the cosine kernel, and our novel variant of the linear kernel. 包括stationary的和non-stationary的kernel</p>
+<p>Kernel之间的操作包括<strong>加和、乘积、卷积、分解、仿射变换</strong></p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220807221455783.png" alt="image-20220807221455783" style="zoom:50%;" />
+
+<p>白噪声+stationary kernel</p>
+<p>白噪声+non-stationary kernel（线性kernel）：</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220807221620786.png" alt="image-20220807221620786" style="zoom:50%;" />
+
+<p>线性kernel对每个输入维度使用独立的方差</p>
+<p>The product between the linear kernel and the noise kernel generates a form of noise <strong>whose variance changes linearly with respect to the inputs.</strong></p>
+<hr>
+<h3 id="Spatio-Temporal-Variational-Gaussian-Processes-（NeurIPS-2021）"><a href="#Spatio-Temporal-Variational-Gaussian-Processes-（NeurIPS-2021）" class="headerlink" title="Spatio-Temporal Variational Gaussian Processes （NeurIPS 2021）"></a>Spatio-Temporal Variational Gaussian Processes （NeurIPS 2021）</h3><h4 id="Intro-1"><a href="#Intro-1" class="headerlink" title="Intro"></a>Intro</h4><h5 id="背景知识："><a href="#背景知识：" class="headerlink" title="背景知识："></a>背景知识：</h5><p>GPs可以parallel algorithms on GPUs（<em>Exact Gaussian processes on a million data points</em>），但是the sparse GP approach is perhaps <strong>the most popular</strong>, and is typically combined with <strong>mini-batching</strong> to allow training on massive datasets</p>
+<p>efﬁcient inference：structured kernel interpolation (SKI, [52]) which requires only that inducing points be on a grid.</p>
+<p>In the <strong>spatio-temporal case</strong>, <strong>sparsity has been used in the spatial dimension</strong></p>
+<p>spatio-temporal GP, which <strong>rewrite the GP prior as a state-space</strong> model and use ﬁltering to perform inference in $O(Nd^3)$, where <strong>d is the dimensionality of the state-space.</strong></p>
+<p>Sparse GP and spatio-temporal GP have been combined by constructing a <strong>Markovian system</strong> in which <strong>a set of spatial inducing points are tracked over time</strong></p>
+<h5 id="已有工作缺点："><a href="#已有工作缺点：" class="headerlink" title="已有工作缺点："></a>已有工作缺点：</h5><p>existing methods for spatio-temporal GPs make approximations to the prior conditional model or <strong>do not exploit natural gradients,</strong> meaning they do not provide the same inference and learning results as state-of-the-art variational GPs in the presence of non-conjugate likelihoods or sparsity, which has hindered their widespread adoption.</p>
+<h5 id="本文工作"><a href="#本文工作" class="headerlink" title="本文工作"></a>本文工作</h5><p>可以provide the exact same results as standard variational GPs</p>
+<p>ST-VGP is derived using a <strong>natural gradient variational inference</strong> approach <strong>based on ﬁltering and smoothing</strong>. We also derive this method’s <strong>sparse variant</strong></p>
+<h4 id="Definition-and-Model"><a href="#Definition-and-Model" class="headerlink" title="Definition and Model"></a>Definition and Model</h4><p>输入数据：X：一维时间，多维空间</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220809172702433.png" alt="image-20220809172702433" style="zoom:50%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220809172729591.png" alt="image-20220809172729591" style="zoom:50%;" />
+
+<h5 id="State-Space-Spatio-Temporal-Gaussian-Processes"><a href="#State-Space-Spatio-Temporal-Gaussian-Processes" class="headerlink" title="State Space Spatio-Temporal Gaussian Processes"></a>State Space Spatio-Temporal Gaussian Processes</h5><p><strong>reformulate the prior</strong> in Eq. (1) as a <strong>state space model</strong>, reducing the computational scaling to <strong>linear in the number of time points</strong></p>
+<p><strong>assumption</strong> is that the <strong>kernel is both Markovian</strong> and <strong>separable between time and space</strong>: $κ(t, s, t^′, s^′) = κ_t(t, t^′) κ_s(s, s^′)$.</p>
+<p><strong>Markovian kernel</strong> to refer to a kernel which can be <strong>re-written in state-space form</strong></p>
+<p><strong>GP prior as a stochastic partial differential equation (SPDE)</strong></p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220809173752837.png" alt="image-20220809173752837" style="zoom:50%;" />
+
+<p>where $w(t, s)$ is a <strong>(spatio-temporal) white noise process</strong> and $A_s$ a suitable (pseudo-) differential operator</p>
+<p>SPDEs of this form can represent a large class of <strong>separable</strong> and <strong>non-separable GP models.</strong></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2022/08/03/ML-paper-misc/" title="ML paper misc" target="_blank" rel="external">http://example.com/2022/08/03/ML-paper-misc/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xmzzyo" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/touxiang.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xmzzyo" target="_blank"><span class="text-dark">xmz</span><small class="ml-1x"></small></a></h3>
+        <div>技术活，当赏~</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2022/07/25/Awesome-GitHub-Repo/" title="Awesome GitHub Repo"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="Catalogue" role="button">
+        <span>[&nbsp;</span><span>Catalogue</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2022 xmz
+        
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+  <script>
+  //利用 FancyBox 实现点击图片放大
+  $(document).ready(function() {
+    $('article img').not('[hidden]').not('.panel-body img').each(function() {
+      var $image = $(this);
+      var imageCaption = $image.attr('alt');
+      var $imageWrapLink = $image.parent('a');
+      if ($imageWrapLink.length < 1) {
+        var src = this.getAttribute('src');
+        var idx = src.lastIndexOf('?');
+        if (idx != -1) {
+          src = src.substring(0, idx);
+        }
+        $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+      }
+      $imageWrapLink.attr('data-fancybox', 'images');
+      if (imageCaption) {
+        $imageWrapLink.attr('data-caption', imageCaption);
+      }
+    });
+    $().fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+    });
+  });
+  </script>
+
+
+
+
+    <script defer>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?5b8968d29b062c2b158f75733d315d20";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+</body>
+</html>

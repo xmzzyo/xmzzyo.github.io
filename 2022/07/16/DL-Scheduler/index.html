@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>DL Scheduler | 洛阳城头看落阳</title>
+  <meta name="description" content="Note NeurComm，spatial，temporal policy 互相dependent？ 系统资源利用率高，不一定就是任务多？指标有噪声？ RL regret Biased random walk intrisic cost and extrisic cost  ASTRAEA: A Fair Deep Learning Scheduler for Multi-Tenant GPU C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DL Scheduler">
+<meta property="og:url" content="http://example.com/2022/07/16/DL-Scheduler/index.html">
+<meta property="og:site_name" content="xmzzyo">
+<meta property="og:description" content="Note NeurComm，spatial，temporal policy 互相dependent？ 系统资源利用率高，不一定就是任务多？指标有噪声？ RL regret Biased random walk intrisic cost and extrisic cost  ASTRAEA: A Fair Deep Learning Scheduler for Multi-Tenant GPU C">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/2022/07/16/asset/DL-Scheduler/image-20220718160811763.png">
+<meta property="og:image" content="http://example.com/2022/07/16/asset/DL-Scheduler/image-20220718165624794.png">
+<meta property="og:image" content="http://example.com/2022/07/16/asset/DL-Scheduler/image-20220721222331069.png">
+<meta property="og:image" content="http://example.com/2022/07/16/asset/DL-Scheduler/image-20220723161422998.png">
+<meta property="og:image" content="http://example.com/2022/07/16/asset/DL-Scheduler/image-20220723161915012.png">
+<meta property="og:image" content="http://example.com/2022/07/16/asset/DL-Scheduler/image-20220723162006488.png">
+<meta property="og:image" content="http://example.com/2022/07/16/asset/DL-Scheduler/image-20220723165507601.png">
+<meta property="article:published_time" content="2022-07-16T03:38:58.000Z">
+<meta property="article:modified_time" content="2022-08-28T08:59:48.715Z">
+<meta property="article:author" content="xmz">
+<meta property="article:tag" content="RL">
+<meta property="article:tag" content="System">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/07/16/asset/DL-Scheduler/image-20220718160811763.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2022/07/16/DL-Scheduler/index.html">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    <link href="https://cdn.bootcss.com/KaTeX/0.8.3/katex.min.css" rel="stylesheet">
+  
+  
+  
+    <link href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css" rel="stylesheet">
+  
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xmzzyo" target="_blank">
+          <img class="img-circle img-rotate" src="/images/touxiang.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">xmz</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20%7C%7C%20fa%20fa-home">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithms/">Algorithms</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DL/">DL</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/DL/NLP/">NLP</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/IELTS/">IELTS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NLP/">NLP</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RL/">RL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/RecSys/">RecSys</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SE/">SE</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/System/">System</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90/">程序分析</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cross-domain/" rel="tag">Cross-domain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RL/" rel="tag">RL</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/" rel="tag">System</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" rel="tag">强化学习</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="tag">推荐系统</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/08/03/ML-paper-misc/" class="title">ML paper misc</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-08-03T08:44:31.000Z" itemprop="datePublished">2022-08-03</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/07/25/Awesome-GitHub-Repo/" class="title">Awesome GitHub Repo</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-25T13:55:40.000Z" itemprop="datePublished">2022-07-25</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/07/19/RL-paper-misc/" class="title">RL paper misc</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-19T08:05:37.000Z" itemprop="datePublished">2022-07-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/07/16/Structured-Multi-Agent-RL/" class="title">Structured Multi-Agent RL</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-16T07:42:05.000Z" itemprop="datePublished">2022-07-16</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/System/">System</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/07/16/DL-Scheduler/" class="title">DL Scheduler</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-16T03:38:58.000Z" itemprop="datePublished">2022-07-16</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/crypto-js@4.0.0/crypto-js.js"></script>
+<script>
+    (function() {
+        let pwd = 'xmzzyo@1995';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">Catalogue</h3>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Note"><span class="toc-number">1.</span> <span class="toc-text">Note</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ASTRAEA-A-Fair-Deep-Learning-Scheduler-for-Multi-Tenant-GPU-Clusters-TPDS-2022"><span class="toc-number">2.</span> <span class="toc-text">ASTRAEA: A Fair Deep Learning Scheduler for Multi-Tenant GPU Clusters (TPDS 2022)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Placement-Sensitivity"><span class="toc-number">2.1.</span> <span class="toc-text">Placement Sensitivity.</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DL-scheduler%E6%8F%8F%E8%BF%B0%EF%BC%9A"><span class="toc-number">2.2.</span> <span class="toc-text">DL scheduler描述：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Unpredictable-Training-Time"><span class="toc-number">2.3.</span> <span class="toc-text">Unpredictable Training Time.</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Issues-of-DLT-Clusters-Without-Fairness"><span class="toc-number">2.4.</span> <span class="toc-text">Issues of DLT Clusters Without Fairness</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Inductive-bias-driven-Reinforcement-Learning-for-Ef%EF%AC%81cient-Schedules-in-Heterogeneous-Clusters-ICML-2020"><span class="toc-number">3.</span> <span class="toc-text">Inductive-bias-driven Reinforcement Learning for Efﬁcient Schedules in Heterogeneous Clusters (ICML 2020)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Intro"><span class="toc-number">3.1.</span> <span class="toc-text">Intro</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Model"><span class="toc-number">3.2.</span> <span class="toc-text">Model</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deep-Learning-based-Job-Placement-in-Distributed-Machine-Learning-Clusters-INFOCOM-2019"><span class="toc-number">4.</span> <span class="toc-text">Deep Learning-based Job Placement in Distributed Machine Learning Clusters (INFOCOM 2019)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Intro-1"><span class="toc-number">4.1.</span> <span class="toc-text">Intro</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Model-1"><span class="toc-number">4.2.</span> <span class="toc-text">Model</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%9B%86%E7%BE%A4%E7%9A%84%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6%E6%9C%BA%E5%88%B6%E7%A0%94%E7%A9%B6-%EF%BC%88Thesis-2020%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">分布式机器学习集群的资源调度机制研究 （Thesis 2020）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Intro-2"><span class="toc-number">5.1.</span> <span class="toc-text">Intro</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Model-2"><span class="toc-number">5.2.</span> <span class="toc-text">Model</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-DL-Scheduler" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      DL Scheduler
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/07/16/DL-Scheduler/" class="article-date">
+	  <time datetime="2022-07-16T03:38:58.000Z" itemprop="datePublished">2022-07-16</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/System/">System</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/RL/" rel="tag">RL</a>, <a class="article-tag-link-link" href="/tags/System/" rel="tag">System</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 2.2k(words)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 10(minutes)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h3 id="Note"><a href="#Note" class="headerlink" title="Note"></a>Note</h3><ol>
+<li>NeurComm，spatial，temporal policy 互相dependent？</li>
+<li>系统资源利用率高，不一定就是任务多？指标有噪声？</li>
+<li>RL regret</li>
+<li>Biased random walk</li>
+<li>intrisic cost and extrisic cost</li>
+</ol>
+<h3 id="ASTRAEA-A-Fair-Deep-Learning-Scheduler-for-Multi-Tenant-GPU-Clusters-TPDS-2022"><a href="#ASTRAEA-A-Fair-Deep-Learning-Scheduler-for-Multi-Tenant-GPU-Clusters-TPDS-2022" class="headerlink" title="ASTRAEA: A Fair Deep Learning Scheduler for Multi-Tenant GPU Clusters (TPDS 2022)"></a>ASTRAEA: A Fair Deep Learning Scheduler for Multi-Tenant GPU Clusters (TPDS 2022)</h3><h4 id="Placement-Sensitivity"><a href="#Placement-Sensitivity" class="headerlink" title="Placement Sensitivity."></a>Placement Sensitivity.</h4><p>If this job is allocated with two nodes, the inter-node communication could be the performance bottleneck [3].</p>
+<h4 id="DL-scheduler描述："><a href="#DL-scheduler描述：" class="headerlink" title="DL scheduler描述："></a>DL scheduler描述：</h4><p>A scheduler is indispensable in a cluster to manage the computing resources and schedule jobs. At runtime, the scheduler continuously receives jobs submitted by users with the explicit resource demands. Then it decides when and where to run by selecting the proper jobs to satisfy the scheduling objectives and placing them to the appropriate servers for execution [24]. Different scheduling systems may pursue various scheduling objectives, e.g., improving resource utilization [5], [20], [25], optimizing the performance of workloads [26], [27], maximizing scheduling efficiency [14], [28], guaranteeing service and user experience [29], [30], etc.</p>
+<h4 id="Unpredictable-Training-Time"><a href="#Unpredictable-Training-Time" class="headerlink" title="Unpredictable Training Time."></a>Unpredictable Training Time.</h4><p>In Venus （商汤的一个production集群）, 52.2% of jobs are successfully completed, 27.9% are canceled, and 19.9% fail. Due to the high cancellation/failure ratio, it is difficult to predict the running time of DLT jobs just based on the remaining number of iterations.</p>
+<h4 id="Issues-of-DLT-Clusters-Without-Fairness"><a href="#Issues-of-DLT-Clusters-Without-Fairness" class="headerlink" title="Issues of DLT Clusters Without Fairness"></a>Issues of DLT Clusters Without Fairness</h4><p>FIFO (First-In-First-Out) </p>
+<p>Long-term jobs may monopolize the whole cluster or VC</p>
+<p>Blocked DLT jobs (especially for short-term jobs) may suffer from large execution slowdown ratio (&gt;5), which is defined as (running_time+pending_time)/running_time.</p>
+<hr>
+<h3 id="Inductive-bias-driven-Reinforcement-Learning-for-Efﬁcient-Schedules-in-Heterogeneous-Clusters-ICML-2020"><a href="#Inductive-bias-driven-Reinforcement-Learning-for-Efﬁcient-Schedules-in-Heterogeneous-Clusters-ICML-2020" class="headerlink" title="Inductive-bias-driven Reinforcement Learning for Efﬁcient Schedules in Heterogeneous Clusters (ICML 2020)"></a>Inductive-bias-driven Reinforcement Learning for Efﬁcient Schedules in Heterogeneous Clusters (ICML 2020)</h3><h4 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h4><p><strong>局限性：</strong></p>
+<ol>
+<li><p>Current system schedulers rely on application/system-speciﬁc heuristics that have to be built on a case-by-case basis.</p>
+</li>
+<li><p>ML techniques for automating the heuristic search by using black-box approaches which require signiﬁcant training data and time</p>
+</li>
+</ol>
+<p><strong>贡献：</strong></p>
+<ol>
+<li>a domain-driven（先验来自系统架构） Bayesian reinforcement learning (RL) model for scheduling, which inherently models the resource dependencies identiﬁed from the system architecture;<ul>
+<li>our inductive bias is a set of statistical relationships between measurements from microarchitectural monitors</li>
+<li>比如PCIe会导致资源竞争，GPU-GPU通信最高慢1.8倍，black-box的方法需要自己学，因此加入领域知识作为inductive bias</li>
+</ul>
+</li>
+<li>a sampling-based technique to compute the gradients of a Bayesian model without performing full probabilistic inference.</li>
+</ol>
+<h4 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h4><p>The model integrates <strong>real-time performance measurements</strong>, prior knowledge about workloads, and <strong>system architecture</strong> to (i) dynamically <strong>infer system state</strong> (i.e., resource utilization), and (ii) automatically <strong>schedule tasks</strong> on a heterogeneous processing fabric.</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/DL-Scheduler/image-20220718160811763.png" alt="image-20220718160811763" style="zoom:50%;" />
+
+<p>上图$\hat{b}_t$是估计的资源利用率。因为计算机不同层次的抽象，获得的系统指标不能准确表明系统真实状态，不能直接measure到的指标成为hidden资源</p>
+<p><strong>Performance Counters.</strong> PCs are generally relied upon to conduct low-level performance analysis or tuning of performance bottlenecks in applications.</p>
+<p>使用贝叶斯网络的目的：</p>
+<ul>
+<li>model aleatoric uncertainty in measurements<ul>
+<li>Measurements made from PCs have some <strong>inherent noise</strong></li>
+<li>if a single scheduling agent is controlling a cluster of machines (which is common in data centers), measurements made on different machines will not be in sync and will often be delayed by <strong>network latency</strong>. （数据缺失，因为网络延迟和抖动，丢包）</li>
+<li>measured value $m_c$ can be modeled in terms of the true value $v_c$ plus measurement noise $e_c$, i.e., $m_c= v_c+ e_c$.</li>
+<li>噪声误差$e_c \sim \mathcal{N}(0, \sigma)$是0均值的，That is a valid assumption because the only reason for systematic errors is hardware or software bugs. <strong>follows from prior work</strong> based on extensive measurement studies (Weaver &amp; McKee, 2008).</li>
+</ul>
+</li>
+<li>encode our knowledge about system architecture in terms of invariants or statistical relationships between the measurements.</li>
+</ul>
+<p>​        <img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/DL-Scheduler/image-20220718165624794.png" alt="image-20220718165624794" style="zoom:50%;" /></p>
+<p>把体系结构建模成贝叶斯网络（根据处理器手册和Linux kernel source code as part of the <strong>perf</strong> package构建）</p>
+<p>We <strong>do not</strong> explicitly model GPU performance counters as low-level scheduling decisions (e.g., warp-level scheduling) in GPUs are <strong>obfuscated by the NVIDIA runtime/driver.</strong></p>
+<hr>
+<h3 id="Deep-Learning-based-Job-Placement-in-Distributed-Machine-Learning-Clusters-INFOCOM-2019"><a href="#Deep-Learning-based-Job-Placement-in-Distributed-Machine-Learning-Clusters-INFOCOM-2019" class="headerlink" title="Deep Learning-based Job Placement in Distributed Machine Learning Clusters (INFOCOM 2019)"></a>Deep Learning-based Job Placement in Distributed Machine Learning Clusters (INFOCOM 2019)</h3><h4 id="Intro-1"><a href="#Intro-1" class="headerlink" title="Intro"></a>Intro</h4><p>Interference-aware job placement，另外有一个辅助的reward预测的模型</p>
+<p>主要针对PS架构：The workers and PSs may well be distributed onto different physical servers, when they cannot be completely hosted on one server, or to maximize resource fragment utilization on servers.</p>
+<p>资源利用率低：over-subscription of resources</p>
+<p>资源（CPU caches, disk I/O, network I/O and buses (e.g., QPI, PCIe)）竞争：Different levels of interference (i.e., resource contention) occur when different types of ML jobs are co-located</p>
+<p>资源竞争导致性能下降，具体数据：We observe a 33% performance degradation on average, and nearly 2x slowdown for training ResNeXt when the jobs are co-located.</p>
+<p>有些job co-loacted，资源竞争比较小：ResNet and WLM are less affected when trained together, so do ResNet and Seq2Seq.</p>
+<p>已经有一些工作关注资源竞争：These studies build an explicit interference model of the target performance based on certain observations/assumptions and rely on hand-crafted heuristics for incorporating interference in scheduling。但是需要profiling，设置阈值，即一个白盒模型，因此本文使用RL做一个black-box模型。</p>
+<p>使用RL的挑战：动作空间大：Even with 6 jobs, 3 workers plus PSs each, and 6 servers, there are more than 100 million different ways of placement.</p>
+<h4 id="Model-1"><a href="#Model-1" class="headerlink" title="Model"></a>Model</h4><p>提交job前，用户需要提供以下信息：</p>
+<ol>
+<li>worker和PS的资源需求</li>
+<li>worker和PS的数量</li>
+<li>training epoch的数量</li>
+</ol>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/DL-Scheduler/image-20220721222331069.png" alt="image-20220721222331069" style="zoom:50%;" />
+
+<p><strong>RL的状态表示：</strong></p>
+<ol>
+<li>$x [N\times L]$，N是并行的jobs个数，包括新来的和已经运行的，L是集群中最大能部署的job数量</li>
+<li>$r [N\times 2(1+K)]$，所有job的worker/PS resource demands，K是资源的种类</li>
+<li>worker的数量</li>
+<li>M个物理机的K种资源状态</li>
+<li>放置的位置</li>
+</ol>
+<p><strong>RL的action：</strong>&lt;N, p, M&gt;第N个job放置p个worker在第M个机器上；一次不一定放完，因此allow multiple inferences，在所有的action都做完后，再观测state</p>
+<p><strong>RL的reward：</strong>目标是最小化JCT，但是：</p>
+<ol>
+<li>只有job运行完才知道reward的大小：Job completion time would be a natural reward to observe, but it is only known when a job is ﬁnished, which may well be hundreds of scheduling intervals later;</li>
+<li>JCT不只由当前的placement决定，还由未来的co-loacted 的job决定：completion time of a job is decided not only by the current job placement state, but also future deployment of upcoming jobs</li>
+</ol>
+<p>设计了平均interval的reward：</p>
+<p>$r=\frac{c}{e}$，c是训练完的epoch，e是总共的epoch</p>
+<p><strong>Reward model training：</strong>输入是job信息和placement信息，输出是reward，相当于supervised critic？使用了全连接层，发现比CNN的效果好；从trace中训练</p>
+<p><strong>RL训练时候，exploration采用熵最大是不够的</strong>，因此：</p>
+<ol>
+<li>$1-\epsilon$ 的概率使用神经网络的输出进行placement</li>
+<li>$\epsilon$的概率从multi-resource bin packing（最小空闲优先，为了防止资源碎片Tetris） and load balancing（最大空闲优先） policies中随机选</li>
+</ol>
+<p>The rationale behind is to enable NN to effectively explore the tradeoff between resource utilization (bin packing is best for) and workload interference (that load balancing avoids). In this way, we <strong>improve exploration quality</strong> to guide the NN training to converge to a good policy.</p>
+<hr>
+<h3 id="分布式机器学习集群的资源调度机制研究-（Thesis-2020）"><a href="#分布式机器学习集群的资源调度机制研究-（Thesis-2020）" class="headerlink" title="分布式机器学习集群的资源调度机制研究 （Thesis 2020）"></a>分布式机器学习集群的资源调度机制研究 （Thesis 2020）</h3><h4 id="Intro-2"><a href="#Intro-2" class="headerlink" title="Intro"></a>Intro</h4><p>现有的相关研究大多基于研究者对特定的机器学习框架 和工作负载的理解对资源-任务完成时间建立白盒模型，再通过启发式算法求解。 白盒模型的准确性会极大的影响资源调度的性能且不具备通用性。</p>
+<p>本文对 4 种不同的概率代理模型和采集函数组合的贝叶斯优化子算法，并且概率代理模型为高斯过程，采集函数为 EI（Expected Improvement） 的贝叶斯优化子算法在所有场景中都表现最好</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/DL-Scheduler/image-20220723161422998.png" alt="image-20220723161422998" style="zoom:50%;" />
+
+<p><strong>资源调度分类：</strong>静态和动态调度；抢占式和非抢占式调度</p>
+<p><strong>挑战：</strong></p>
+<ol>
+<li>分布式机器学习任务本身的复杂性和异构性</li>
+<li>即使对于一个确定的分布式机器学习任务要想确定资源和任务完成时间的关系也是十分困难的，和资源并不是线性加速的。虽然最近有一些研究者尝试对分布式机器学习任务的完成时间建立复杂的数 学模型。如文献[10]对参数服务器架构的分布式机器学习任务的完成时间进行数 学建模。文献[34]则对 AllReduce 架构的分布式机器学习任务的完成时间建模，但 是仅限于卷积神经网络这一种机器学习模型。</li>
+<li>位置敏感的</li>
+<li>资源竞争</li>
+</ol>
+<p><strong>收敛曲线近似：</strong>（k是迭代次数）</p>
+<p>一阶优化（GD）：</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/DL-Scheduler/image-20220723161915012.png" alt="image-20220723161915012" style="zoom:50%;" />
+
+<p>二阶优化（牛顿法，BFGS）</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/DL-Scheduler/image-20220723162006488.png" alt="image-20220723162006488" style="zoom:50%;" />
+
+<h4 id="Model-2"><a href="#Model-2" class="headerlink" title="Model"></a>Model</h4><p>贝叶斯优化见原论文第三章，写的非常好</p>
+<p>Metis 算法以一种固定时间分片的方式工作，每个时间槽是一个调度间隔（如 30 分钟）。</p>
+<p>Agent 根据状态选择采用动作。在采取动作后，神经网络的输入状态也随之变。对于新的输入状态，神经网络又产生新的动作，直到集群中没有未分配 的节点可以分配或者 Agent 产生的动作为 ∅ 。</p>
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/DL-Scheduler/image-20220723165507601.png" alt="image-20220723165507601" style="zoom:50%;" />
+
+<p>不同于标准的强化学习每次执行动作都能立即收到奖赏，在一个时间槽内本 文的神经网络会多次决策，产生多个动作，但是直到这个时间槽结束才能知道这 些动作的奖赏。</p>
+<p>本章的调度目标是最大化集群中机器学习模型的整体性能。但是需要等到模 型训练完成才能知道模型的最终性能，而这可能需要几百甚至几千个时间槽。对 于在线强化学习来说，奖赏的显著反馈延迟是不可接受的，因为延迟的奖赏对于 改善早期决策的指导作用很小。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2022/07/16/DL-Scheduler/" title="DL Scheduler" target="_blank" rel="external">http://example.com/2022/07/16/DL-Scheduler/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xmzzyo" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/touxiang.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xmzzyo" target="_blank"><span class="text-dark">xmz</span><small class="ml-1x"></small></a></h3>
+        <div>技术活，当赏~</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2022/07/16/Structured-Multi-Agent-RL/" title="Structured Multi-Agent RL"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/10/07/RL-for-Resource-Managemet/" title="RL for Resource Managemet"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="Catalogue" role="button">
+        <span>[&nbsp;</span><span>Catalogue</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xmzzyo" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/people/zzyo-25" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2022 xmz
+        
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+  <script>
+  //利用 FancyBox 实现点击图片放大
+  $(document).ready(function() {
+    $('article img').not('[hidden]').not('.panel-body img').each(function() {
+      var $image = $(this);
+      var imageCaption = $image.attr('alt');
+      var $imageWrapLink = $image.parent('a');
+      if ($imageWrapLink.length < 1) {
+        var src = this.getAttribute('src');
+        var idx = src.lastIndexOf('?');
+        if (idx != -1) {
+          src = src.substring(0, idx);
+        }
+        $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+      }
+      $imageWrapLink.attr('data-fancybox', 'images');
+      if (imageCaption) {
+        $imageWrapLink.attr('data-caption', imageCaption);
+      }
+    });
+    $().fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+    });
+  });
+  </script>
+
+
+
+
+    <script defer>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?5b8968d29b062c2b158f75733d315d20";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+</body>
+</html>
