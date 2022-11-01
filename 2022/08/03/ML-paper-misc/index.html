@@ -362,7 +362,7 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h3 id="Accurate-Uncertainty-Estimation-and-Decomposition-in-Ensemble-Learning-NeurIPS-2019"><a href="#Accurate-Uncertainty-Estimation-and-Decomposition-in-Ensemble-Learning-NeurIPS-2019" class="headerlink" title="Accurate Uncertainty Estimation and Decomposition in Ensemble Learning (NeurIPS 2019)"></a>Accurate Uncertainty Estimation and Decomposition in Ensemble Learning (NeurIPS 2019)</h3><img src="../asset/ML-paper-misc/image-20220802174158525.png" alt="image-20220802174158525" style="zoom:50%;" />
+        <h3 id="Accurate-Uncertainty-Estimation-and-Decomposition-in-Ensemble-Learning-NeurIPS-2019"><a href="#Accurate-Uncertainty-Estimation-and-Decomposition-in-Ensemble-Learning-NeurIPS-2019" class="headerlink" title="Accurate Uncertainty Estimation and Decomposition in Ensemble Learning (NeurIPS 2019)"></a>Accurate Uncertainty Estimation and Decomposition in Ensemble Learning (NeurIPS 2019)</h3><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220802174158525.png" alt="image-20220802174158525" style="zoom:50%;" />
 
 <ol>
 <li><p>aleatoric uncertainty： 来自数据集，如sensor数据采集的误差，不能被减少</p>
@@ -378,27 +378,27 @@
 <ol>
 <li>标准化方法</li>
 </ol>
-<img src="../asset/ML-paper-misc/image-20220803164911473.png" alt="image-20220803164911473" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220803164911473.png" alt="image-20220803164911473" style="zoom:50%;" />
 
 <p>使用“范围”、“方差”作为不确定性度量</p>
 <ol start="2">
 <li><p>Lee2016</p>
-<img src="../asset/ML-paper-misc/image-20220803165108107.png" alt="image-20220803165108107" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220803165108107.png" alt="image-20220803165108107" style="zoom:50%;" />
 
 <p>标准方法先取平均值，然后应用不确定性度量，而 Lee 的方法先应用不确定性度量，然后取平均值。</p>
 </li>
 <li><p>ANOVA</p>
-<p>假设<img src="../asset/ML-paper-misc/image-20220803165212768.png" alt="image-20220803165212768" style="zoom:50%;" /></p>
+<p>假设<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220803165212768.png" alt="image-20220803165212768" style="zoom:50%;" /></p>
 </li>
 </ol>
-<img src="../asset/ML-paper-misc/image-20220803165229005.png" alt="image-20220803165229005" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220803165229005.png" alt="image-20220803165229005" style="zoom:50%;" />
 
 <p>​        x是随机变量，均值为0，方差解释为自然变异或者内部变异</p>
 <p>​        最小化：</p>
-<img src="../asset/ML-paper-misc/image-20220803165413291.png" alt="image-20220803165413291" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220803165413291.png" alt="image-20220803165413291" style="zoom:50%;" />
 
 <p>​        阶段k的不确定性度量为：</p>
-<img src="../asset/ML-paper-misc/image-20220803165455128.png" alt="image-20220803165455128" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220803165455128.png" alt="image-20220803165455128" style="zoom:50%;" />
 
 
 
@@ -410,11 +410,11 @@
 <p>each kernel’s suitability is instead usually determined via a proxy for the model evidence, such as the <strong>Bayesian Information Criterion (BIC)</strong></p>
 <p>In this work, we utilise <strong>eight primitive kernels</strong>: the squared exponential; periodic; white noise; three variants of the Matern kernel ; the cosine kernel, and our novel variant of the linear kernel. 包括stationary的和non-stationary的kernel</p>
 <p>Kernel之间的操作包括<strong>加和、乘积、卷积、分解、仿射变换</strong></p>
-<img src="../asset/ML-paper-misc/image-20220807221455783.png" alt="image-20220807221455783" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220807221455783.png" alt="image-20220807221455783" style="zoom:50%;" />
 
 <p>白噪声+stationary kernel</p>
 <p>白噪声+non-stationary kernel（线性kernel）：</p>
-<img src="../asset/ML-paper-misc/image-20220807221620786.png" alt="image-20220807221620786" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220807221620786.png" alt="image-20220807221620786" style="zoom:50%;" />
 
 <p>线性kernel对每个输入维度使用独立的方差</p>
 <p>The product between the linear kernel and the noise kernel generates a form of noise <strong>whose variance changes linearly with respect to the inputs.</strong></p>
@@ -428,15 +428,15 @@
 <h5 id="本文工作"><a href="#本文工作" class="headerlink" title="本文工作"></a>本文工作</h5><p>可以provide the exact same results as standard variational GPs</p>
 <p>ST-VGP is derived using a <strong>natural gradient variational inference</strong> approach <strong>based on ﬁltering and smoothing</strong>. We also derive this method’s <strong>sparse variant</strong></p>
 <h4 id="Definition-and-Model"><a href="#Definition-and-Model" class="headerlink" title="Definition and Model"></a>Definition and Model</h4><p>输入数据：X：一维时间，多维空间</p>
-<img src="../asset/ML-paper-misc/image-20220809172702433.png" alt="image-20220809172702433" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220809172702433.png" alt="image-20220809172702433" style="zoom:50%;" />
 
-<img src="../asset/ML-paper-misc/image-20220809172729591.png" alt="image-20220809172729591" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220809172729591.png" alt="image-20220809172729591" style="zoom:50%;" />
 
 <h5 id="State-Space-Spatio-Temporal-Gaussian-Processes"><a href="#State-Space-Spatio-Temporal-Gaussian-Processes" class="headerlink" title="State Space Spatio-Temporal Gaussian Processes"></a>State Space Spatio-Temporal Gaussian Processes</h5><p><strong>reformulate the prior</strong> in Eq. (1) as a <strong>state space model</strong>, reducing the computational scaling to <strong>linear in the number of time points</strong></p>
 <p><strong>assumption</strong> is that the <strong>kernel is both Markovian</strong> and <strong>separable between time and space</strong>: $κ(t, s, t^′, s^′) = κ_t(t, t^′) κ_s(s, s^′)$.</p>
 <p><strong>Markovian kernel</strong> to refer to a kernel which can be <strong>re-written in state-space form</strong></p>
 <p><strong>GP prior as a stochastic partial differential equation (SPDE)</strong></p>
-<img src="../asset/ML-paper-misc/image-20220809173752837.png" alt="image-20220809173752837" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/ML-paper-misc/image-20220809173752837.png" alt="image-20220809173752837" style="zoom:50%;" />
 
 <p>where $w(t, s)$ is a <strong>(spatio-temporal) white noise process</strong> and $A_s$ a suitable (pseudo-) differential operator</p>
 <p>SPDEs of this form can represent a large class of <strong>separable</strong> and <strong>non-separable GP models.</strong></p>

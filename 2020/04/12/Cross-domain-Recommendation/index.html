@@ -436,9 +436,9 @@
 <li>每个领域的latent vector</li>
 <li>latent vector对齐</li>
 </ul>
-<p><strong>user vector</strong> $u_{dn}$，<strong>item vector</strong> $v_{dm}$，<strong>打分</strong><img src="../asset/Cross-domain-Recommendation/image-20200409161847024.png" alt="image-20200409161847024" style="zoom:67%;" /></p>
+<p><strong>user vector</strong> $u_{dn}$，<strong>item vector</strong> $v_{dm}$，<strong>打分</strong><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200409161847024.png" alt="image-20200409161847024" style="zoom:67%;" /></p>
 <p><strong>对齐</strong>user vector和item vector：</p>
-<p><img src="../asset/Cross-domain-Recommendation/image-20200409161545479.png" alt="image-20200409161545479" style="zoom:67%;" />                <img src="../asset/Cross-domain-Recommendation/image-20200409161600602.png" alt="image-20200409161600602" style="zoom:67%;" />  </p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200409161545479.png" alt="image-20200409161545479" style="zoom:67%;" />                <img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200409161600602.png" alt="image-20200409161600602" style="zoom:67%;" />  </p>
 <blockquote>
 <p><strong>Gaussian-Wishart先验分布</strong></p>
 <p>用来估计多元正态样本的协方差矩阵而引入的<strong>矩阵型</strong>随机分布</p>
@@ -446,19 +446,19 @@
 <blockquote>
 <p>多元高斯分布均值分布的共轭是高斯分布，精度（方差的逆）分布的共轭为Gamma分布</p>
 </blockquote>
-<img src="../asset/Cross-domain-Recommendation/image-20200409210417405.png" alt="image-20200409210417405" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200409210417405.png" alt="image-20200409210417405" style="zoom:50%;" />
 
-<img src="../asset/Cross-domain-Recommendation/image-20200409210454834.png" alt="image-20200409210454834" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200409210454834.png" alt="image-20200409210454834" style="zoom:50%;" />
 </blockquote>
 <p><strong>训练过程：</strong></p>
-<img src="../asset/Cross-domain-Recommendation/image-20200409210020132.png" alt="image-20200409210020132" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200409210020132.png" alt="image-20200409210020132" style="zoom:67%;" />
 
 <p><strong>推断过程：</strong></p>
 <p>包括user/item vector、高斯参数通过<strong>Gibbs 采样</strong>，根据当前<strong>其他参数的状态的条件概率</strong>得到。</p>
 <ol>
 <li>从Gaussian-Wishart后验分布中采样user/item vectors的均值$\mu$、协方差$\Lambda$</li>
 <li>从以$\mu\quad \Lambda$的高斯分布中采样user/item vector</li>
-<li>估计打分值<img src="../asset/Cross-domain-Recommendation/image-20200410104429093.png" alt="image-20200410104429093" style="zoom:50%;" /></li>
+<li>估计打分值<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200410104429093.png" alt="image-20200410104429093" style="zoom:50%;" /></li>
 </ol>
 <p><strong>改进：</strong>本文所提出的方法假设所有的domain共享一个latent vector的分布。然而，一些latent vector仅用于某一domain，领域之间的关系有所不同。通过<strong>引入domain-speciﬁc latent vector和shared latent vector</strong>，<strong>可建模domain heterogeneity</strong>。</p>
 <h3 id="Cross-domain-Recommendation-via-Deep-Domain-Adaptation"><a href="#Cross-domain-Recommendation-via-Deep-Domain-Adaptation" class="headerlink" title="Cross-domain Recommendation via Deep Domain Adaptation"></a>Cross-domain Recommendation via Deep Domain Adaptation</h3><blockquote>
@@ -468,19 +468,19 @@
 <p><strong>目的：</strong> 将source domain的item推荐给target domain,其中source domain和target domain无user overlap</p>
 <p><strong>任务：</strong> 通过video文本描述推荐新闻</p>
 <p><strong>方法：</strong> 使用domain separation network</p>
-<img src="../asset/Cross-domain-Recommendation/image-20200409114743237.png" alt="image-20200409114743237" style="zoom: 67%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200409114743237.png" alt="image-20200409114743237" style="zoom: 67%;" />
 
-<p><strong>损失函数：</strong><img src="../asset/Cross-domain-Recommendation/image-20200409114904853.png" alt="image-20200409114904853"></p>
+<p><strong>损失函数：</strong><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200409114904853.png" alt="image-20200409114904853"></p>
 <p><strong>DSN 损失：</strong> 分类误差＋stack降噪自编码器重构误差＋共享/私有正交约束＋共享encoder的对抗损失(Gradient Reversal Layer)</p>
-<img src="../asset/Cross-domain-Recommendation/image-20200409121518939.png" alt="image-20200409121518939" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200409121518939.png" alt="image-20200409121518939" style="zoom:67%;" />
 
-<p>损失函数：<img src="../asset/Cross-domain-Recommendation/image-20200409121334123.png" alt="image-20200409121334123"></p>
+<p>损失函数：<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200409121334123.png" alt="image-20200409121334123"></p>
 <p>DSN损失＋item embedding差别＋降噪自编码器重构误差</p>
 <h3 id="Connecting-Social-Media-to-E-Commerce-Cold-Start-Product-Recommendation-Using-Microblogging-Information"><a href="#Connecting-Social-Media-to-E-Commerce-Cold-Start-Product-Recommendation-Using-Microblogging-Information" class="headerlink" title="Connecting Social Media to E-Commerce: Cold-Start Product Recommendation Using Microblogging Information"></a>Connecting Social Media to E-Commerce: Cold-Start Product Recommendation Using Microblogging Information</h3><blockquote>
 <p>需要user的overlap</p>
 <p><strong>目的</strong>： 解决冷启动</p>
 </blockquote>
-<img src="../asset/Cross-domain-Recommendation/image-20200413143713415.png" alt="image-20200413143713415" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200413143713415.png" alt="image-20200413143713415" style="zoom:67%;" />
 
 <p><strong>流程：</strong></p>
 <ol>
@@ -494,24 +494,24 @@
 <li>约束特征向量维度之间的相关性</li>
 </ol>
 <p><strong>目标函数为：</strong></p>
-<img src="../asset/Cross-domain-Recommendation/image-20200413145306248.png" alt="image-20200413145306248" style="zoom: 67%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200413145306248.png" alt="image-20200413145306248" style="zoom: 67%;" />
 
 <h3 id="Cross-Domain-Recommendation-An-Embedding-and-Mapping-Approach"><a href="#Cross-Domain-Recommendation-An-Embedding-and-Mapping-Approach" class="headerlink" title="Cross-Domain Recommendation: An Embedding and Mapping Approach"></a>Cross-Domain Recommendation: An Embedding and Mapping Approach</h3><blockquote>
 <p>MLP非线性映射（非线性好，但需要数据多）</p>
 <p><strong>选择性映射</strong>（不是所有user/item适合映射，不active/popular的对映射有害）</p>
 <p>需要overlap</p>
 </blockquote>
-<img src="../asset/Cross-domain-Recommendation/image-20200413153547226.png" alt="image-20200413153547226" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200413153547226.png" alt="image-20200413153547226" style="zoom:50%;" />
 
 <p>两种隐向量模型：**</p>
 <ol>
 <li><p>MF：</p>
-<p>隐向量正态分布：<img src="../asset/Cross-domain-Recommendation/image-20200413152223999.png" alt="image-20200413152223999" style="zoom: 67%;" /></p>
-<p>目标函数：<img src="../asset/Cross-domain-Recommendation/image-20200413152306519.png" alt="image-20200413152306519" style="zoom:67%;" /></p>
+<p>隐向量正态分布：<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200413152223999.png" alt="image-20200413152223999" style="zoom: 67%;" /></p>
+<p>目标函数：<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200413152306519.png" alt="image-20200413152306519" style="zoom:67%;" /></p>
 </li>
 <li><p>RBF（pair-wise的preference ranking模型）：</p>
-<p>相对偏好：<img src="../asset/Cross-domain-Recommendation/image-20200413152643491.png" alt="image-20200413152643491" style="zoom:67%;" /></p>
-<p>目标函数：<img src="../asset/Cross-domain-Recommendation/image-20200413152711190.png" alt="image-20200413152711190" style="zoom: 67%;" /></p>
+<p>相对偏好：<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200413152643491.png" alt="image-20200413152643491" style="zoom:67%;" /></p>
+<p>目标函数：<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200413152711190.png" alt="image-20200413152711190" style="zoom: 67%;" /></p>
 </li>
 </ol>
 <p><strong>两种映射模型：</strong></p>
@@ -526,7 +526,7 @@
 <p>基于相似user邻居的GBT学习Mapping</p>
 <p>需要user overlap</p>
 </blockquote>
-<img src="../asset/Cross-domain-Recommendation/image-20200413154008830.png" alt="image-20200413154008830" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200413154008830.png" alt="image-20200413154008830" style="zoom:50%;" />
 
 <p><strong>基于用户相似度的矩阵分解：</strong></p>
 <p><strong>动机：</strong></p>
@@ -541,7 +541,7 @@
 <li>Similarity Based on Rating Biases</li>
 </ol>
 <p><strong>目标函数：</strong></p>
-<img src="../asset/Cross-domain-Recommendation/image-20200413161710453.png" alt="image-20200413161710453" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200413161710453.png" alt="image-20200413161710453" style="zoom:67%;" />
 
 <p><strong>基于邻居的latent mapping：</strong></p>
 <p>由于分domain进行分解，需要在不同domain的latent space进行mapping</p>
@@ -554,7 +554,7 @@
 </blockquote>
 <p><strong>用户社区检测：</strong></p>
 <p>最小割方法-NP hard问题</p>
-<p>使用谱聚类，GNN，Grassman Manifolds衡量距离，<img src="../asset/Cross-domain-Recommendation/image-20200414225744223.png" alt="image-20200414225744223" style="zoom: 67%;" /></p>
+<p>使用谱聚类，GNN，Grassman Manifolds衡量距离，<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200414225744223.png" alt="image-20200414225744223" style="zoom: 67%;" /></p>
 <p><strong>考虑层间关系（相似度）：</strong></p>
 <ul>
 <li>动机：<ul>
@@ -564,7 +564,7 @@
 </li>
 <li>通过inter-layer similarity graph $R$ 和 the adjacency matrix $W_R$得到</li>
 </ul>
-<img src="../asset/Cross-domain-Recommendation/image-20200414230836966.png" alt="image-20200414230836966" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Cross-domain-Recommendation/image-20200414230836966.png" alt="image-20200414230836966" style="zoom:67%;" />
 
 
 

@@ -377,10 +377,10 @@
 <p>$P(w_{j}|d_{i}) = \sum <em>{k} P(w</em>{j}|z_{k}) \cdot  P(z_{k}|d_{i})$</p>
 <p>共轭分布：分布的分布，先验(Dir) + 数据似然(多项式)=后验(Dir)；一方面符合直觉，另一方面可作为先验链，在Gibbs采样中有用</p>
 <p>模型结构：</p>
-<img src="../asset/Neural-Variational-Inference/lda-model.png" alt="lda-model" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/lda-model.png" alt="lda-model" style="zoom:50%;" />
 
 <p>生成过程：</p>
-<img src="../asset/Neural-Variational-Inference/lda-gen.png" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/lda-gen.png" style="zoom:50%;" />
 
 <p>其中$\beta=(\beta_1,\beta_2\dots \beta_k)$，k是topic数，$\beta_i$是topic-word的概率分布</p>
 <p>参数求解：</p>
@@ -407,7 +407,7 @@
 <p>模型参数是$\alpha \ \eta$，求解目标是$\theta\ \beta\ z$，由于$\theta\ \beta\ z$之间的耦合性，需要使用变分假设，假设所有的隐藏变量都是通过各自的独立分布形成的(mean field theory)，这样就去掉了隐藏变量之间的耦合关系。</p>
 <p>隐藏变量的概率分布为：$p(\theta,\beta, z | w, \alpha, \eta) = \frac{p(\theta,\beta, z,  w| \alpha, \eta)}{p(w|\alpha, \eta)}$</p>
 <p>引入平均场理论后，隐藏变量的分布相对独立：</p>
-<img src="../asset/Neural-Variational-Inference/lda-mean-field.png" alt="lda-mean-field" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/lda-mean-field.png" alt="lda-mean-field" style="zoom:50%;" />
 
 <p>$\begin{align} q(\beta, z, \theta|\lambda,\phi, \gamma)   =  \prod_{k=1}^Kq(\beta_k|\lambda_k)\prod_{d=1}^M(q(\theta_d|\gamma_d)\prod_{n=1}^{N_d}q(z_{dn}| \phi_{dn})) \end{align}$</p>
 <p>最小化估计分布和真实分布：</p>
@@ -435,7 +435,7 @@
 <li><a target="_blank" rel="noopener" href="https://tiffer.cn/variational-autoencoder.html">https://tiffer.cn/variational-autoencoder.html</a></li>
 </ol>
 </blockquote>
-<img src="../asset/Neural-Variational-Inference/vae-model.png" alt="vae-model" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/vae-model.png" alt="vae-model" style="zoom:50%;" />
 
 <p>$\log P(X) = ELBO + KL(Q||P)$</p>
 <p>目标函数为y优化变分下界：</p>
@@ -444,12 +444,12 @@
 <p>对于$D_{KL}[Q(z \vert X) \Vert P(z)]$，假设$P(z) = N(0,1)$，</p>
 <p>$\begin{aligned}&amp;KL\Big(N(\mu,\sigma^2)\Big\Vert N(0,1)\Big)\  =&amp;\int \frac{1}{\sqrt{2\pi\sigma^2}}e^{-(x-\mu)^2/2\sigma^2} \left(\log \frac{e^{-(x-\mu)^2/2\sigma^2}/\sqrt{2\pi\sigma^2}}{e^{-x^2/2}/\sqrt{2\pi}}\right)dx\  =&amp;\int \frac{1}{\sqrt{2\pi\sigma^2}}e^{-(x-\mu)^2/2\sigma^2} \log \left{\frac{1}{\sqrt{\sigma^2}}\exp\left{\frac{1}{2}\big[x^2-(x-\mu)^2/\sigma^2\big]\right} \right}dx\  =&amp;\frac{1}{2}\int \frac{1}{\sqrt{2\pi\sigma^2}}e^{-(x-\mu)^2/2\sigma^2} \Big[-\log \sigma^2+x^2-(x-\mu)^2/\sigma^2 \Big] dx\end{aligned}$</p>
 <p>整个结果分为三项积分，第一项实际上就是$-\log \sigma^2$乘以概率密度的积分（也就是1），所以结果是$-\log \sigma^2$；第二项实际是正态分布的二阶矩，正态分布的二阶矩为$\mu^2+\sigma^2$；而根据定义，第三项实际上就是“-方差除以方差=-1”。所以总结果就是$KL\Big(N(\mu,\sigma^2)\Big\Vert N(0,1)\Big)=\frac{1}{2}\Big(-\log \sigma^2+\mu^2+\sigma^2-1\Big)$，相当于对$\mu \ \sigma$加$L_2$正则</p>
-<img src="../asset/Neural-Variational-Inference/vae-loss.png" alt="vae-model" style="zoom: 67%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/vae-loss.png" alt="vae-model" style="zoom: 67%;" />
 
 <p><strong>Reparameterization Trick:</strong></p>
 <p>采样操作是不可导的，而采样的结果是可导的</p>
 <p>从$\mathcal{N}(\mu,\sigma^2)$中采样一个$Z$，相当于从$\mathcal{N}(0,I)$中采样一个$\varepsilon$，然后让$Z=\mu + \varepsilon \times \sigma$。</p>
-<p><img src="../asset/Neural-Variational-Inference/vae-reparam-trick.png" alt="vae-model"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/vae-reparam-trick.png" alt="vae-model"></p>
 <h2 id="二、Neural-Variational-Inference"><a href="#二、Neural-Variational-Inference" class="headerlink" title="二、Neural Variational Inference"></a>二、Neural Variational Inference</h2><h3 id="1-NVDM-Neural-Variational-Document-Model"><a href="#1-NVDM-Neural-Variational-Document-Model" class="headerlink" title="1. NVDM (Neural Variational Document Model)"></a>1. NVDM (Neural Variational Document Model)</h3><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1511.06038.pdf">Neural Variational Inference for Text Processing</a></p>
 <p>传统方法的约束：随着generation模型复杂度、深度的提升，高维积分给对后验分布的变分推断带来了困难；模型的微小改变就需要重新求导，限制了对数据的不同分布假设；数据规模较大时Gibbs采样效率低</p>
 <p>于是，不同于传统的变分推断、近似采样等方法，NVI通过Black-Box直接对h后验概率进行建模，取得强大的生成能力。</p>
@@ -464,17 +464,17 @@
 <li>隐变量分布参数$\mu=l_1(\pi),\log\sigma=l_2(\pi)$</li>
 </ul>
 <p>得到隐变量$h$后，变分下界对模型参数$\theta$求导为：</p>
-<img src="../asset/Neural-Variational-Inference/NVDM-loss.png" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/NVDM-loss.png" style="zoom:67%;" />
 
 <p>对于Inference网络参数$\phi$，经过RT后$h=\mu+\sigma$，</p>
-<img src="../asset/Neural-Variational-Inference/NVDM-loss2.png" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/NVDM-loss2.png" style="zoom:67%;" />
 
-<h4 id="Neural-Variational-Document-Model"><a href="#Neural-Variational-Document-Model" class="headerlink" title="Neural Variational Document Model"></a>Neural Variational Document Model</h4><img src="../asset/Neural-Variational-Inference/NVDM-model.png" style="zoom:67%;" />
+<h4 id="Neural-Variational-Document-Model"><a href="#Neural-Variational-Document-Model" class="headerlink" title="Neural Variational Document Model"></a>Neural Variational Document Model</h4><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/NVDM-model.png" style="zoom:67%;" />
 
 <p>Inference网络：MLP：$X-&gt;h, p(h|X)$，推断隐藏话题分布</p>
 <p>Generation网络：softmax decoder: $p(X|h)=\prod_i p(x_i|h)$</p>
 <p>变分下界：</p>
-<img src="../asset/Neural-Variational-Inference/NVDM-ELBO.png" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/NVDM-ELBO.png" style="zoom:50%;" />
 
 <h3 id="2-AVITM"><a href="#2-AVITM" class="headerlink" title="2. AVITM"></a>2. AVITM</h3><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1703.01488.pdf">AutoEncoding Varitional Inference For Topic Models</a></p>
 <p>使用 autoencoding variational Bayes (AEVB)解决传统LDA的缺点</p>
@@ -483,7 +483,7 @@
 <ul>
 <li><p>Dirichlet分布限制了RT</p>
 <p>Dirichlet可以使用Laplace approximation 将其近似为 logistic normal 分布，于是Dirichlet可以近似为K(Topic 数，值较大)个独立的高斯分布，然后就可以通过RT采样出Dirichlet分布</p>
-<img src="../asset/Neural-Variational-Inference/BTM-la.png" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/BTM-la.png" style="zoom:50%;" />
 
 <p>于是将$p(\theta|\alpha)$近似为$\hat{p}(\mu_1|\sum_1)=\mathcal{NL}(\theta|\mu_1,\sum_1)$</p>
 </li>
@@ -498,10 +498,10 @@
 <p>传统LDA的约束：在短文本上由于数据稀疏性(词共现稀疏)而表现不好</p>
 <h4 id="BTM"><a href="#BTM" class="headerlink" title="BTM"></a>BTM</h4><p>于是提出了BTM(Biterm Topic Model)，通过建模word-paris来学习topic，其缺点是没有体现Biterm之间的transitivity ；对整个语料学习一个topic分布而不是LDA中的每个文档</p>
 <p><strong>生成过程：</strong></p>
-<img src="../asset/Neural-Variational-Inference/BTM-gen.png" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/BTM-gen.png" style="zoom:50%;" />
 
 <p>对于$b=(w_i,w_j)$</p>
-<img src="../asset/Neural-Variational-Inference/BTM-jp.png" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/BTM-jp.png" style="zoom:50%;" />
 
 <p>由于BTM和LDA一样对topic和word的先验分布的参数使用Dirichlet分布，但对于Dirichlet很难使用RT对ELBO得到一个可导的 Monte Carlo estimator，Dirichlet可以使用Laplace approximation 将其近似为 logistic normal 分布</p>
 <h4 id="GraphBTM"><a href="#GraphBTM" class="headerlink" title="GraphBTM"></a>GraphBTM</h4><ul>
@@ -512,7 +512,7 @@
 </li>
 </ul>
 <p>语料的似然为：</p>
-<img src="../asset/Neural-Variational-Inference/GBTM-siran.png" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/GBTM-siran.png" style="zoom:50%;" />
 
 <p>类似LDA，对于$\alpha \ \theta$分别引入两个变分参数$\gamma\ \phi$，优化目标为最大化变分下界$L(\gamma,\phi)=R-D_{KL}$</p>
 <p>使用Inference网络计算变分参数，$(\mu_b,\sum_b)=f(b)$，于是可以通过logistic normal 将其近似为Dirichlet分布，$q_{\gamma}(\theta)=\mathcal{LN}(\theta|\mu_b,diag(\sum_b)$</p>
@@ -523,30 +523,30 @@
 <li><p>Householder flow</p>
 <p>打破隐变量的独立性假设，使用迭代的可逆的线性变换将一个各向同性高斯分布映射为非各向同性</p>
 <p>通过正交阵可以将isotropic Gaussian 映射为full covariance，Householder flow 使用k个Householder transformation的乘积表示正交阵。</p>
-<img src="../asset/Neural-Variational-Inference/householder-matrix.png" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/householder-matrix.png" style="zoom:67%;" />
 
 <p>其中$h^0$是初始的isotropic Gaussian样本，$\pi$是MLP即Inference网络的输出，经过迭代得到non-isotropic Gaussian 的样本</p>
-<img src="../asset/Neural-Variational-Inference/householder-trans.png" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/householder-trans.png" style="zoom:67%;" />
 
 <p>约束：Householder flow只能转换单个隐变量topic vector，计算重构误差是不够的</p>
 </li>
 <li><p>Centralized Transformation Flow</p>
 <p>利用高斯分布的线性性，可以通过线性变换得到non-isotropic Gaussian样本：</p>
-<img src="../asset/Neural-Variational-Inference/CTF.png" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/CTF.png" style="zoom:67%;" />
 
 <p>其中$U=\prod_iH_i$，其中$H$的输入是MLP的输出和isotropic Gaussian的均值</p>
 <p>在CTF中，通过定义转换矩阵，可以将多个isotropic Gaussian 样本转换为non-isotropic的样本。</p>
 <p>模型如下：</p>
-<img src="../asset/Neural-Variational-Inference/CTF-model.png" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/CTF-model.png" style="zoom:67%;" />
 
 <p>NVCTM (Neural Variational Correlated Topic Model) 的目标函数是：</p>
-<img src="../asset/Neural-Variational-Inference/NVCTM-obj.png" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/NVCTM-obj.png" style="zoom:67%;" />
 
 <p>其中重构误差通过隐变量topic分布中随机采样计算出</p>
 <p>对于KL距离，利用高斯分布的线性性：$h_0 \sim N(\mu, \sum) , \hat{h}=U \cdot h, \hat{h} \sim N(U\mu,U\sum U^T)$</p>
-<p><img src="../asset/Neural-Variational-Inference/NVCTM-kl.png"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/NVCTM-kl.png"></p>
 <p>于是得到 Transformation Flow Lower Bound(TFLB)：</p>
-<p><img src="../asset/Neural-Variational-Inference/NVCTM-tflb.png"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/Neural-Variational-Inference/NVCTM-tflb.png"></p>
 <p>作者使用point-wise mutual information来衡量topic之间的相关程度，证明比LDA、NVDM、GSM等模型更好的学习topic之间关系</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>NVI使用神经网络灵活的建模能力直接对隐变量的后验分布进行推断，通过Inference网络得到Varitional Parameters，不用像传统方法对变分参数进行严格数学推导，模型的微小改变就需要重新推导，不利于对数据的不同分布假设，并且可以避免因为数据规模增加带来Gibbs采样效率的下降。NVI使用Black-box的Inference网络带来了更加灵活的建模方式，如MLP、CNN、RNN等。</p>
 <p>总之，定义好Inference网络结构、隐变量的先验分布、ELBO目标函数即可进行隐变量学习，提供了更加一般性的方法。</p>

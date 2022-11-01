@@ -359,17 +359,17 @@
 <h3 id="Reinforcement-learning-with-Gaussian-processes-（ICML-2005）"><a href="#Reinforcement-learning-with-Gaussian-processes-（ICML-2005）" class="headerlink" title="Reinforcement learning with Gaussian processes （ICML 2005）"></a>Reinforcement learning with Gaussian processes （ICML 2005）</h3><h4 id="Intro-1"><a href="#Intro-1" class="headerlink" title="Intro"></a>Intro</h4><p>Gaussian Process Temporal Difference (GPTD) learning offers a Bayesian solution to the policy evaluation problem of reinforcement learning.</p>
 <p>GPTD 有两个问题没有解决：1）需要MDP是确定性的；2）policy必须是optimal或者sub-optimal的，才能训练value estimation</p>
 <p>折扣Reward的随机性（<strong>intrinsic randomness</strong>）来自于：1）状态序列的随机性；2）reward的随机性</p>
-<img src="../asset/RL-paper-misc/image-20220803172635038.png" alt="image-20220803172635038" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/RL-paper-misc/image-20220803172635038.png" alt="image-20220803172635038" style="zoom:50%;" />
 
 <p>将D分解为均值和不确定性：</p>
-<img src="../asset/RL-paper-misc/image-20220803172708544.png" alt="image-20220803172708544" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/RL-paper-misc/image-20220803172708544.png" alt="image-20220803172708544" style="zoom:50%;" />
 
 <p>通过定义V(x)为随机过程，来建模<strong>extrinsic uncertainty</strong></p>
 <p>上式代入上上式：</p>
-<img src="../asset/RL-paper-misc/image-20220803174706456.png" alt="image-20220803174706456" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/RL-paper-misc/image-20220803174706456.png" alt="image-20220803174706456" style="zoom:50%;" />
 
 <p>定义如下随机过程：</p>
-<img src="../asset/RL-paper-misc/image-20220803183628784.png" alt="image-20220803183628784" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/xmzzyo/Blog@master/source/_posts/../asset/RL-paper-misc/image-20220803183628784.png" alt="image-20220803183628784" style="zoom:50%;" />
 
 <h3 id="Sample-Efﬁcient-Reinforcement-Learning-with-Gaussian-Processes-（ICML-2014）"><a href="#Sample-Efﬁcient-Reinforcement-Learning-with-Gaussian-Processes-（ICML-2014）" class="headerlink" title="Sample Efﬁcient Reinforcement Learning with Gaussian Processes （ICML 2014）"></a>Sample Efﬁcient Reinforcement Learning with Gaussian Processes （ICML 2014）</h3><h4 id="Intro-2"><a href="#Intro-2" class="headerlink" title="Intro"></a>Intro</h4><p>介绍了高斯过程在model-based 和model-free RL里面的应用</p>
 <p>the ﬁrst <strong>model-free continuous</strong> state space PAC-MDP algorithm using GPs: <strong>Delayed-GPQ (DGPQ).</strong></p>
